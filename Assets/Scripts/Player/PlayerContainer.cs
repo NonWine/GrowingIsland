@@ -9,7 +9,7 @@ public class PlayerContainer : MonoBehaviour
     [SerializeField] private Animator _player;
     [SerializeField] private PlayerStats _playerStats;
     [Inject] private Joystick _joystick;
-    [Inject]  private ObjectPoolEnemy _objectPoolEnemy;
+   // [Inject]  private ObjectPoolEnemy _objectPoolEnemy;
     private Vector3 _direction;
 
     public Vector3 Direction

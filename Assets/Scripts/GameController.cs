@@ -14,9 +14,9 @@ public class GameController : MonoBehaviour
     private PlayerController _player;
 
     [Inject]
-    public void Construct(ObjectPoolEnemy objectPoolEnemy, DiContainer diContainer)
+    public void Construct(DiContainer diContainer)
     {
-        _objectPoolEnemy = objectPoolEnemy;
+      //  _objectPoolEnemy = objectPoolEnemy;
         _diContainer = diContainer;
     }
     
@@ -31,16 +31,18 @@ public class GameController : MonoBehaviour
             new PlayerRotating(_playerContainer),
             new PlayerAnimator(_playerContainer),
             new PlayerDamaging(_playerContainer, new PlayerEnemyDetector(_playerContainer,_objectPoolEnemy)));
-
-        _cameraFollowing.Init(_playerContainer.transform);
+        
+        _cameraFollowing.SetFollow(_playerContainer.transform);
     }
+
+    
 
     private void Update()
     {
-        foreach (var enemy in _objectPoolEnemy._InActiveUnits)
-        {
-            enemy.Tick();
-        }
+        // foreach (var enemy in _objectPoolEnemy._InActiveUnits)
+        // {
+        //     enemy.Tick();
+        // }
         _player.Tick();
     }
 }

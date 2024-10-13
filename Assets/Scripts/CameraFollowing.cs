@@ -1,35 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using Zenject;
 
 public class CameraFollowing : MonoBehaviour
 {
-    private Transform _player;
-    private Camera _camera;
-    private Vector3 _startCamPos;
-    
-    private void Start()
-    {
-        _camera = Camera.main;
-        _startCamPos = _camera.transform.position;
-    }
+    [SerializeField] private CinemachineVirtualCamera _cinemachineVirtual;
 
-    public void Init(Transform transform)
+    public void SetFollow(Transform target)
     {
-        _player = transform;
-    }
-
-    private void LateUpdate()
-    {
-        FollowToPlayer();
-    }
-
-    private void FollowToPlayer()
-    {
-        if (transform.position != _player.position)
-            _camera.transform.position = Vector3.MoveTowards(  _camera.transform.position,_player.position + _startCamPos , 3f);
+        _cinemachineVirtual.Follow = target;
     }
 
 }

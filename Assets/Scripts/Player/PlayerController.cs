@@ -24,7 +24,7 @@ public class PlayerController
 
     public void Tick()
     {
-        _attackable.Attack();
+       // _attackable.Attack();
         _moveable.Move();
         _rotateable.Rotate();
         _entityAnimateable.UpdateAnimator();
