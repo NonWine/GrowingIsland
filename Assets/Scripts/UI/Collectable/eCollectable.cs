@@ -1,6 +1,5 @@
 public enum eCollectable
 {
-    Meat,
     Wood,
     Blood,
     Clothe,

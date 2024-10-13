@@ -8,11 +8,13 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] private PlayerContainer _playerContainerPrefab;
     [SerializeField] private CameraFollowing _cameraFollowing;
+    [SerializeField] private CollectableAnimationData _collectableAnimationData; 
     private ObjectPoolEnemy _objectPoolEnemy;
     private DiContainer _diContainer;
     private PlayerContainer _playerContainer;
     private PlayerController _player;
-
+    private StorageManager _storageManager;
+    
     [Inject]
     public void Construct(DiContainer diContainer)
     {
@@ -23,7 +25,11 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         _playerContainer = _diContainer.InstantiatePrefabForComponent<PlayerContainer>(_playerContainerPrefab);
+        
+        _storageManager = new StorageManager();
         _diContainer.BindInstance(_playerContainer).AsSingle().Lazy();
+        _diContainer.BindInstance(_storageManager);
+        _diContainer.BindInstance(_collectableAnimationData);
         
         _player = new PlayerController
         (

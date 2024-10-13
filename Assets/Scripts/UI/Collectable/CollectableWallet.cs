@@ -6,53 +6,51 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class CollectableWallet : MonoBehaviour
 {
-    [field: SerializeField] public eCollectable CollectableType { get; private set; }
     [SerializeField, ReadOnly] private TextMeshProUGUI _amountDisplay;
     [SerializeField, ReadOnly] private RectTransform _amountRect;
     [SerializeField, ReadOnly] private RectTransform _targetTransform;
     [SerializeField, ReadOnly] private CollectableSender _collectableSender;
     [SerializeField, ReadOnly] private GameObject _visual;
-    [SerializeField] private Sprite _spriteIcon;
+    [Inject] private StorageManager _storageManager;
+    [SerializeField] private Image _image;
+    private WalletObj _walletObj;
     public event Action<int> onValueChanged;
-
-    public int StartAmount;
-
+    
+    
+    
     private Tween _punchingAmount;
     private Tween _punchingIcon;
     private Sequence _shakeAmount;
     private Vector3 _startAmountPosition;
 
-    private StorageManager _storageManager;
-    private CollectableAnimationData.WalletData _walletData;
+   [Inject] private CollectableAnimationData _walletData;
 
     private int _amount;
+
+    public eCollectable WalletType => _walletObj.TypeWallet;
+    
     #region Amount
     //[ShowInInspector, PropertyOrder(-1)]
     public int Amount
     {
         get
         {
-            return _storageManager.GetCollectable(CollectableType);
+            return _storageManager.GetCollectable(_walletObj.TypeWallet);
         }
 
         private set
         {
            
             onValueChanged?.Invoke(value);
-            _storageManager.SetCollectable(CollectableType, value);
+            _storageManager.SetCollectable(_walletObj.TypeWallet, value);
         }
     }
     #endregion
-
-    public void PreSaveAmount() => _amount = Amount;
-
-
-    public void ResetAmount() => Amount = 0;
-
-    public void SaveAmount() => Amount = _amount;
+    
     
     #region Editor
     private void OnValidate()
@@ -66,15 +64,18 @@ public class CollectableWallet : MonoBehaviour
         _amountDisplay = GetComponentInChildren<TextMeshProUGUI>(true);
         _amountRect = _amountDisplay.GetComponent<RectTransform>();
         _targetTransform = transform.FindDeepChild<RectTransform>("Icon");
-        _targetTransform.GetComponent<Image>().sprite = _spriteIcon;
         _collectableSender = GetComponentInChildren<CollectableSender>();
         _visual = transform.FindDeepChild<GameObject>("Visual");
     }
     #endregion
 
     #region Init
-    private void Awake()
+    public void Init(WalletObj walletObj)
     {
+        //get fromSave
+        _walletObj = walletObj;
+        _image.sprite = walletObj.ItemIcon;
+        Debug.Log(_storageManager.ToString());
         UpdateAmount(Amount);
         _collectableSender.Initialize(this);
 
@@ -122,9 +123,9 @@ public class CollectableWallet : MonoBehaviour
         {
             _punchingIcon?.Kill();
             _targetTransform.localScale = Vector3.one;
-            _punchingIcon = _targetTransform.DOPunchScale(_walletData.IconAnimation.Scale,
-                _walletData.IconAnimation.Time,
-                _walletData.IconAnimation.Vibration);
+            _punchingIcon = _targetTransform.DOPunchScale(_walletData.WalletAnimationData.IconAnimation.Scale,
+                _walletData.WalletAnimationData.IconAnimation.Time,
+                _walletData.WalletAnimationData.IconAnimation.Vibration);
         }
 
         Amount += amount;
@@ -181,65 +182,7 @@ public class CollectableWallet : MonoBehaviour
         
     }
     
-    public void AddTween(int amount,float dur  , bool isNeededAnimation = true)
-    {
-        PlayAmountAnimation();
-
-        if (isNeededAnimation)
-        {
-            _punchingIcon?.Kill();
-            _targetTransform.localScale = Vector3.one;
-            _punchingIcon = _targetTransform.DOPunchScale(_walletData.IconAnimation.Scale,
-                _walletData.IconAnimation.Time,
-                _walletData.IconAnimation.Vibration);
-        }
-
-       // Amount += amount;
-       int endAmount = Amount += amount;
-       _tween?.Kill();
-       _tween =  DOVirtual.Int(Amount, endAmount, dur,
-           x =>
-           {
-               Amount = x;
-                        
-           }); 
-       ResetHorizontalLayout();
-    }
-
-    public Tween _tween;
-    public bool TryRemoveTween(int amount, float dur)
-    {
-        int remainingAmount = Amount - amount;
-        if (remainingAmount >= 0)
-        {
-            PlayAmountAnimation();
-            _tween?.Kill();
-            _tween =  DOVirtual.Int(Amount, remainingAmount, dur,
-                x =>
-                {
-                    Amount = x;
-                        
-                });
-        }
-        else
-        {
-            if (_shakeAmount.IsActive() == false || _shakeAmount.IsPlaying() == false)
-            {
-                _startAmountPosition = _amountRect.anchoredPosition;
-                
-                _shakeAmount?.Kill();
-                _shakeAmount = DOTween.Sequence();
-                _shakeAmount.Append(_amountRect.DOShakePosition(1f, 5f, 5, 50, false, true))
-                    .SetRelative(false)
-                    .OnComplete(() => _amountRect.anchoredPosition = _startAmountPosition);
-            }
-        }
-
-        ResetHorizontalLayout();
-        return remainingAmount >= 0;
-        
-    }
-
+    
     public void RemoveAll() => TryRemove(Amount);
 
     public bool CanRemove(int amount)
@@ -254,9 +197,9 @@ public class CollectableWallet : MonoBehaviour
     {
         _punchingAmount?.Kill();
         _amountRect.localScale = Vector3.one;
-        _punchingAmount = _amountRect.DOPunchScale(_walletData.AmountAnimation.Scale,
-            _walletData.AmountAnimation.Time,
-            _walletData.AmountAnimation.Vibration);
+        _punchingAmount = _amountRect.DOPunchScale(_walletData.WalletAnimationData.AmountAnimation.Scale,
+            _walletData.WalletAnimationData.AmountAnimation.Time,
+            _walletData.WalletAnimationData.AmountAnimation.Vibration);
     }
     #endregion
 }

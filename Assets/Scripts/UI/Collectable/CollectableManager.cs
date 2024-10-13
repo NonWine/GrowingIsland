@@ -1,56 +1,44 @@
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
 public class CollectableManager : MonoBehaviour
 {
-    [SerializeField, ReadOnly] protected CollectableWallet[] _collectableWallets;
+    [SerializeField] private WalletObj[] _walletObjs;
+    [SerializeField] private CollectableWallet _walletPrefab;
+    [Inject] private DiContainer _diContainer;
     
-    #region Editor
-    private void OnValidate() 
-        => SetRefs();
-
-    [Button]
-    protected virtual void SetRefs()
-    {
-        _collectableWallets = GetComponentsInChildren<CollectableWallet>(true);
-    }
-    #endregion
+    private List<CollectableWallet> _collectableWallets;
 
     private void Start()
     {
-        foreach (var wallet in _collectableWallets)
+        _collectableWallets = new List<CollectableWallet>();
+        foreach (var wallet in _walletObjs)
         {
-            if (wallet.Amount > 0)
-                wallet.gameObject.SetActive(true);
-        }
-    }
-
-    public void SaveAmount()
-    {
-        foreach (var wallet in _collectableWallets)
-        {
-            wallet.SaveAmount();
+           var wall =  _diContainer.InstantiatePrefabForComponent<CollectableWallet>(_walletPrefab, transform);
+           wall.Init(wallet);
+            _collectableWallets.Add(wall);
         }
     }
     
-    public void PreSaveAmount()
-    {
-        foreach (var wallet in _collectableWallets)
-        {
-            wallet.PreSaveAmount();
-        }
-    }
 
     public CollectableWallet GetWallet(eCollectable collectable)
     {
         foreach (var wallet in _collectableWallets)
         {
-            if (wallet.CollectableType == collectable)
+            if (wallet.WalletType == collectable)
                 return wallet;
         }
     
         Debug.LogError("Collectable wallet wasn't found!");
         return null;
+    }
+
+    [Button]
+    public void Add100Wood()
+    {
+        GetWallet(eCollectable.Wood).Add(100,false);
     }
 }

@@ -7,20 +7,11 @@ public class StorageManager
     public JsonSaver JsonSaver { get; private set; }
     public static event Action onCoinsAmountChanged;
 
-    public void Init()
+    public StorageManager()
     {
         JsonSaver = new JsonSaver(BaseDataSaver);
     }
-
-    public int CoinsAmount
-    {
-        get => GetCollectable(eCollectable.Meat);
-        set
-        {
-            onCoinsAmountChanged?.Invoke();
-            SetCollectable(eCollectable.Meat, value);
-        }
-    }
+    
 
     public int GetCollectable(eCollectable eCollectable)
     {
