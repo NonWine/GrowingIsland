@@ -2,7 +2,7 @@
 
 public interface IFactory<T>
 {
-    T Create(BaseEnemy baseEnemy);
+    T Create(T baseEnemy);
     
     T Create(T Object, Transform transform, Quaternion rotation, Transform parent);
 }

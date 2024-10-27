@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
-public abstract class BaseEnemy : MonoBehaviour , IDamageable
+public abstract class BaseEnemy : PoolAble , IDamageable
 {
     [SerializeField] protected HealthUI HealthUI;
     [SerializeField] protected NavMeshAgent NavMesh;
@@ -13,6 +13,8 @@ public abstract class BaseEnemy : MonoBehaviour , IDamageable
     [Inject] protected PlayerContainer PlayerContainer;
     protected EnemyStateMachine EnemyStateMachine;
 
+    
+    
     public Stats Stats
     {
         get => _stats;
@@ -20,7 +22,7 @@ public abstract class BaseEnemy : MonoBehaviour , IDamageable
         protected set => Stats = value;
     }
 
-    public ObjectPoolEnemy ObjectPoolEnemy;
+   // public ObjectPoolEnemy ObjectPoolEnemy;
     
     public event Action<BaseEnemy> OnDie;
     public void InvokeOnDie() => OnDie?.Invoke(this);
@@ -28,6 +30,7 @@ public abstract class BaseEnemy : MonoBehaviour , IDamageable
     
     private void Awake()
     {
+        isAlive = true;
         Stats.OnHealthChange += HealthUI.GetDamageUI;
         Stats.OnHealthChange += Death;
     }
@@ -45,7 +48,7 @@ public abstract class BaseEnemy : MonoBehaviour , IDamageable
         HealthUI.Tick();
     }
     
-    protected virtual void Death(int health)
+    protected virtual void Death(float health)
     {
         if (health <= 0 && !Stats.IsDeath)
         {
@@ -53,11 +56,18 @@ public abstract class BaseEnemy : MonoBehaviour , IDamageable
         }
     }
     
-    public virtual void GetDamage(int damage)
+    public virtual void GetDamage(float damage)
     {
         Stats.CurrentHealth -= damage;
     }
 
+    public bool isAlive { get; set; }
+
     public abstract void ResetMob();
+    
+}
+
+public enum EnemyType
+{
     
 }

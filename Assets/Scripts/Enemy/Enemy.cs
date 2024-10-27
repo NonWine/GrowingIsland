@@ -29,7 +29,12 @@ public class Enemy : BaseEnemy
         if (other.gameObject.GetComponent<PlayerContainer>() != null && Stats.IsDeath)
         {
             ParticlePool.Instance.PlayPoof(transform.position);
-            ObjectPoolEnemy.ToPool(this);
+         //   ObjectPoolEnemy.ToPool(this);
         }
+    }
+
+    public override void ResetPool()
+    {
+        //throw new NotImplementedException();
     }
 }

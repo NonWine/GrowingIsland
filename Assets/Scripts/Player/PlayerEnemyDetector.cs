@@ -3,17 +3,17 @@ using UnityEngine;
 
 public class PlayerEnemyDetector : IDetector
 {
-    private ObjectPoolEnemy _objectPoolEnemy;
+    private ObjectPoolTemplate<EnemyType,BaseEnemy> _objectPoolTamplate;
     private PlayerContainer _playerContainer;
     private List<BaseEnemy> _enemies;
     private List<BaseEnemy> _enemiesToRemove;
  
     
     public PlayerEnemyDetector(PlayerContainer playerContainer,
-        ObjectPoolEnemy objectPoolEnemy)
+        ObjectPoolTemplate<EnemyType, BaseEnemy> objectPoolTamplate)
     {
         _playerContainer = playerContainer;
-        _objectPoolEnemy = objectPoolEnemy;
+        _objectPoolTamplate = objectPoolTamplate;
         _enemies = new List<BaseEnemy>();
         _enemiesToRemove = new List<BaseEnemy>();
 
@@ -22,7 +22,7 @@ public class PlayerEnemyDetector : IDetector
     
     public List<BaseEnemy> TryFindEnemies()
     {
-        foreach (var enemy in _objectPoolEnemy._InActiveUnits)
+        foreach (var enemy in _objectPoolTamplate._inActiveUnits)
         {
             var distance = Vector3.Distance(_playerContainer.transform.position, enemy.transform.position);
             var stats = _playerContainer.PlayerStats;

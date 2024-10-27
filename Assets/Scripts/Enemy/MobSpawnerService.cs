@@ -8,7 +8,7 @@ public class MobSpawnerService : MonoBehaviour
 {
     [SerializeField] private EnemyConfig _enemyConfig;
     [SerializeField] private Transform _spawnPoint;
-    [Inject] private ObjectPoolEnemy _objectPoolEnemy;
+    //[Inject] private ObjectPoolEnemy _objectPoolEnemy;
 
     private void Start()
     {
@@ -24,8 +24,8 @@ public class MobSpawnerService : MonoBehaviour
         Transform point = _spawnPoint;
         float randomAngle = Random.Range(0f, 2 * Mathf.PI);
         point.position = new Vector3(Mathf.Cos(randomAngle), 0, Mathf.Sin(randomAngle)) * Random.Range(5,10); 
-        var enemy = _objectPoolEnemy.SpawnEnemy(_enemyConfig.EnemyPrefab, point, Quaternion.identity);
-        enemy.OnDie += Respawn;
+  //      var enemy = _objectPoolEnemy.SpawnEnemy(_enemyConfig.EnemyPrefab, point, Quaternion.identity);
+     //   enemy.OnDie += Respawn;
     }
 
     private async void Respawn(BaseEnemy enemy)

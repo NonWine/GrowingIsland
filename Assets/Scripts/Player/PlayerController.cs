@@ -9,18 +9,21 @@ public class PlayerController
     private IRotateable _rotateable;
     private IEntityAnimateable _entityAnimateable;
     private IAttackable _attackable;
-    
+    private PlayerStateMachine _playerStateMachine;
+
     public  PlayerController(IMoveable moveable,
         IRotateable rotateable,
         IEntityAnimateable entityAnimateable,
-        IAttackable attackable
+        IAttackable attackable,
+        PlayerStateMachine playerStateMachine
         )
 {
         _attackable = attackable;
         _entityAnimateable = entityAnimateable;
         _moveable = moveable;
         _rotateable = rotateable;
-    }
+        _playerStateMachine = playerStateMachine;
+}
 
     public void Tick()
     {
@@ -28,5 +31,6 @@ public class PlayerController
         _moveable.Move();
         _rotateable.Rotate();
         _entityAnimateable.UpdateAnimator();
+        _playerStateMachine.CurrentState.LogicUpdate();
     }
 }

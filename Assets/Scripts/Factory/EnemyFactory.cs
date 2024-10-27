@@ -1,31 +1,22 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class EnemyFactory : IFactory<BaseEnemy>
+public class EnemyFactory : PoolableFactory<EnemyType,BaseEnemy>
 {
-    private DiContainer _diContainer;
-    
-
-    public  EnemyFactory( DiContainer diContainer)
+    public EnemyFactory(Dictionary<EnemyType, BaseEnemy> prefabs, DiContainer container) : base(prefabs, container)
     {
-        _diContainer = diContainer;
-    }
-
-    public BaseEnemy Create(BaseEnemy baseEnemy)
-    {
-       return _diContainer.InstantiatePrefabForComponent<BaseEnemy>(baseEnemy);
-    }
-
-    public BaseEnemy Create(BaseEnemy Object, Transform transform, Quaternion rotation, Transform parent)
-    {
-        return _diContainer.InstantiatePrefabForComponent<BaseEnemy>(Object, transform.position, rotation, parent);
+        
     }
 
 
 }
 
-public class Unit : MonoBehaviour
+public class ResourcePartObjFactory :  PoolableFactory<eCollectable,ResourcePartObj>
 {
-    
+    public ResourcePartObjFactory(Dictionary<eCollectable, ResourcePartObj> prefabs, DiContainer container) : base(prefabs, container)
+    {
+        
+    }
 }

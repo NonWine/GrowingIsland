@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
@@ -9,7 +10,9 @@ public class PlayerContainer : MonoBehaviour
     [SerializeField] private Animator _player;
     [SerializeField] private PlayerStats _playerStats;
     [Inject] private Joystick _joystick;
-   // [Inject]  private ObjectPoolEnemy _objectPoolEnemy;
+    
+    [field: SerializeField] public PlayerTrigger PlayerTrigger { get; private set; }
+    
     private Vector3 _direction;
 
     public Vector3 Direction
@@ -17,6 +20,13 @@ public class PlayerContainer : MonoBehaviour
         get;
         set;
     }
+    
+    public float Magmitude
+    {
+        get;
+        set;
+    }
+
     
     public NavMeshAgent Agent => _navMeshAgent;
  

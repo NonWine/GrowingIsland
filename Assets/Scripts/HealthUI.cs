@@ -27,7 +27,7 @@ public class HealthUI : MonoBehaviour
         _slider.value = value;
     }
 
-    public void GetDamageUI(int count)
+    public void GetDamageUI(float count)
     {
         _slider.value = count;
     }
