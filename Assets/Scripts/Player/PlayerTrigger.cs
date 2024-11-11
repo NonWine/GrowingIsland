@@ -16,6 +16,9 @@ public class PlayerTrigger : MonoBehaviour
         {
             _playerStateMachine.ChangeState(PlayerStateKey.Lumber);
         }
+        else if(other.TryGetComponent(out IPlayerEnterTriggable playerEnterTriggable))
+            playerEnterTriggable.PlayerEnter();
+        
     }
 
     private void OnTriggerExit(Collider other)
@@ -24,5 +27,7 @@ public class PlayerTrigger : MonoBehaviour
         {
             _playerStateMachine.ChangeState(PlayerStateKey.Idle);
         }
+        else if(other.TryGetComponent(out IPlayerExitTriggable playerEnterTriggable))
+            playerEnterTriggable.PlayerExit();
     }
 }

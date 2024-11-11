@@ -40,8 +40,8 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
             for (int i = 0; i < _resourceWorld.VisualDrop; i++)
             {
                 var resource = _resourcesFactory.Create(_resourceWorld.TypeWallet);
-                resource.transform.position = transform.position * Random.Range(1, 3);
-                
+                resource.transform.DOMove(transform.position * Random.Range(2f, 3f), 2.5f).OnComplete(resource.ResetPool);
+
             }
 
             isAlive = false;

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d9db04da6924b7eb2dffc76b755ec69, type: 3}
   m_Name: Wallet
   m_EditorClassIdentifier: 
-  ItemIcon: {fileID: 21300000, guid: 1e0204e4d32684272b7718888c21dd55, type: 3}
+  ItemIcon: {fileID: 21300000, guid: 066ee676fc667124993ce4448328a98f, type: 3}
   TypeWallet: 0

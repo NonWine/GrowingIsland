@@ -9,7 +9,6 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] private PlayerContainer _playerContainerPrefab;
     [SerializeField] private CameraFollowing _cameraFollowing;
-    [SerializeField] private CollectableAnimationData _collectableAnimationData;
     [SerializeField, ReadOnly] private List<IGameTickable> _gameTickable;
     private ObjectPoolTemplate<eCollectable,ResourcePartObj> _resourceObjectPool;
     private ObjectPoolTemplate<EnemyType, BaseEnemy> _poolTamplate;
@@ -18,7 +17,6 @@ public class GameController : MonoBehaviour
     private PlayerContainer _playerContainer;
     private PlayerController _player;
     private PlayerStateMachine _playerStateMachine;
-    private StorageManager _storageManager;
     private PlayerDefaultRadiusDamageHandler _defaultRadiusDamageHandler;
     
     
@@ -36,7 +34,6 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        _storageManager = new StorageManager();
         _playerContainer = _diContainer.InstantiatePrefabForComponent<PlayerContainer>(_playerContainerPrefab);
         _defaultRadiusDamageHandler = new PlayerDefaultRadiusDamageHandler(_playerContainer);
         RegisterPool();
@@ -96,8 +93,6 @@ public class GameController : MonoBehaviour
     private void RegisterDependecies()
     {
         _diContainer.BindInstance(_playerContainer).AsSingle().Lazy();
-        _diContainer.BindInstance(_storageManager).AsSingle();
-        _diContainer.BindInstance(_collectableAnimationData).AsSingle();
         _diContainer.BindInstance(_playerStateMachine).AsSingle();
         
     }
@@ -112,4 +107,4 @@ public class GameController : MonoBehaviour
 
         _player.Tick();
     }
-}   
+}

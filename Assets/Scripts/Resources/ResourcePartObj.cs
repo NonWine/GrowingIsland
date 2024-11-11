@@ -1,12 +1,16 @@
 ﻿using System;
+using DG.Tweening;
 using UnityEngine;
 using Zenject;
 
-public class ResourcePartObj : PoolAble , IGameTickable
+public class ResourcePartObj : PoolAble , IGameTickable, IPlayerEnterTriggable
 {
      [field: SerializeField] public eCollectable TypeE { get; private set; }
     [Inject] private GameController _gameController;
-
+    [Inject] private CollectableManager _collectableWallet;
+    private bool _isPicked = true;
+    
+    
     private void Awake()
     {
         _gameController.RegisterInTick(this);
@@ -28,6 +32,25 @@ public class ResourcePartObj : PoolAble , IGameTickable
 
     public override void ResetPool()
     {
-        
+        _isPicked = false;
+        gameObject.SetActive(true);
+    }
+
+    private void PickUp()
+    {
+        if(_isPicked )
+            return;
+        _isPicked = true;
+        _collectableWallet.GetWallet(TypeE).Add(1);
+        transform.DOScale(0f, 0.25f).SetEase(Ease.Linear).OnComplete(() =>
+        {
+            gameObject.SetActive(false);
+        });
+    }
+
+
+    public void PlayerEnter()
+    {
+        PickUp();
     }
 }

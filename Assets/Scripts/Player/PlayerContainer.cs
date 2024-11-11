@@ -9,6 +9,7 @@ public class PlayerContainer : MonoBehaviour
     [SerializeField] private Transform _body;
     [SerializeField] private Animator _player;
     [SerializeField] private PlayerStats _playerStats;
+    [SerializeField] private PlayerAnimatorEvent _playerAnimatorEvent;
     [Inject] private Joystick _joystick;
     
     [field: SerializeField] public PlayerTrigger PlayerTrigger { get; private set; }
@@ -37,4 +38,6 @@ public class PlayerContainer : MonoBehaviour
     public Animator Animator => _player;
 
     public PlayerStats PlayerStats => _playerStats;
+
+    public PlayerAnimatorEvent PlayerAnimatorEvent => _playerAnimatorEvent;
 }

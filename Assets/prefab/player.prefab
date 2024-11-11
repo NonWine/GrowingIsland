@@ -134,6 +134,7 @@ MonoBehaviour:
     _maxEnemyDetection: 4
     _radiusDetection: 2
     <MiningCD>k__BackingField: 0.5
+  _playerAnimatorEvent: {fileID: 7310931004945973}
   <PlayerTrigger>k__BackingField: {fileID: 2728184818506720818}
 --- !u!1 &9194403283993568141
 GameObject:
@@ -266,18 +267,6 @@ PrefabInstance:
       value: NPC_MainPrefab
       objectReference: {fileID: 0}
     - target: {fileID: 400164, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2.163197
-      objectReference: {fileID: 0}
-    - target: {fileID: 400164, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2.163197
-      objectReference: {fileID: 0}
-    - target: {fileID: 400164, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2.163197
-      objectReference: {fileID: 0}
-    - target: {fileID: 400164, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.0078984
       objectReference: {fileID: 0}
@@ -317,35 +306,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9500000, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
-      propertyPath: m_Avatar
-      value: 
-      objectReference: {fileID: 9000000, guid: 063bad66f847e894287b0b98297b4853, type: 3}
-    - target: {fileID: 9500000, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9500000, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 1c837dac8c89dab41b6b24b4f83f3640, type: 2}
-    - target: {fileID: 9500000, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11100000, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
-      propertyPath: m_Animations.Array.size
-      value: 22
-      objectReference: {fileID: 0}
-    - target: {fileID: 11100000, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
-      propertyPath: m_Animations.Array.data[21]
-      value: 
-      objectReference: {fileID: 7400000, guid: 238b0adbff1b36f4fb976c1b52179040, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
+--- !u!114 &7310931004945973 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8939467050046320734, guid: e2b3820f507f5aa4ca5657f5ee1e5a64,
+    type: 3}
+  m_PrefabInstance: {fileID: 8941515168477021803}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 303c24d1be33379489585df44eeadb52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &8941515168467645195 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 9500000, guid: e2b3820f507f5aa4ca5657f5ee1e5a64,
