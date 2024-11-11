@@ -29,10 +29,15 @@ public class LumberingState : PlayerState
 
     private void TryLumber()
     {
-        _damageableHandler.HandDamage(_playerStats.AxeDamage, out bool detected);
+        _damageableHandler.HandDamage(_playerStats.AxeDamage, out bool detected, out Transform target);
+        
         if (detected == false)
         {
             stateMachine.ChangeState(PlayerStateKey.Idle);
+        }
+        else
+        {
+            ParticlePool.Instance.PlayAxeHitFx(target.position);
         }
     }
 

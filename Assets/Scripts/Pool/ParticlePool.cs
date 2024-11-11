@@ -7,8 +7,11 @@ public class ParticlePool : MonoBehaviour
     public static ParticlePool Instance;
 
     [SerializeField] private ParticleSystem[] _poofFx;
+    [SerializeField] private ParticleSystem[] _lumberHitFx;
+
     private int _currentPoof;
-    
+    private int _currentAxeHit;
+
     private void Awake()
     {
         Instance = this;
@@ -23,5 +26,13 @@ public class ParticlePool : MonoBehaviour
             _currentPoof = 0;
     }
 
-
+    
+    public void PlayAxeHitFx(Vector3 pos)
+    {
+        _lumberHitFx[_currentAxeHit].transform.position = pos;
+        _lumberHitFx[_currentAxeHit].Play();
+        _currentAxeHit++;
+        if (_currentAxeHit == _lumberHitFx.Length)
+            _currentAxeHit = 0;
+    }
 }
