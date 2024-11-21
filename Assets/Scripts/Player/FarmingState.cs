@@ -1,13 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Linq;
+using UnityEngine;
 
-public class LumberingState : PlayerState
+public class FarmingState : PlayerState
 {
     private PlayerAnimator _playerAnimator;
     private IDamageableHandler _damageableHandler;
     private PlayerStats _playerStats => player.PlayerStats;
     private float _timer;
     
-    public LumberingState( PlayerStateMachine stateMachine, PlayerContainer playerContainer
+    public FarmingState( PlayerStateMachine stateMachine, PlayerContainer playerContainer
         , PlayerAnimator playerAnimator, 
         IDamageableHandler damageableHandler) : base( stateMachine, playerContainer)
     {
@@ -17,7 +19,7 @@ public class LumberingState : PlayerState
 
     public override void Enter()
     {
-        player.PlayerAnimatorEvent.OnAxeAttacked += TryLumber;
+        player.PlayerAnimatorEvent.OnFarming += TryLumber;
         _playerAnimator.SetStateBehaviour(1);
         
     }
@@ -29,7 +31,7 @@ public class LumberingState : PlayerState
 
     private void TryLumber()
     {
-        _damageableHandler.HandDamage(_playerStats.AxeDamage, out bool detected, out Transform target);
+        _damageableHandler.HandDamage(_playerStats.AxeDamage, out bool detected, out Transform[] targets);
         
         if (detected == false)
         {
@@ -37,13 +39,19 @@ public class LumberingState : PlayerState
         }
         else
         {
-            ParticlePool.Instance.PlayAxeHitFx(target.position);
+            
         }
     }
 
+ 
     public override void Exit()
     {
-        player.PlayerAnimatorEvent.OnAxeAttacked -= TryLumber;
+        player.PlayerAnimatorEvent.OnFarming -= TryLumber;
         _playerAnimator.SetStateBehaviour(0);
+    }
+
+    public void Dispose()
+    {
+        
     }
 }

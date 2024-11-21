@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class PlayerAnimatorEvent : MonoBehaviour
 {
-    public event Action OnAxeAttacked;
+    public event Action OnFarming;
 
-    public void OnAxeAttack()
+    public void OnFarmAttack()
     {
-        OnAxeAttacked?.Invoke();
+        OnFarming?.Invoke();
     }
 
 }

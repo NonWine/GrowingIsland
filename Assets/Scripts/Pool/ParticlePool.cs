@@ -8,9 +8,11 @@ public class ParticlePool : MonoBehaviour
 
     [SerializeField] private ParticleSystem[] _poofFx;
     [SerializeField] private ParticleSystem[] _lumberHitFx;
+    [SerializeField] private ParticleSystem[] _mineHitFx;
 
     private int _currentPoof;
     private int _currentAxeHit;
+    private int _currentMineHit;
 
     private void Awake()
     {
@@ -34,5 +36,14 @@ public class ParticlePool : MonoBehaviour
         _currentAxeHit++;
         if (_currentAxeHit == _lumberHitFx.Length)
             _currentAxeHit = 0;
+    }
+    
+    public void PlayMineHitFx(Vector3 pos)
+    {
+        _mineHitFx[_currentMineHit].transform.position = pos;
+        _mineHitFx[_currentMineHit].Play();
+        _currentMineHit++;
+        if (_currentMineHit == _mineHitFx.Length)
+            _currentMineHit = 0;
     }
 }

@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
     private PlayerController _player;
     private PlayerStateMachine _playerStateMachine;
     private PlayerDefaultRadiusDamageHandler _defaultRadiusDamageHandler;
-    
+    private ResourceDetector _resourceDetector;
     
     [Inject]
     public void Construct(DiContainer diContainer)
@@ -30,12 +30,13 @@ public class GameController : MonoBehaviour
     public void RegisterInTick(IGameTickable tickable)
     {
         _gameTickable.Add(tickable);
-    }
+    } 
 
     private void Awake()
     {
         _playerContainer = _diContainer.InstantiatePrefabForComponent<PlayerContainer>(_playerContainerPrefab);
         _defaultRadiusDamageHandler = new PlayerDefaultRadiusDamageHandler(_playerContainer);
+        _resourceDetector = new ResourceDetector(_playerContainer);
         RegisterPool();
         
         
@@ -69,7 +70,8 @@ public class GameController : MonoBehaviour
             new PlayerRotating(_playerContainer),
             new PlayerAnimator(_playerContainer),
             new PlayerDamaging(_playerContainer, new PlayerEnemyDetector(_playerContainer, _poolTamplate)),
-            _playerStateMachine
+            _playerStateMachine,
+            _resourceDetector
         );
     }
 
@@ -81,7 +83,7 @@ public class GameController : MonoBehaviour
         {
             { PlayerStateKey.Idle, new IdleState(_playerStateMachine, _playerContainer) },
             {
-                PlayerStateKey.Lumber, new LumberingState(_playerStateMachine, _playerContainer, new PlayerAnimator(_playerContainer), _defaultRadiusDamageHandler)
+                PlayerStateKey.Lumber, new FarmingState(_playerStateMachine, _playerContainer, new PlayerAnimator(_playerContainer), _defaultRadiusDamageHandler)
             }
         };
         

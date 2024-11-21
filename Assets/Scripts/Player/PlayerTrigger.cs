@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Zenject;
 
 public class PlayerTrigger : MonoBehaviour
 {
     private PlayerStateMachine _playerStateMachine;
+
+    public event Action<eCollectable> CurrentResourceTrigger; 
 
     public void Init(PlayerStateMachine playerStateMachine)
     {
@@ -15,19 +18,15 @@ public class PlayerTrigger : MonoBehaviour
         if (other.TryGetComponent(out EnvironmentResource environmentResource))
         {
             _playerStateMachine.ChangeState(PlayerStateKey.Lumber);
+            CurrentResourceTrigger?.Invoke(environmentResource.ResourceType);
         }
-        else if(other.TryGetComponent(out IPlayerEnterTriggable playerEnterTriggable))
-            playerEnterTriggable.PlayerEnter();
-        
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent<EnvironmentResource>(out EnvironmentResource environmentResource))
+        if (other.TryGetComponent(out EnvironmentResource environmentResource))
         {
             _playerStateMachine.ChangeState(PlayerStateKey.Idle);
         }
-        else if(other.TryGetComponent(out IPlayerExitTriggable playerEnterTriggable))
-            playerEnterTriggable.PlayerExit();
     }
 }

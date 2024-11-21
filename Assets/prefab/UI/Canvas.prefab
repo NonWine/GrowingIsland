@@ -216,6 +216,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3304654961179522617, guid: 2f941fe5fd1120c4db9c2cf6f155a248,
+        type: 3}
+      propertyPath: _walletObjs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304654961179522617, guid: 2f941fe5fd1120c4db9c2cf6f155a248,
+        type: 3}
+      propertyPath: _walletObjs.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: db04d4892390bfd4b92f581c81625e28,
+        type: 2}
     - target: {fileID: 3304654961236574134, guid: 2f941fe5fd1120c4db9c2cf6f155a248,
         type: 3}
       propertyPath: m_AnchorMax.y

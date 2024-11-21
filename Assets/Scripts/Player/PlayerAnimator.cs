@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class PlayerAnimator : IEntityAnimateable
+public class PlayerAnimator : IEntityAnimateable, IDisposable
 {
     private const  string _MOVING_KEY = "Speed";
     private const  string _STATE_KEY = "State";
@@ -12,7 +13,8 @@ public class PlayerAnimator : IEntityAnimateable
     public PlayerAnimator(PlayerContainer playerContainer)
     {
         _playerContainer = playerContainer;
-      //  playerContainer.Animator.setla
+        playerContainer.PlayerTrigger.CurrentResourceTrigger += SetFarmingAnim;
+        //  playerContainer.Animator.setla
     }
     
     public void UpdateAnimator() 
@@ -31,11 +33,34 @@ public class PlayerAnimator : IEntityAnimateable
 
     public void SetStateBehaviour(int state)
     {
-        if(state == 0)
+        if (state == 0)
+        {
+            _playerContainer.Animator.SetInteger(_STATE_KEY,0);
             _playerContainer.Animator.SetLayerWeight(1,0);
+        }
         else
             _playerContainer.Animator.SetLayerWeight(1,1);
+    }
+    
+    public void Lumbering() =>         _playerContainer.Animator.SetInteger(_STATE_KEY,1);
+    
+    public void MineAttack() =>         _playerContainer.Animator.SetInteger(_STATE_KEY,2);
 
-        _playerContainer.Animator.SetInteger(_STATE_KEY,state);
+    public void Digging() =>         _playerContainer.Animator.SetInteger(_STATE_KEY,3);
+
+    private void SetFarmingAnim(eCollectable wECollectable)
+    {
+        if(wECollectable == eCollectable.Wood)
+            Lumbering();
+        else if(wECollectable == eCollectable.Stone)
+            MineAttack();
+        else if(wECollectable == eCollectable.grass)
+            Digging();
+    }
+    
+    public void Dispose()
+    {
+        _playerContainer.PlayerTrigger.CurrentResourceTrigger -= SetFarmingAnim;
+        Debug.Log(typeof(PlayerAnimator) + " Destroy ");
     }
 }

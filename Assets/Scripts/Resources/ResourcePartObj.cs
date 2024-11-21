@@ -2,8 +2,10 @@
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
-public class ResourcePartObj : PoolAble , IGameTickable, IPlayerEnterTriggable
+[RequireComponent(typeof(Rigidbody))]
+public class ResourcePartObj : PoolAble , IGameTickable
 {
      [field: SerializeField] public eCollectable TypeE { get; private set; }
     [Inject] private GameController _gameController;
@@ -36,7 +38,7 @@ public class ResourcePartObj : PoolAble , IGameTickable, IPlayerEnterTriggable
         gameObject.SetActive(true);
     }
 
-    private void PickUp()
+    public void PickUp()
     {
         if(_isPicked )
             return;
@@ -45,12 +47,9 @@ public class ResourcePartObj : PoolAble , IGameTickable, IPlayerEnterTriggable
         transform.DOScale(0f, 0.25f).SetEase(Ease.Linear).OnComplete(() =>
         {
             gameObject.SetActive(false);
-        });
+        }).SetDelay(Random.Range(0f,2f));
     }
 
 
-    public void PlayerEnter()
-    {
-        PickUp();
-    }
+
 }

@@ -11,7 +11,8 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
     [SerializeField] private ResourceWorld _resourceWorld;
     [Inject] private ResourcePartObjFactory _resourcesFactory;
     private float _health;
-    
+
+    public eCollectable ResourceType => _resourceWorld.TypeWallet;
     
     
     private void Awake()
@@ -35,6 +36,9 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
 
     public virtual void GetDamage(float damage)
     {
+        if(!isAlive)
+            return;
+        
         _health -= damage;
         AnimTrigDamage();
         if (_health <= 0)
@@ -45,7 +49,7 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
                 resource.transform.position = transform.position;
                 var offset = transform.position + Random.insideUnitSphere * 2f;
                 offset.y = resource.transform.position.y;
-                resource.transform.DOMove(offset, 1.5f).OnComplete(resource.ResetPool);
+                resource.transform.DOMove(offset, 1f).OnComplete(resource.ResetPool).SetEase(Ease.Linear);
 
             }
 
