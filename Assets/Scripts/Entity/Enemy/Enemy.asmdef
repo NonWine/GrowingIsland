@@ -1,0 +1,22 @@
+{
+    "name": "Enemy",
+    "rootNamespace": "Entity.Enemy",
+    "references": [
+        "GUID:247be90cacfede94984bb05cbbd2c036",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:b3e70e7a0cc1097438cf37c1a9998d3a",
+        "GUID:0f02ce893ef335d4fba8288e01d9a4d0",
+        "GUID:9936c8c3da9c32645b8d7a110974a6d7",
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
+        "GUID:8bce16687c61f4d48a78b7c44d7b5bcd"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

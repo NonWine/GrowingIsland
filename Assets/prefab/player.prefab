@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -6893310137314981664}
   - component: {fileID: -4647434811046176580}
   - component: {fileID: 6225447994784167255}
+  - component: {fileID: 4203139770830303457}
   m_Layer: 0
   m_Name: player
   m_TagString: Untagged
@@ -136,6 +137,19 @@ MonoBehaviour:
     <MiningCD>k__BackingField: 0.5
   _playerAnimatorEvent: {fileID: 7310931004945973}
   <PlayerTrigger>k__BackingField: {fileID: 2728184818506720818}
+--- !u!114 &4203139770830303457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8385618249768559235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee475ded8ec34b71b943d99250839e5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerContainer: {fileID: 6225447994784167255}
 --- !u!1 &9194403283993568141
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,6 +268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 451094bf85d14fdcada86e906072de60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 4203139770830303457}
 --- !u!1001 &8941515168477021803
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -49,7 +49,8 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
                 resource.transform.position = transform.position;
                 var offset = transform.position + Random.insideUnitSphere * 2f;
                 offset.y = resource.transform.position.y;
-                resource.transform.DOMove(offset, 1f).OnComplete(resource.ResetPool).SetEase(Ease.Linear);
+                resource.transform.DOMove(offset, 0.8f).OnComplete(resource.SetIdle).SetEase(Ease.OutQuart);
+                resource.ResetPool();
 
             }
 

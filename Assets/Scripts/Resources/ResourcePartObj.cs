@@ -2,15 +2,18 @@
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
+using Zenject.Asteroids;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ResourcePartObj : PoolAble , IGameTickable
 {
      [field: SerializeField] public eCollectable TypeE { get; private set; }
-    [Inject] private GameController _gameController;
+    [Inject] private IGameСontroller _gameController;
     [Inject] private CollectableManager _collectableWallet;
     private bool _isPicked = true;
+    private bool _canPickUp;
+    public bool IsPicked => _isPicked;
     
     
     private void Awake()
@@ -26,30 +29,30 @@ public class ResourcePartObj : PoolAble , IGameTickable
 
     public void Tick()
     {
-        if(!gameObject.activeSelf)
-            return;
-        
+
         Rotate();
     }
 
     public override void ResetPool()
     {
-        _isPicked = false;
         gameObject.SetActive(true);
     }
 
     public void PickUp()
     {
-        if(_isPicked )
-            return;
+  
         _isPicked = true;
         _collectableWallet.GetWallet(TypeE).Add(1);
-        transform.DOScale(0f, 0.25f).SetEase(Ease.Linear).OnComplete(() =>
-        {
-            gameObject.SetActive(false);
-        }).SetDelay(Random.Range(0f,2f));
+      Debug.Log("Pick this ");
+      transform.DOScale(0f, 0.25f).SetEase(Ease.InBack).OnComplete(() =>
+      {
+          gameObject.SetActive(false);
+      });
     }
 
-
+    public void SetIdle()
+    {
+        _isPicked = false;
+    }
 
 }

@@ -1,0 +1,23 @@
+{
+    "name": "UI.Collectable",
+    "rootNamespace": "Collectable",
+    "references": [
+        "GUID:726a9a94978be65429fc913f392b58c4",
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
+        "GUID:c3bbbfa24f9459d4f9a2a0d5ad8741f6",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:e5b3f3566233da2418178118c1f81b64",
+        "GUID:a160f588bcbd96d409e627ef69646a91",
+        "GUID:0f02ce893ef335d4fba8288e01d9a4d0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
