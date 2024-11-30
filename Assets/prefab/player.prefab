@@ -35,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8941515168476634447}
-  - {fileID: 8985065720838631072}
+  - {fileID: 1153355490180105636}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &-5541318596171603067
@@ -134,9 +134,10 @@ MonoBehaviour:
     _coolDown: 0.8
     _maxEnemyDetection: 4
     _radiusDetection: 2
+    <RadiusFarming>k__BackingField: 2
     <MiningCD>k__BackingField: 0.5
   _playerAnimatorEvent: {fileID: 7310931004945973}
-  <PlayerTrigger>k__BackingField: {fileID: 2728184818506720818}
+  <PlayerTrigger>k__BackingField: {fileID: 8421645836444998454}
 --- !u!114 &4203139770830303457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerContainer: {fileID: 6225447994784167255}
---- !u!1 &9194403283993568141
+--- !u!1 &8765444328292573050
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,25 +159,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8985065720838631072}
-  - component: {fileID: 4154179178049881089}
-  - component: {fileID: 1645645309340870884}
-  - component: {fileID: 1475070874190254951}
-  - component: {fileID: 2728184818506720818}
+  - component: {fileID: 1153355490180105636}
+  - component: {fileID: 8247129443336424755}
+  - component: {fileID: 789231043565035052}
+  - component: {fileID: 3674799826788635521}
+  - component: {fileID: 8421645836444998454}
   m_Layer: 0
-  m_Name: Detector
+  m_Name: BuildZoneTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8985065720838631072
+--- !u!4 &1153355490180105636
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9194403283993568141}
+  m_GameObject: {fileID: 8765444328292573050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.00000011921, y: 1.104, z: 0}
@@ -185,21 +186,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6835917827310612658}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4154179178049881089
+--- !u!33 &8247129443336424755
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9194403283993568141}
+  m_GameObject: {fileID: 8765444328292573050}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1645645309340870884
+--- !u!23 &789231043565035052
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9194403283993568141}
+  m_GameObject: {fileID: 8765444328292573050}
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -235,13 +236,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &1475070874190254951
+--- !u!135 &3674799826788635521
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9194403283993568141}
+  m_GameObject: {fileID: 8765444328292573050}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -254,21 +255,23 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2728184818506720818
+  m_Radius: 0.34
+  m_Center: {x: 0, y: -0.27, z: 0}
+--- !u!114 &8421645836444998454
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9194403283993568141}
+  m_GameObject: {fileID: 8765444328292573050}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 451094bf85d14fdcada86e906072de60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 4203139770830303457}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1001 &8941515168477021803
 PrefabInstance:
   m_ObjectHideFlags: 0

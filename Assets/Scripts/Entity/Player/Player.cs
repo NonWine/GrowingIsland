@@ -7,10 +7,13 @@ public class Player : MonoBehaviour, IGameTickable
 {
     [SerializeField] private PlayerContainer _playerContainer;
     [Inject] private IGameСontroller _gameСontroller;
+    [Inject] private OverlapSphereHandler _overlapSphereHandler;
     private PlayerHandlersService _playerHandlersService;
     private PlayerController _playerController;
     private PlayerStateMachine _playerStateMachine;
     private PlayerAnimator _playerAnimator;
+    private PlayerFarmDetector _playerFarmDetector;
+    
     public PlayerStateMachine PlayerStateMachine => _playerStateMachine;
     
 
@@ -20,10 +23,11 @@ public class Player : MonoBehaviour, IGameTickable
     
     private void Awake()
     {
-        _playerAnimator = new PlayerAnimator(_playerContainer);
         _gameСontroller.RegisterInTick(this);
         InitializeHandler();
+        _playerAnimator = new PlayerAnimator(_playerContainer);
         InitializePlayerStateMachine();
+        _playerFarmDetector = new PlayerFarmDetector(_playerContainer, _overlapSphereHandler, _playerStateMachine, _playerAnimator);
         PlayerInitialize();
         
     }
@@ -35,10 +39,10 @@ public class Player : MonoBehaviour, IGameTickable
         (
             new PlayerMoving(_playerContainer),
             new PlayerRotating(_playerContainer),
-            new PlayerAnimator(_playerContainer),
+            _playerAnimator,
             _playerHandlersService.PlayerResourceDetector,
-            _playerStateMachine
-            
+            _playerStateMachine,
+            _playerFarmDetector
         );
     }
     
@@ -50,7 +54,7 @@ public class Player : MonoBehaviour, IGameTickable
         {
             { PlayerStateKey.Idle, new IdleState(_playerStateMachine, _playerContainer) },
             {
-                PlayerStateKey.Lumber, new FarmingState(_playerStateMachine, _playerContainer,_playerAnimator, _playerHandlersService.DefaultRadiusDamageHandler)
+                PlayerStateKey.Farming, new FarmingState(_playerStateMachine, _playerContainer,_playerAnimator, _playerHandlersService.DefaultRadiusDamageHandler)
             }
         };
         
@@ -61,11 +65,17 @@ public class Player : MonoBehaviour, IGameTickable
 
     private void InitializeHandler()
     {
-        _playerHandlersService = new PlayerHandlersService(_playerContainer);
+        _playerHandlersService = new PlayerHandlersService(_playerContainer, _overlapSphereHandler);
     }
 
     public void Tick()
     {
+      //  _overlapSphereHandler.UpdateOverlapSphere();
         _playerController.Tick();
+    }
+
+    private void OnDrawGizmos()
+    {
+        _overlapSphereHandler.OnDrawGizmos();
     }
 }

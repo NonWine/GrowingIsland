@@ -1,21 +1,21 @@
 ﻿using System;
 using UnityEngine;
 
-public class PlayerAnimator : IEntityAnimateable, IDisposable
+public class PlayerAnimator : IEntityAnimateable
 {
     private const  string _MOVING_KEY = "Speed";
     private const  string _STATE_KEY = "State";
     private const  string _STATE_LAYER_KEY = "StateBehavior";
-    
-
-    private PlayerContainer _playerContainer;
 
     public PlayerAnimator(PlayerContainer playerContainer)
     {
         _playerContainer = playerContainer;
-        playerContainer.PlayerTrigger.CurrentResourceTrigger += SetFarmingAnim;
-        //  playerContainer.Animator.setla
     }
+        
+    
+    private PlayerContainer _playerContainer;
+
+
     
     public void UpdateAnimator() 
     {
@@ -48,7 +48,7 @@ public class PlayerAnimator : IEntityAnimateable, IDisposable
 
     public void Digging() =>         _playerContainer.Animator.SetInteger(_STATE_KEY,3);
 
-    private void SetFarmingAnim(eCollectable wECollectable)
+    public void SetFarmingAnim(eCollectable wECollectable)
     {
         if(wECollectable == eCollectable.Wood)
             Lumbering();
@@ -58,9 +58,4 @@ public class PlayerAnimator : IEntityAnimateable, IDisposable
             Digging();
     }
     
-    public void Dispose()
-    {
-        _playerContainer.PlayerTrigger.CurrentResourceTrigger -= SetFarmingAnim;
-        Debug.Log(typeof(PlayerAnimator) + " Destroy ");
-    }
 }

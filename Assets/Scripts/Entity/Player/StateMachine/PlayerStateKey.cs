@@ -1,6 +1,6 @@
 ﻿public enum PlayerStateKey
 {
-    Lumber,
+    Farming,
     Idle,
     
 }

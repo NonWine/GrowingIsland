@@ -39,6 +39,13 @@ public class CollectableManager : MonoBehaviour
     [Button]
     public void Add100Wood()
     {
-        GetWallet(eCollectable.Wood).Add(100,false);
+        GetWallet(eCollectable.Wood).Add(1000,false);
+    }
+    
+    
+    [Button]
+    public void Add100Stone()
+    {
+        GetWallet(eCollectable.Stone).Add(1000,false);
     }
 }

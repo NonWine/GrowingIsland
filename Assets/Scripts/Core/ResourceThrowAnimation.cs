@@ -8,17 +8,17 @@ using Zenject;
 public class ResourceThrowAnimation : MonoBehaviour
 {
     [Inject] private ResourcePartObjFactory _resourceFactory; 
-    private PlayerContainer _playerContainer;
+    [Inject] private Player _playerContainer;
     public Transform point;
-
-    [Button]
-    public void StartSpawn()
+    private Coroutine _coroutine;
+    
+    void Awake()
     {
-        _playerContainer = FindObjectOfType<PlayerContainer>();
-        StartCoroutine(SpawnResources(_playerContainer));
+        
     }
+    
 
-    private IEnumerator SpawnResources(PlayerContainer player)
+    private IEnumerator SpawnResources()
         {
             float delay = 0.05f;
             
@@ -26,7 +26,7 @@ public class ResourceThrowAnimation : MonoBehaviour
             {
                 var res = _resourceFactory.Create(eCollectable.Wood);
                 res.transform.parent = point;
-                res.transform.position = player.transform.position;
+                res.transform.position = _playerContainer.transform.position;
                 res.transform.rotation = Quaternion.Euler(new Vector3(-30f,0f,0f));
                 res.transform.DOLocalJump(Vector3.zero,2f,1,0.25f).SetEase(Ease.OutQuad).OnComplete((() =>
                     {
@@ -35,4 +35,14 @@ public class ResourceThrowAnimation : MonoBehaviour
                 yield return new WaitForSeconds(delay);
             }
         }
+
+    public void StartAnim()
+    {
+        _coroutine =   StartCoroutine(SpawnResources());
+    }
+
+    public void Stop()
+    {
+        StopCoroutine(_coroutine);
+    }
 }

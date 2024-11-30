@@ -1,73 +1,68 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerDefaultRadiusDamageHandler : IDamageableHandler
 {
     private PlayerContainer _playerContainer;
-    private Collider[] _overlapResults;
+    private OverlapSphereHandler _overlapSphereHandler;
 
-    public PlayerDefaultRadiusDamageHandler(PlayerContainer playerContainer)
+    public PlayerDefaultRadiusDamageHandler(PlayerContainer playerContainer, OverlapSphereHandler overlapSphereHandler)
     {
         _playerContainer = playerContainer;
-        _overlapResults = new Collider[10];
+        _overlapSphereHandler = overlapSphereHandler;
     }
 
     private bool TryDamagingByRadius(float damage)
     {
         bool detectEnemy = false;
-        int count = Physics.OverlapSphereNonAlloc(
-            _playerContainer.transform.position,
-            _playerContainer.PlayerStats.RadiusDetection,
-            _overlapResults
-        );
-
-        for (int i = 0; i < count; i++)
-        {
-            if (_overlapResults[i].TryGetComponent(out IDamageable damageable))
-            {
-                if (damageable.isAlive)
-                {
-                    detectEnemy = true;
-                    damageable.GetDamage(damage);
-                }
-            }
-        }
+        // int count = Physics.OverlapSphereNonAlloc(
+        //     _playerContainer.transform.position,
+        //     _playerContainer.PlayerStats.RadiusDetection,
+        //     _overlapResults
+        // );
+        //
+        // for (int i = 0; i < count; i++)
+        // {
+        //     if (_overlapResults[i].TryGetComponent(out IDamageable damageable))
+        //     {
+        //         if (damageable.isAlive)
+        //         {
+        //             detectEnemy = true;
+        //             damageable.GetDamage(damage);
+        //         }
+        //     }
+        // }
 
         return detectEnemy;
     }
-    
+
     private bool TryDamagingByRadius(float damage, out Transform[] taregt)
     {
-        bool detectEnemy = false;
-        int count = Physics.OverlapSphereNonAlloc(
+        var enemies = _overlapSphereHandler.GetFilteredObjects<IDamageable>(
             _playerContainer.transform.position,
             _playerContainer.PlayerStats.RadiusDetection,
-            _overlapResults
+            0,
+            enemy => enemy.isAlive
         );
-        taregt = new Transform[count];
-        int j = 0;
-        for (int i = 0; i < count; i++)
+
+        List<Transform> damagedTargets = new List<Transform>();
+        foreach (var enemy in enemies)
         {
-            if (_overlapResults[i].TryGetComponent(out IDamageable damageable))
-            {
-                if (damageable.isAlive)
-                {
-                    detectEnemy = true;
-                    taregt[j] = damageable.transform;
-                    j++;
-                    damageable.GetDamage(damage);
-                }
-            }
+            enemy.GetDamage(damage);
+            damagedTargets.Add(enemy.transform);
         }
 
-        return detectEnemy;
+        taregt = damagedTargets.ToArray();
+        return taregt.Length > 0;    
     }
+    
 
     public void HandDamage(float damage, out bool isDetected)
     {
         isDetected = TryDamagingByRadius(damage);
     }
-    
+
     public void HandDamage(float damage, out bool isDetected, out Transform[] taregt)
     {
         isDetected = TryDamagingByRadius(damage, out taregt);

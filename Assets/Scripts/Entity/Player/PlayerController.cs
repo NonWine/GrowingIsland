@@ -10,13 +10,14 @@ public class PlayerController
     private IEntityAnimateable _animateable;
     private PlayerStateMachine _playerStateMachine;
     private PlayerResourceDetector _playerResourceDetector;
-    private PlayerHandlersService _playerHandlersService;
+    private PlayerFarmDetector _playerFarmDetector;
     
     public  PlayerController(IMoveable moveable,
         IRotateable rotateable,
         IEntityAnimateable animateable,
         PlayerResourceDetector playerResourceDetector, 
-        PlayerStateMachine playerStateMachine
+        PlayerStateMachine playerStateMachine,
+        PlayerFarmDetector playerFarmDetector
         )
     {
         _playerResourceDetector = playerResourceDetector;
@@ -24,6 +25,7 @@ public class PlayerController
         _moveable = moveable;
         _rotateable = rotateable;
         _playerStateMachine = playerStateMachine;
+        _playerFarmDetector = playerFarmDetector;
     }   
     
     public void Tick()
@@ -33,7 +35,8 @@ public class PlayerController
         _rotateable.Rotate();
         _animateable.UpdateAnimator();
         _playerStateMachine.CurrentState.LogicUpdate();
-        //maybe optimize it in future???
-       _playerResourceDetector.FindResources();
+
+        _playerResourceDetector.FindResources();
+       _playerFarmDetector.FindFarmingResources();
     }
 }

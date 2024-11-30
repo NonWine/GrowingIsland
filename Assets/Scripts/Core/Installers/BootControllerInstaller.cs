@@ -11,9 +11,14 @@ public class BootControllerInstaller : MonoInstaller
         
     public override void InstallBindings()
     {
-
+        BindHandlers();
         BindGameController();
         RegirsterPlayer();
+    }
+
+    private void BindHandlers()
+    {
+        Container.Bind<OverlapSphereHandler>().FromNew().AsSingle();
     }
 
     private void BindGameController()

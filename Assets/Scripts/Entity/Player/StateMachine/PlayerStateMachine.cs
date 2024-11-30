@@ -5,7 +5,7 @@ public class PlayerStateMachine
     private Dictionary<PlayerStateKey, PlayerState> _playerStates;
     public PlayerState CurrentState { get; private set; }
     
-    
+    public PlayerStateKey CurrentStateKey { get; private set; }
 
     public void RegisterStates(Dictionary<PlayerStateKey, PlayerState> states) => _playerStates = states;
     
@@ -20,6 +20,7 @@ public class PlayerStateMachine
             CurrentState.Exit();
         CurrentState = GetState(state);
         CurrentState.Enter();
+        CurrentStateKey = state;
     }
 
     private PlayerState GetState(PlayerStateKey playerStateKey)

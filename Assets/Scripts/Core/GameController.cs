@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour , IGameСontroller
 
     public void RegisterInTick(IGameTickable tickable)
     {
+        
         if (!_tickables.Contains(tickable))
         {
             _tickables.Add(tickable);

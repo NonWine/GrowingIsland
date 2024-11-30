@@ -1,33 +1,27 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 public class PlayerTrigger : MonoBehaviour
 {
-    [SerializeField] private Player _player;
-    private PlayerStateMachine _playerStateMachine;
+    [SerializeField] private LayerMask _layerMask;
 
-    public event Action<eCollectable> CurrentResourceTrigger;
 
-    private void Awake()
-    {
-        _playerStateMachine = _player.PlayerStateMachine;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out EnvironmentResource environmentResource))
+    protected virtual void OnTriggerEnter(Collider other)
+    {   
+        if ((_layerMask.value & (1 << other.gameObject.layer)) == 0)
+            return;
+        
+        if (other.TryGetComponent(out IPlayerEnterTriggable playerEnterTriggable))
         {
-            _playerStateMachine.ChangeState(PlayerStateKey.Lumber);
-            CurrentResourceTrigger?.Invoke(environmentResource.ResourceType);
+            playerEnterTriggable.PlayerEnter();
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out EnvironmentResource environmentResource))
+        if (other.TryGetComponent(out IPlayerExitTriggable playerExitTriggable))
         {
-            _playerStateMachine.ChangeState(PlayerStateKey.Idle);
+            playerExitTriggable.PlayerExit();
         }
     }
 }
