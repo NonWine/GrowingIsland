@@ -14,7 +14,7 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
     [Inject] private CollectableManager _collectableManager;
     [Inject] private ResourcePartObjFactory _resourceFactory;
     [Inject] private Player _playerContainer;
-
+    [Inject] private ResourceData _resourceData;
     private Dictionary<eCollectable, int> currentResources = new Dictionary<eCollectable, int>();
     private Coroutine resourceDeliveryCoroutine;
     private bool isPlayerInZone = false;
@@ -36,7 +36,7 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
 
     private IEnumerator TransferResources()
     {
-        float delay = 0.05f;
+        float delay = _resourceData.DelayPerResource;
 
         foreach (var requirement in requiredResources)
         {
@@ -51,7 +51,7 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
                 ? (float)totalAvailable / 10f
                 : (float)totalNeeded / 10f;
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < _resourceData.CountResourceInAnimation; i++)
             {
                 if (totalNeeded <= 0 || totalAvailable <= 0)
                     break; // Якщо ресурси закінчилися, зупиняємо цикл
@@ -75,11 +75,11 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
                 // Створюємо об'єкт для анімації
                 var res = _resourceFactory.Create(type: requirement.WalletObj.TypeWallet);
                 res.transform.parent = _throwPointTarget;
-                res.transform.position = _playerContainer.transform.position;
-                res.transform.rotation = Quaternion.Euler(new Vector3(-30f, 0f, 0f));
+                res.transform.position = _playerContainer.ResourceStartPoint.transform.position;
+                res.transform.rotation = _resourceData.StartRotation;
 
                 // Анімація ресурсу
-                res.transform.DOLocalJump(Vector3.zero, jumpPower: 2f, numJumps: 1, duration: 0.25f)
+                res.transform.DOLocalJump(Vector3.zero, _resourceData.JumpPower, _resourceData.NumJumps, _resourceData.Duration)
                     .SetEase(Ease.OutQuad)
                     .OnComplete(() =>
                     {

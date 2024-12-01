@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data")]
+[CreateAssetMenu(menuName = "AnimationData/CollectableAnimationData", fileName = "CollectableAnimationData", order = 0)]
 public class CollectableAnimationData : ScriptableObject
 {
     [SerializeField] private SendingData m_SendingAnimationData;

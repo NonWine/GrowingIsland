@@ -10,4 +10,3 @@ public class JoystickInstaller : MonoInstaller
         Container.BindInstance(_joystick).AsSingle().NonLazy();
     }
 }
-

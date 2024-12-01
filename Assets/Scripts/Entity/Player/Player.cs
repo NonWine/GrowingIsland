@@ -13,6 +13,7 @@ public class Player : MonoBehaviour, IGameTickable
     private PlayerStateMachine _playerStateMachine;
     private PlayerAnimator _playerAnimator;
     private PlayerFarmDetector _playerFarmDetector;
+    public Transform ResourceStartPoint;
     
     public PlayerStateMachine PlayerStateMachine => _playerStateMachine;
     
@@ -76,6 +77,7 @@ public class Player : MonoBehaviour, IGameTickable
 
     private void OnDrawGizmos()
     {
-        _overlapSphereHandler.OnDrawGizmos();
+        if(_overlapSphereHandler != null)
+            _overlapSphereHandler.OnDrawGizmos();
     }
 }

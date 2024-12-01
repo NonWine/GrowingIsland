@@ -19,6 +19,8 @@ public class BootControllerInstaller : MonoInstaller
     private void BindHandlers()
     {
         Container.Bind<OverlapSphereHandler>().FromNew().AsSingle();
+        Container.Bind<StorageManager>().FromNew().AsSingle();
+
     }
 
     private void BindGameController()
