@@ -44,10 +44,12 @@ public class ResourcePartObj : PoolAble , IGameTickable
         _isPicked = true;
         _collectableWallet.GetWallet(TypeE).Add(1);
       Debug.Log("Pick this ");
-      transform.DOScale(0f, 0.25f).SetEase(Ease.InBack).OnComplete(() =>
-      {
-          gameObject.SetActive(false);
-      });
+      DestroyAnim();
+    }
+
+    public void DestroyAnim()
+    {
+        transform.DOScale(0f, 0.25f).SetEase(Ease.InBack).OnComplete(() => { gameObject.SetActive(false); });
     }
 
     public void SetIdle()

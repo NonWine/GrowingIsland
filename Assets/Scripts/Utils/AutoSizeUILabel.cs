@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Utils
@@ -12,6 +13,9 @@ namespace Utils
         [SerializeField] private RectTransform _preferredRect;
         [SerializeField] private bool _useHeight, _useWidht;
         private RectTransform _rectTransform;
+
+        [ShowInInspector]
+        public TextIconView[] Labels => _preferredRect.GetComponentsInChildren<TextIconView>(true);
         
         private void OnValidate()
         {
@@ -25,7 +29,8 @@ namespace Utils
             UpdateRectToPadding();
         }
 
-        private void UpdateRectToPadding()
+        [Button]
+        public void UpdateRectToPadding()
         {
             var rect = _rectTransform.rect;
             if (_useHeight)
@@ -48,5 +53,7 @@ namespace Utils
             public float height;
 
         }
+            
+            
     }
 }

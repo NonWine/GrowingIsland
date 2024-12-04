@@ -11,6 +11,7 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
     [SerializeField] private ConstructionUI constructionUI; // UI прогресу
     [SerializeField] private List<ResourceRequirement> requiredResources; // Потрібні ресурси
     [SerializeField] private Transform _throwPointTarget;
+    [SerializeField] private Transform _canvasZone;
     [Inject] private CollectableManager _collectableManager;
     [Inject] private ResourcePartObjFactory _resourceFactory;
     [Inject] private Player _playerContainer;
@@ -31,7 +32,13 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
         }
 
         // Оновлюємо UI
-        constructionUI.InitializeUI(requiredResources);
+     //   constructionUI.InitializeUI(requiredResources);
+    }
+
+    private void OnValidate()
+    {
+       constructionUI.InitializeUI(requiredResources);
+
     }
 
     private IEnumerator TransferResources()
@@ -40,6 +47,8 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
 
         foreach (var requirement in requiredResources)
         {
+        
+            
             int totalNeeded = requirement.amount - currentResources[requirement.WalletObj.TypeWallet];
             int totalAvailable = _collectableManager.GetWallet(requirement.WalletObj.TypeWallet).Amount;
 
@@ -79,22 +88,29 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
                 res.transform.rotation = _resourceData.StartRotation;
 
                 // Анімація ресурсу
+                
                 res.transform.DOLocalJump(Vector3.zero, _resourceData.JumpPower, _resourceData.NumJumps, _resourceData.Duration)
                     .SetEase(Ease.OutQuad)
                     .OnComplete(() =>
                     {
-                        res.gameObject.SetActive(false);
+                        res.DestroyAnim();
                     });
 
                 // Оновлюємо UI
                 constructionUI.UpdateUI(requirement.WalletObj.TypeWallet, currentResources[requirement.WalletObj.TypeWallet], requirement.amount);
-                CheckCompletion();
+
+                if(requiredResources.All(r => currentResources[r.WalletObj.TypeWallet] >= r.amount))
+                    constructionUI.Hide();
+                
                 yield return new WaitForSeconds(delay); // Затримка між ресурсами
             }
+
         }
+        yield return new WaitForSeconds(_resourceData.DelayPerResource);
+        CheckCompletion();
     }
 
-    private void CheckCompletion()
+    private async void CheckCompletion()
     {
         if (isConstructionComplete) return;
 
@@ -113,6 +129,7 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
     {
         if (resourceDeliveryCoroutine == null)
         {
+            _canvasZone.transform.DOScale(1.2f, 0.25f).SetEase(Ease.OutBack);
             resourceDeliveryCoroutine = StartCoroutine(TransferResources());
         }
     }
@@ -121,6 +138,8 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
     {
         if (resourceDeliveryCoroutine != null)
         {
+            _canvasZone.transform.DOScale(1f, 0.15f).SetEase(Ease.Linear);
+
             StopCoroutine(resourceDeliveryCoroutine);
             resourceDeliveryCoroutine = null;
         }

@@ -16,6 +16,6 @@ MonoBehaviour:
   Duration: 0.6
   CountResourceInAnimation: 10
   StartRotation: {x: -0.25881904, y: 0, z: 0, w: 0.9659258}
-  JumpPower: 2
+  JumpPower: 1.6
   NumJumps: 1
-  DelayPerResource: 0.1
+  DelayPerResource: 0.08
