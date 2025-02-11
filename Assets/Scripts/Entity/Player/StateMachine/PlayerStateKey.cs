@@ -2,5 +2,5 @@
 {
     Farming,
     Idle,
-    
+    Attack
 }

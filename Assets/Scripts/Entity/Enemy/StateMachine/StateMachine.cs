@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class EnemyStateMachine
 {
-    private readonly Dictionary<Type, EnemyState> _states = new Dictionary<Type, EnemyState>();
+    private Dictionary<Type, EnemyState> _states = new Dictionary<Type, EnemyState>();
     private EnemyState _currentState;
     private BaseEnemy _base;
 
-    public EnemyStateMachine(BaseEnemy baseEnemy, Dictionary<Type, EnemyState> states)
+    public BaseEnemy Enemy => _base;
+
+    public EnemyStateMachine(BaseEnemy baseEnemy)
     {
-        _states = states;
         _base = baseEnemy;
     }
 
@@ -25,8 +26,9 @@ public class EnemyStateMachine
         return (T)state;
     }
     
-    public void Initialize<T>() where T : EnemyState
+    public void Initialize<T>(Dictionary<Type, EnemyState> states) where T : EnemyState
     {
+        _states = states;
         _currentState = GetState<T>();
         _currentState.EnterState(_base);
     }
@@ -41,6 +43,7 @@ public class EnemyStateMachine
     public void Update()
     {
         _currentState.UpdateState();
+        Debug.Log(_currentState);
     }
     
     
@@ -48,6 +51,15 @@ public class EnemyStateMachine
 
 public abstract class EnemyState
 {
+    protected EnemyStateMachine EnemyStateMachine;
+    protected EnemyAnimator EnemyAnimator;
+
+    public EnemyState(EnemyStateMachine enemyStateMachine, EnemyAnimator enemyAnimator )
+    {
+        EnemyStateMachine = enemyStateMachine;
+        EnemyAnimator = enemyAnimator;
+    }
+    
     public abstract void EnterState(BaseEnemy baseEnemy);
 
     public abstract void UpdateState();

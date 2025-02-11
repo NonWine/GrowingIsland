@@ -1,22 +1,24 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class ResetingState 
+public class ResetingState : EnemyState
 {
     private NavMeshAgent _meshAgent;
     private Rigidbody _rigidbody;
     private HealthUI _healthUI;
     
     public ResetingState(
+        EnemyStateMachine enemyStateMachine,
+        EnemyAnimator enemyAnimator,
         NavMeshAgent navMeshAgent,
         Rigidbody rigidbody,
-        HealthUI healthUI)
+        HealthUI healthUI) : base(enemyStateMachine, enemyAnimator)
     {
         _meshAgent = navMeshAgent;
         _rigidbody = rigidbody;
         _healthUI = healthUI;
     }    
-    public void EnterState(BaseEnemy enemy)
+    public override void EnterState(BaseEnemy enemy)
     {
         _rigidbody.isKinematic = true;
         _meshAgent.enabled = true;
@@ -26,13 +28,15 @@ public class ResetingState
         _healthUI.SetHealth(enemy.Stats.MaxHealth);
         _rigidbody.transform.localScale = new Vector3(1f,1f,1f);
         enemy.Stats.IsDeath = false;
+        
+        EnemyStateMachine.ChangeState<EnemyIdleState>();
     }
 
-    public void UpdateState()
+    public override void UpdateState()
     {
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
     }
 }

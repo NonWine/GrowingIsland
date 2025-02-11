@@ -6,6 +6,7 @@ using Zenject;
 public class Player : MonoBehaviour, IGameTickable
 {
     [SerializeField] private PlayerContainer _playerContainer;
+    [SerializeField] private HealthUI _healthUI;
     [Inject] private IGameСontroller _gameСontroller;
     [Inject] private OverlapSphereHandler _overlapSphereHandler;
     private PlayerHandlersService _playerHandlersService;
@@ -13,6 +14,8 @@ public class Player : MonoBehaviour, IGameTickable
     private PlayerStateMachine _playerStateMachine;
     private PlayerAnimator _playerAnimator;
     private PlayerFarmDetector _playerFarmDetector;
+    private PlayerEnemyDetector _playerEnemyDetector;
+    private PlayerRotating _playerRotating;
     public Transform ResourceStartPoint;
     
     public PlayerStateMachine PlayerStateMachine => _playerStateMachine;
@@ -26,25 +29,28 @@ public class Player : MonoBehaviour, IGameTickable
     {
         _gameСontroller.RegisterInTick(this);
         InitializeHandler();
-        _playerAnimator = new PlayerAnimator(_playerContainer);
         InitializePlayerStateMachine();
         _playerFarmDetector = new PlayerFarmDetector(_playerContainer, _overlapSphereHandler, _playerStateMachine, _playerAnimator);
-        PlayerInitialize();
+        _playerEnemyDetector = new PlayerEnemyDetector(_playerContainer, _overlapSphereHandler, _playerStateMachine, _playerAnimator);
         
+        PlayerInitialize();
+        _playerContainer.PlayerStats.CurrentHealth = _playerContainer.PlayerStats.MaxHealth;
+        _healthUI.SetHealth(_playerContainer.PlayerStats.MaxHealth);
     }
     
     private void PlayerInitialize()
     {
-        
         _playerController = new PlayerController
         (
             new PlayerMoving(_playerContainer),
-            new PlayerRotating(_playerContainer),
+            _playerRotating,
             _playerAnimator,
             _playerHandlersService.PlayerResourceDetector,
             _playerStateMachine,
-            _playerFarmDetector
+            _playerFarmDetector,
+            _playerEnemyDetector
         );
+        
     }
     
     private void InitializePlayerStateMachine()
@@ -53,9 +59,13 @@ public class Player : MonoBehaviour, IGameTickable
         
         var playerStates = new Dictionary<PlayerStateKey, PlayerState>
         {
-            { PlayerStateKey.Idle, new IdleState(_playerStateMachine, _playerContainer) },
+            { PlayerStateKey.Idle, new PlayerIdleState(_playerStateMachine, _playerContainer) },
             {
                 PlayerStateKey.Farming, new FarmingState(_playerStateMachine, _playerContainer,_playerAnimator, _playerHandlersService.DefaultRadiusDamageHandler)
+            },
+            
+             {
+                PlayerStateKey.Attack, new PlayerAttackState(_playerStateMachine, _playerContainer,_playerAnimator,_playerRotating, _playerHandlersService.DefaultRadiusDamageHandler )
             }
         };
         
@@ -67,6 +77,20 @@ public class Player : MonoBehaviour, IGameTickable
     private void InitializeHandler()
     {
         _playerHandlersService = new PlayerHandlersService(_playerContainer, _overlapSphereHandler);
+        _playerAnimator = new PlayerAnimator(_playerContainer);
+        _playerRotating = new PlayerRotating(_playerContainer);
+    }
+
+    public void GetDamage(float dmg)
+    {
+        Debug.Log("Get Damage");
+        _playerContainer.PlayerStats.CurrentHealth -= dmg;
+        _healthUI.GetDamageUI(dmg);
+
+        if (_playerContainer.PlayerStats.CurrentHealth <= 0)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public void Tick()

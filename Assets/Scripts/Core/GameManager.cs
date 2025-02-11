@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     
     private void Awake()
     {
+       
         _diContainer.BindInstance(_collectableAnimationData).AsSingle();
 
     }

@@ -8,18 +8,8 @@ using UnityEngine.UI;
 public class HealthUI : MonoBehaviour
 {
     [SerializeField] private Slider _slider;
-    [SerializeField] private TMP_Text _hpText;
     [SerializeField] private RectTransform _canvas;
     
-    private void Awake()
-    {
-        _slider.onValueChanged.AddListener(ChangeHpText);
-    }
-
-    private void OnDestroy()
-    {
-        _slider.onValueChanged.RemoveListener(ChangeHpText);
-    }
 
     public void SetHealth(float value)
     {
@@ -29,7 +19,10 @@ public class HealthUI : MonoBehaviour
 
     public void GetDamageUI(float count)
     {
-        _slider.value = count;
+        DOVirtual.Float(_slider.value, _slider.value - count, 0.25f, x =>
+        {
+            _slider.value = x;
+        }).SetEase(Ease.Linear);
     }
 
     public void Tick()
@@ -41,14 +34,6 @@ public class HealthUI : MonoBehaviour
     {
         _canvas.rotation = Quaternion.Euler(40f, transform.rotation.y, 0f);
     }
-
-    private void ChangeHpText(float value)
-    {
-        _hpText.text  = _slider.value.ToString() + "/" + _slider.maxValue.ToString();
-        if (_slider.value <= 0)
-        {
-            gameObject.SetActive(false);
-        }
-    }
+    
 }
 

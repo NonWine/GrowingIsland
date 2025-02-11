@@ -22,7 +22,7 @@ public class OverlapSphereHandler
     /// <summary>
     /// Оновлює OverlapSphere вручну (опціонально).
     /// </summary>
-    public void UpdateOverlapSphere(Vector3 position, float radius, LayerMask layerMask)
+    private void UpdateOverlapSphere(Vector3 position, float radius, LayerMask layerMask)
     {
         _lastPosition = position;
         _lastRadius = radius;
@@ -43,12 +43,12 @@ public class OverlapSphereHandler
     /// Повертає всі об'єкти, які відповідають умовам.
     /// Якщо результати застарілі, виконує OverlapSphere автоматично.
     /// </summary>
-    public List<T> GetFilteredObjects<T>(Vector3 position, float radius, LayerMask layerMask, Func<T, bool> filter = null) 
+    public List<T> GetFilteredObjects<T>(Vector3 position, float radius, LayerMask layerMask, Func<T, bool> filter = null, bool alwaysUpdate = false) 
     { 
         //if(layerMask == 0)
             layerMask = LayerMask.GetMask("Default");
         
-        if (_resultsAreStale || position != _lastPosition || radius != _lastRadius || layerMask != _lastLayerMask)
+        if (_resultsAreStale || position != _lastPosition || radius != _lastRadius || layerMask != _lastLayerMask || alwaysUpdate)
         {
             UpdateOverlapSphere(position, radius, layerMask);
         }

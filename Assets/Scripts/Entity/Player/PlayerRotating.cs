@@ -24,16 +24,22 @@ public class PlayerRotating : IRotateable
 
     }
 
-    public void SetTargetRotate(Vector3 target)
+    public void SetTargetRotate(Transform target)
     {
         _isTargeting = true;
-        _playerContainer.Body.rotation = Quaternion.Slerp(_playerContainer.Body.rotation,
-            Quaternion.LookRotation(target),
-            _playerContainer.PlayerStats.RotateSpeed * Time.deltaTime);
+        Vector3 direction = (target.position - _playerContainer.Body.position).normalized; // Отримуємо напрямок
+        Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up); // Обчислюємо правильний поворот
+
+        _playerContainer.Body.rotation = Quaternion.Slerp(
+            _playerContainer.Body.rotation,
+            targetRotation,
+            _playerContainer.PlayerStats.RotateSpeed * Time.deltaTime
+        );
     }
+
 
     public void UnLockTarget()
     {
-        _isTargeting = true;
+        _isTargeting = false;
     }
 }

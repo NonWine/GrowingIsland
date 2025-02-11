@@ -49,9 +49,5 @@ public class FarmingState : PlayerState
         player.PlayerAnimatorEvent.OnFarming -= TryLumber;
         _playerAnimator.SetStateBehaviour(0);
     }
-
-    public void Dispose()
-    {
-        
-    }
+    
 }

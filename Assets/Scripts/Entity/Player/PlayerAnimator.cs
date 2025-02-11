@@ -47,6 +47,8 @@ public class PlayerAnimator : IEntityAnimateable
     public void MineAttack() =>         _playerContainer.Animator.SetInteger(_STATE_KEY,2);
 
     public void Digging() =>         _playerContainer.Animator.SetInteger(_STATE_KEY,3);
+    
+    public void Attack() =>_playerContainer.Animator.SetInteger(_STATE_KEY,2);
 
     public void SetFarmingAnim(eCollectable wECollectable)
     {

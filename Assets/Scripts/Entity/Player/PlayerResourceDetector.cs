@@ -69,3 +69,42 @@ public class PlayerFarmDetector
     }
 
 }
+
+public class PlayerEnemyDetector
+{
+    private PlayerContainer _playerContainer;
+    private OverlapSphereHandler _overlapSphereHandler;
+    private PlayerStateMachine _playerStateMachine;
+    private PlayerAnimator _playerAnimator;
+    
+    public PlayerEnemyDetector(PlayerContainer playerContainer, OverlapSphereHandler overlapSphereHandler,
+        PlayerStateMachine playerStateMachine, PlayerAnimator playerAnimator)
+    {
+        _playerContainer = playerContainer;
+        _overlapSphereHandler = overlapSphereHandler;
+        _playerAnimator = playerAnimator;
+        _playerStateMachine = playerStateMachine;
+    }
+    
+    public void Find()
+    {
+        var farmObjects = _overlapSphereHandler.GetFilteredObjects<BaseEnemy>(
+            _playerContainer.transform.position,
+            _playerContainer.PlayerStats.RadiusDetection,
+            0,
+            resource => resource.isAlive,
+            true
+        );
+        
+        if(_playerStateMachine.CurrentStateKey == PlayerStateKey.Attack)
+            return;
+        
+        if (farmObjects.Count > 0)
+        {
+            _playerAnimator.SetFarmingAnim(eCollectable.Wood);
+            _playerStateMachine.ChangeState(PlayerStateKey.Attack);
+        }
+
+    }
+
+}

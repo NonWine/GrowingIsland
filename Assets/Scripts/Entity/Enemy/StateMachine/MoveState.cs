@@ -1,26 +1,39 @@
-﻿
+﻿using UnityEngine;
+using UnityEngine.AI;
 
-public class MoveState 
+public class MoveState : EnemyState
 {
-    private IMoveable _moveable;
-
-    public MoveState(IMoveable moveable)
+    private IEnemyMoveable _moveable;
+    private OverlapSphereHandler _overlapSphereHandler;
+    
+    public MoveState(EnemyStateMachine enemyStateMachine, EnemyAnimator enemyAnimator, IEnemyMoveable moveable) : base(enemyStateMachine, enemyAnimator)
     {
         _moveable = moveable;
     }
     
-    public void EnterState(BaseEnemy enemy)
+    public override void EnterState(BaseEnemy baseEnemy)
     {
+        EnemyStateMachine.Enemy.OnGetDamage += AttackPlayer;
+        EnemyAnimator.Move();
+        _moveable.StartMove();
         
     }
 
-    public void UpdateState()
+    public override void UpdateState()
     {
+        EnemyStateMachine.Enemy.SetTargetPlayer();
         _moveable.Move();
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
-        
+        EnemyStateMachine.Enemy.OnGetDamage -= AttackPlayer;
+
     }
+    
+    private void AttackPlayer()
+    {
+        EnemyStateMachine.ChangeState<AttackState>();
+    }
+
 }

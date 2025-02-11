@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using UnityEngine.Serialization;
-using Zenject;
 
 public class PlayerController 
 { 
@@ -11,13 +7,15 @@ public class PlayerController
     private PlayerStateMachine _playerStateMachine;
     private PlayerResourceDetector _playerResourceDetector;
     private PlayerFarmDetector _playerFarmDetector;
+    private PlayerEnemyDetector _playerEnemyDetector;
     
     public  PlayerController(IMoveable moveable,
         IRotateable rotateable,
         IEntityAnimateable animateable,
         PlayerResourceDetector playerResourceDetector, 
         PlayerStateMachine playerStateMachine,
-        PlayerFarmDetector playerFarmDetector
+        PlayerFarmDetector playerFarmDetector,
+        PlayerEnemyDetector playerEnemyDetector
         )
     {
         _playerResourceDetector = playerResourceDetector;
@@ -26,17 +24,17 @@ public class PlayerController
         _rotateable = rotateable;
         _playerStateMachine = playerStateMachine;
         _playerFarmDetector = playerFarmDetector;
+        _playerEnemyDetector = playerEnemyDetector;
     }   
     
     public void Tick()
     {
-       // _attackable.Attack();
         _moveable.Move();
         _rotateable.Rotate();
         _animateable.UpdateAnimator();
         _playerStateMachine.CurrentState.LogicUpdate();
-
-        _playerResourceDetector.FindResources();
-       _playerFarmDetector.FindFarmingResources();
+        _playerEnemyDetector.Find();
+    //    _playerResourceDetector.FindResources();
+    //   _playerFarmDetector.FindFarmingResources();
     }
 }

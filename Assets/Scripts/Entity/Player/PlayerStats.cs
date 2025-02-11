@@ -9,7 +9,7 @@ public class PlayerStats : Stats
     [SerializeField] private float _damage;
     [SerializeField] private float _coolDown;
     [SerializeField] private int _maxEnemyDetection;
-    [SerializeField] private float _radiusDetection;
+
     [field: SerializeField] public float RadiusFarming { get; private set; }
 
     [field: SerializeField]
@@ -24,7 +24,6 @@ public class PlayerStats : Stats
 
     public int MaxEnemyDetection => _maxEnemyDetection;
 
-    public float RadiusDetection => _radiusDetection;
     
     public float AxeDamage => _axeDamage;
 

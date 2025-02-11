@@ -2,3 +2,8 @@
 {
     void Move();
 }
+
+public interface IEnemyMoveable : IMoveable
+{
+    void StartMove();
+}

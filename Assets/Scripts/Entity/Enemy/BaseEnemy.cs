@@ -4,18 +4,19 @@ using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
-public abstract class BaseEnemy : PoolAble , IDamageable
+public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
 {
+    [SerializeField] private EnemyStats _stats;
     [SerializeField] protected HealthUI HealthUI;
     [SerializeField] protected NavMeshAgent NavMesh;
     [SerializeField] protected Rigidbody Rigidbody;
-    [SerializeField] private Stats _stats;
-    [Inject] protected PlayerContainer PlayerContainer;
+    [SerializeField] protected Animator Animator;
+    [Inject] protected Player Player;
+    [Inject] protected IGameСontroller GameСontroller;
     protected EnemyStateMachine EnemyStateMachine;
-
+    private float _timeFromGetDamage;
     
-    
-    public Stats Stats
+    public EnemyStats Stats
     {
         get => _stats;
         
@@ -25,49 +26,84 @@ public abstract class BaseEnemy : PoolAble , IDamageable
    // public ObjectPoolEnemy ObjectPoolEnemy;
     
     public event Action<BaseEnemy> OnDie;
-    public void InvokeOnDie() => OnDie?.Invoke(this);
+
+    public event Action OnGetDamage;
+
+    public event Action OnDrawGizmoz;
+
+    public bool HasDamaged => _timeFromGetDamage < 3f;
+    
+    
 
     
     private void Awake()
     {
+        NavMesh.speed = _stats.MoveSpeed;
+        
+        GameСontroller.RegisterInTick(this);
+        
         isAlive = true;
-        Stats.OnHealthChange += HealthUI.GetDamageUI;
-        Stats.OnHealthChange += Death;
-    }
-
-    private void OnDestroy()
-    {
-        Stats.OnHealthChange -= HealthUI.GetDamageUI;
-        Stats.OnHealthChange -= Death;
-
     }
     
     public void Tick()
     {
         EnemyStateMachine.Update();
         HealthUI.Tick();
-    }
-    
-    protected virtual void Death(float health)
-    {
-        if (health <= 0 && !Stats.IsDeath)
-        {
-         //   EnemyStateMachine.ChangeState<DieState>();
-        }
+
+        _timeFromGetDamage += Time.deltaTime;
+        
     }
     
     public virtual void GetDamage(float damage)
     {
         Stats.CurrentHealth -= damage;
+        _timeFromGetDamage = 0f;
+        OnGetDamage?.Invoke();
+        HealthUI.GetDamageUI(damage);
+        if (_stats.CurrentHealth <= 0)
+        {
+            EnemyStateMachine.ChangeState<DieState>();
+            GameСontroller.UnregisterFromTick(this);
+
+        }
+    }
+
+    public void SetTargetPlayer()
+    {
+        Vector3 direction = (Player.transform.position - transform.position).normalized; // Отримуємо напрямок
+        Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * EnemyStateMachine.Enemy.Stats.RotateSpeed);
     }
 
     public bool isAlive { get; set; }
 
-    public abstract void ResetMob();
-    
-}
+    public virtual void ResetMob()
+    {
+        EnemyStateMachine.ChangeState<ResetingState>();
+    }
 
-public enum EnemyType
-{
+    private void OnDrawGizmos()
+    {
+        OnDrawGizmoz?.Invoke();
+    }
     
+#if UNITY_EDITOR
+
+    private void OnDrawGizmosSelected()
+    {
+        if(Player == null)
+            return;
+        
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position, Player.transform.position);
+
+        // Вычисляем расстояние
+        float distance = Vector3.Distance(transform.position, Player.transform.position);
+
+        // Показываем текст с расстоянием
+        UnityEditor.Handles.color = Color.black;
+        UnityEditor.Handles.Label((transform.position + Player.transform.position) / 2, distance.ToString("F2"));
+    }
+    
+#endif
 }
