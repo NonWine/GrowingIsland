@@ -13,7 +13,7 @@ public class MoveState : EnemyState
     
     public override void EnterState(BaseEnemy baseEnemy)
     {
-        EnemyStateMachine.Enemy.OnGetDamage += AttackPlayer;
+        EnemyStateMachine.Enemy.EnemyHealth.OnGetDamage += AttackPlayer;
         EnemyAnimator.Move();
         _moveable.StartMove();
         
@@ -21,13 +21,13 @@ public class MoveState : EnemyState
 
     public override void UpdateState()
     {
-        EnemyStateMachine.Enemy.SetTargetPlayer();
+        EnemyStateMachine.Enemy.EnemyRotator.RotateToPlayer();
         _moveable.Move();
     }
 
     public override void ExitState()
     {
-        EnemyStateMachine.Enemy.OnGetDamage -= AttackPlayer;
+        EnemyStateMachine.Enemy.EnemyHealth.OnGetDamage -= AttackPlayer;
 
     }
     

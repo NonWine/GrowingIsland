@@ -17,7 +17,7 @@ public class EnemyBackHomeState : EnemyState
     public override void EnterState(BaseEnemy baseEnemy)
     {
         _navMeshAgent_.SetDestination(_spawnPoint);
-        EnemyStateMachine.Enemy.OnGetDamage += AttackState;
+        EnemyStateMachine.Enemy.EnemyHealth.OnGetDamage += AttackState;
         EnemyAnimator.Move();
 
     }
@@ -30,7 +30,7 @@ public class EnemyBackHomeState : EnemyState
         }
 
         if (Vector3.Distance(EnemyStateMachine.Enemy.transform.position, _player.transform.position) <
-            EnemyStateMachine.Enemy.Stats.RadiusDetection  || EnemyStateMachine.Enemy.HasDamaged)
+            EnemyStateMachine.Enemy.Stats.RadiusDetection  || EnemyStateMachine.Enemy.EnemyHealth.HasDamaged)
         {
             EnemyStateMachine.ChangeState<MoveState>();
 
@@ -40,7 +40,7 @@ public class EnemyBackHomeState : EnemyState
 
     public override void ExitState()
     {
-        EnemyStateMachine.Enemy.OnGetDamage -= AttackState;
+        EnemyStateMachine.Enemy.EnemyHealth.OnGetDamage -= AttackState;
 
     }
 

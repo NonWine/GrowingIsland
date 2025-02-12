@@ -49,7 +49,7 @@ public class ResourcePartObj : PoolAble , IGameTickable
 
     public void DestroyAnim()
     {
-        transform.DOScale(0f, 0.25f).SetEase(Ease.InBack).OnComplete(() => { gameObject.SetActive(false); });
+            transform.DOScale(0f, 0.25f).SetEase(Ease.InBack).OnComplete(() => { gameObject.SetActive(false); });
     }
 
     public void SetIdle()

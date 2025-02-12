@@ -13,7 +13,7 @@ public class EnemyMovingIdle : BaseEnemyMoving
     public override void Move()
     {
         if (Vector3.Distance(NavMeshAgent.transform.position, SpawnPoint) >
-            EnemyStateMachine.Enemy.Stats.DistanceFromSpawn && !EnemyStateMachine.Enemy.HasDamaged)
+            EnemyStateMachine.Enemy.Stats.DistanceFromSpawn && !EnemyStateMachine.Enemy.EnemyHealth.HasDamaged)
         {
             EnemyStateMachine.ChangeState<EnemyBackHomeState>();
             return;

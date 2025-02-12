@@ -16,7 +16,7 @@
 
     public override void UpdateState()
     {
-        EnemyStateMachine.Enemy.SetTargetPlayer();
+        EnemyStateMachine.Enemy.EnemyRotator.RotateToPlayer();
         _attackable.Attack();
     }
 
