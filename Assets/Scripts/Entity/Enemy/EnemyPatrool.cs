@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Entity.Enemy;
 using UnityEngine;
 
 public class EnemyPatrool : BaseEnemy
@@ -16,4 +15,12 @@ public class EnemyPatrool : BaseEnemy
         return states;
     }
 
+}
+
+public class PatroolArea
+{
+    public Vector3 GetRandomPointInCollider()
+    {
+        throw new NotImplementedException();
+    }
 }

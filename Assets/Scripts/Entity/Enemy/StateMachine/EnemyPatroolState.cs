@@ -1,5 +1,4 @@
-﻿using Entity.Enemy;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyPatroolState : EnemyState
