@@ -20,7 +20,7 @@ namespace Utils
         private void OnValidate()
         {
             _rectTransform = GetComponent<RectTransform>();
-            UpdateRectToPadding();
+           // UpdateRectToPadding();
         }
 
         private void Start()
