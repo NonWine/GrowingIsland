@@ -31,6 +31,8 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
         CreateComponents();
         EnemyStateMachine = new EnemyStateMachine(this);
         EnemyStateMachine.Initialize<EnemyIdleState>(CreateStates());
+        EnemyHealth = new EnemyHealth(Stats, HealthUI, this, GameСontroller , EnemyStateMachine);
+
     }
 
     public void Tick()
@@ -49,7 +51,6 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
     {
         EnemyAnimator = new EnemyAnimator(Animator);
         EnemyRotator = new EnemyRotator(transform, Player.transform, Stats.RotateSpeed);
-        EnemyHealth = new EnemyHealth(Stats, HealthUI, this, GameСontroller);
     }
     
     protected virtual Dictionary<Type, EnemyState> CreateStates()

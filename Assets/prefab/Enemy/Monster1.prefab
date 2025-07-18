@@ -49,18 +49,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 294d10a546b5495a8d39761a8276d121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stats:
-    _health: 100
-    _moveSpeed: 3
-    _roateSpeed: 35
-    _radiusDetection: 5
-    <TimeBeetwenHit>k__BackingField: 1.57
-    <DamageHit>k__BackingField: 4.84
-    <DistanceFromSpawn>k__BackingField: 15.12
-    <TargetDistance>k__BackingField: 2.05
+  <Stats>k__BackingField:
+    _health: 35
+    _moveSpeed: 4
+    _roateSpeed: 32
+    _radiusDetection: 4
+    <TimeBeetwenHit>k__BackingField: 1
+    <DamageHit>k__BackingField: 2
+    <DistanceFromSpawn>k__BackingField: 8.75
+    <TargetDistance>k__BackingField: 0.75
   HealthUI: {fileID: 209943772752738437}
   NavMesh: {fileID: 4842188062717599529}
   Rigidbody: {fileID: 8702557431408717527}
+  Animator: {fileID: 2260630785505717227}
 --- !u!195 &4842188062717599529
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -229,6 +230,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59a51997eb082e449b7eff675857e1ff, type: 3}
+--- !u!95 &2260630785505717227 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 545682315341920650, guid: 59a51997eb082e449b7eff675857e1ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1787357943491695201}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2260630785515553803 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 545682315351430762, guid: 59a51997eb082e449b7eff675857e1ff,

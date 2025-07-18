@@ -19,11 +19,13 @@ public class EnemyHealth
 
 
 
-    public EnemyHealth(EnemyStats stats, HealthUI healthUI, BaseEnemy enemy, IGameСontroller gameСontroller)
+    public EnemyHealth(EnemyStats stats, HealthUI healthUI, BaseEnemy enemy, IGameСontroller gameСontroller, EnemyStateMachine enemyStateMachine)
     {
         _stats = stats;
         _healthUI = healthUI;
+        _gameСontroller = gameСontroller;
         _enemy = enemy;
+        this._enemyStateMachine = enemyStateMachine;
         _stats.CurrentHealth = _stats.MaxHealth;
         IsAlive = true;
     }
