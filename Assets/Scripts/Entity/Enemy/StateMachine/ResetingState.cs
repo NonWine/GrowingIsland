@@ -27,7 +27,7 @@ public class ResetingState : EnemyState
         _healthUI.gameObject.SetActive(true);
         _healthUI.SetHealth(enemy.Stats.MaxHealth);
         _rigidbody.transform.localScale = new Vector3(1f,1f,1f);
-        enemy.Stats.IsDeath = false;
+        enemy.IsDeath = false;
         
         EnemyStateMachine.ChangeState<EnemyIdleState>();
     }

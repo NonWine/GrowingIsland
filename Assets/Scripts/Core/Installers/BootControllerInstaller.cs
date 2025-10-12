@@ -30,10 +30,7 @@ public class BootControllerInstaller : MonoInstaller
 
     private void RegirsterPlayer()
     {
-        _playerPrefab = Container.InstantiatePrefabForComponent<Player>(_playerPrefab);
-        _playerContainer = _playerPrefab.PlayerContainer;
-        Container.BindInstance(_playerContainer).AsSingle().Lazy();
-        Container.BindInstance(_playerPrefab).AsSingle();
+        Container.Bind<Player>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();
     }
 
  

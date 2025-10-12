@@ -12,11 +12,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - TCP2_REFLECTIONS
   - TCP2_REFLECTIONS_FRESNEL
-  - TCP2_RIM_LIGHTING
   - TCP2_RIM_LIGHTING_LIGHTMASK
-  - TCP2_SPECULAR
   m_InvalidKeywords:
   - TCP2_OUTLINE_TEXTURED_VERTEX
   - TCP2_TANGENT_AS_NORMALS
@@ -130,7 +127,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _IndirectIntensity: 0.458
+    - _IndirectIntensity: 1
     - _IndirectIntensityOutline: 0
     - _MatCapMaskChannel: 0
     - _MatCapType: 0
@@ -183,11 +180,11 @@ Material:
     - _UseNormalMap: 0
     - _UseOcclusion: 0
     - _UseOutline: 0
-    - _UseReflections: 1
-    - _UseRim: 1
+    - _UseReflections: 0
+    - _UseRim: 0
     - _UseRimLightMask: 1
     - _UseShadowTexture: 0
-    - _UseSpecular: 1
+    - _UseSpecular: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:

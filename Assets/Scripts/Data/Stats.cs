@@ -1,28 +1,23 @@
 ﻿using System;
-using UnityEngine;
+using Sirenix.OdinInspector;
 
 [System.Serializable]
 public class Stats
 {
-    [SerializeField] private float _health;
-    [SerializeField] private int _moveSpeed;
-    [SerializeField] private int _roateSpeed;
-    [SerializeField] private float _radiusDetection;
-    [field: SerializeField] public float TimeBeetwenHit { get; private set; }
-    [field: SerializeField] public float DamageHit { get; private set; }
+    public const float LabelWidht = 140f; 
+    
+    [ProgressBar(0, 100), ShowInInspector] [LabelWidth(LabelWidht)] public float MaxHealth { get; private set; }
+    
+    [ProgressBar(0, 100), ShowInInspector] [LabelWidth(LabelWidht)] public int MoveSpeed {get; private set; }
+    [ProgressBar(0, 100), ShowInInspector] [LabelWidth(LabelWidht)] public int RotateSpeed {get; private set; }
+    [ProgressBar(0, 100), ShowInInspector] [LabelWidth(LabelWidht)] public float RadiusDetection {get; private set; }
+    [ProgressBar(0, 100), ShowInInspector] [LabelWidth(LabelWidht)] public float TimeBeetwenHit { get; private set; }
+    [ProgressBar(0, 100), ShowInInspector] [LabelWidth(LabelWidht)] public float DamageHit { get; private set; }
 
     private float _currentHealth;
-    private bool _isDeath;
-
+    
     public event Action<float> OnHealthChange;
     
-    public int MoveSpeed => _moveSpeed;
-    
-    public int RotateSpeed => _moveSpeed;
-
-    public float MaxHealth => _health;
-    
-    public float RadiusDetection => _radiusDetection;
 
     
     public float CurrentHealth
@@ -34,19 +29,6 @@ public class Stats
             OnHealthChange?.Invoke(_currentHealth);
         }
     }
-
-    public bool IsDeath
-    {
-        get => _isDeath;
-        set => _isDeath = value;
-    }
-
-}
-
-[System.Serializable]
-public class EnemyStats : Stats
-{
-    [field: SerializeField] public float DistanceFromSpawn { get; private set; }
-    [field: SerializeField] public float TargetDistance { get; private set; }
+    
 
 }

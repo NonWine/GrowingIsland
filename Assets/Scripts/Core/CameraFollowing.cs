@@ -8,7 +8,9 @@ using Zenject;
 public class CameraFollowing : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera _cinemachineVirtual;
-    [Inject] private PlayerContainer _playerContainer;
+
+    [Inject] private Player _playerContainer;
+    
     private void Start()
     {
         SetFollow(_playerContainer.transform);
@@ -19,5 +21,5 @@ public class CameraFollowing : MonoBehaviour
     {
         _cinemachineVirtual.Follow = target;
     }
-
+ 
 }

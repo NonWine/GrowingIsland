@@ -6,3 +6,4 @@ public class WalletObj : ScriptableObject
     public Sprite ItemIcon;
     public eCollectable TypeWallet;
 }
+

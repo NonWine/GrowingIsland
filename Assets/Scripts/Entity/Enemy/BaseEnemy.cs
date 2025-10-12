@@ -18,6 +18,14 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
     public  EnemyRotator EnemyRotator { get; private set; }
     public  EnemyHealth EnemyHealth { get; private set; }
     
+    private bool _isDeath;
+
+    public bool IsDeath
+    {
+        get => _isDeath;
+        set => _isDeath = value;
+    }
+    
     private void Awake()
     {
         NavMesh.speed = Stats.MoveSpeed;
