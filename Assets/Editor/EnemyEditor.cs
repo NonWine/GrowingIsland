@@ -68,10 +68,9 @@ using UnityEngine;
                 {
                     Debug.Log(selected.Name);
                     GUILayout.Label(selected.Name);
+                    
                     if (selected.Value is EnemyConfig enemy)
                     {
-                            
-                        EditorUtility.FocusProjectWindow();
                         Selection.activeObject = enemy;
                     }
                 }
@@ -89,6 +88,19 @@ using UnityEngine;
                     EditorUtility.FocusProjectWindow();
                     Selection.activeObject = asset;
                 }
+
+                if (SirenixEditorGUI.ToolbarButton(new GUIContent("Delete Enemy")))
+                {
+                    if (selected?.Value is EnemyConfig enemy)
+                    {
+                        string assetPath = AssetDatabase.GetAssetPath(enemy);
+
+                        
+                        AssetDatabase.DeleteAsset(assetPath);
+                    }
+                }
+
+                
 
             }
             SirenixEditorGUI.EndHorizontalToolbar();
