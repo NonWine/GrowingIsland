@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -8,8 +9,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObject/EnemyConfig", fileName = "EnemyConfig", order = 0)]
 public class EnemyConfig : ScriptableObject
 {
-    [LabelWidth(80)]
-    public string Name;
+
     
     [Space(20)]
     
@@ -21,10 +21,11 @@ public class EnemyConfig : ScriptableObject
 
     
     [HorizontalGroup(width:0.7f)] [InlineProperty] [HideLabel] [SerializeField] 
-    private EnemyStats enemyStats;
+    public EnemyStats enemyStats;
 
-
-
+    
 
     private IEnumerable<GameObject> GetAllScriptableObjects() => EnemyConfigResolver.GetAllScriptableObjects();
 }
+
+
