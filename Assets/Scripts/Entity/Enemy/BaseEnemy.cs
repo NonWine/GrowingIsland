@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
 public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
 {
-    [field: SerializeField] public EnemyStats Stats { get; private set; }
+    [field: SerializeField, ReadOnly] public EnemyStats Stats { get; private set; }
     [SerializeField] protected HealthUI HealthUI;
     [SerializeField] protected NavMeshAgent NavMesh;
     [SerializeField] protected Rigidbody Rigidbody;

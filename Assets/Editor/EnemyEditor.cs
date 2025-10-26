@@ -14,37 +14,55 @@ using UnityEngine;
     {
        [SerializeField] private EnemyEditorGeneralSettings editorGeneralSettings;
        private EnemyTable enemyTable;
-       
+       private OdinMenuTree  odinMenuTree;
         [MenuItem("Custom/Enemy Editor")]
         private static void Open()
         {
             var window = GetWindow<EnemyEditor>();
             window.position = GUIHelper.GetEditorWindowRect().AlignCenter(800, 500);
         }
-        
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            odinMenuTree.Selection.SelectionChanged -= SelectionOnSelectionChanged;
+
+        }
 
         protected override OdinMenuTree BuildMenuTree()
         {
-            var tree = new OdinMenuTree(true);
-            tree.DefaultMenuStyle.IconSize = 28.00f;
-            tree.Config.DrawSearchToolbar = true;
+            odinMenuTree = new OdinMenuTree(true);
+            odinMenuTree.DefaultMenuStyle.IconSize = 28.00f;
+            odinMenuTree.Config.DrawSearchToolbar = true;
             enemyTable = new EnemyTable(UpdateEnemiesFromFolder());
             Debug.Log(enemyTable.AllEnemies.Count);
             // Adds the character overview table.
-            tree.Add("General", editorGeneralSettings);
-            tree.Add("Enemies", enemyTable);
+            odinMenuTree.Add("General", editorGeneralSettings);
+            odinMenuTree.Add("Enemies", enemyTable);
          
+            
             foreach (var enemy in enemyTable.AllEnemies)
             {
                 Debug.Log(enemy.EnemyConfig.name); 
-                tree.Add($"Enemies/ {enemy.EnemyConfig.name}", enemy.EnemyConfig);
+                odinMenuTree.Add($"Enemies/ {enemy.EnemyConfig.name}", enemy.EnemyConfig);
 
             }
-            
-            return tree;
+
+            odinMenuTree.Selection.SelectionChanged += SelectionOnSelectionChanged;
+            return odinMenuTree;
         }
-        
-        
+
+        private void SelectionOnSelectionChanged(SelectionChangedType obj)
+        {
+            // Відпрацьовує при кліку на айтем у дереві
+            var selected = odinMenuTree.Selection.FirstOrDefault();
+            if (selected?.Value is EnemyConfig enemy)
+            {
+                Selection.activeObject = enemy;
+                Debug.Log($"Selected enemy: {enemy.name}");
+            }
+        }
+
         public IEnumerable<EnemyConfig> UpdateEnemiesFromFolder()
         {
             // Finds and assigns all scriptable objects of type Character
@@ -59,21 +77,9 @@ using UnityEngine;
         {
             var selected = this.MenuTree.Selection.FirstOrDefault();
             var toolbarHeight = this.MenuTree.Config.SearchToolbarHeight;
-
-
-            // Draws a toolbar with the name of the currently selected menu item.
+            
             SirenixEditorGUI.BeginHorizontalToolbar(toolbarHeight);
             {
-                if (selected != null)
-                {
-                    Debug.Log(selected.Name);
-                    GUILayout.Label(selected.Name);
-                    
-                    if (selected.Value is EnemyConfig enemy)
-                    {
-                        Selection.activeObject = enemy;
-                    }
-                }
 
                 if (SirenixEditorGUI.ToolbarButton(new GUIContent("Create Enemy")))
                 {
@@ -84,7 +90,6 @@ using UnityEngine;
                     AssetDatabase.CreateAsset(asset, assetPath);
                     AssetDatabase.SaveAssets();
                     AssetDatabase.Refresh();
-        
                     EditorUtility.FocusProjectWindow();
                     Selection.activeObject = asset;
                 }
@@ -99,9 +104,6 @@ using UnityEngine;
                         AssetDatabase.DeleteAsset(assetPath);
                     }
                 }
-
-                
-
             }
             SirenixEditorGUI.EndHorizontalToolbar();
         }
