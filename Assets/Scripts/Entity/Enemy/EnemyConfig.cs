@@ -9,8 +9,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObject/EnemyConfig", fileName = "EnemyConfig", order = 0)]
 public class EnemyConfig : ScriptableObject
 {
+    [ReadOnly] public string guId;
 
-    
+    private void Awake()
+    {
+        guId = Guid.NewGuid().ToString();
+    }
+
     [Space(20)]
     
     

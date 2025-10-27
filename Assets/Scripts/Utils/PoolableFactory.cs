@@ -14,7 +14,6 @@ public abstract class PoolableFactory<TType, TEntity> : IFactory<TType, TEntity>
         _container = container;
     }
 
-    // Метод для створення нового об'єкта або витягування його з пулу
     public TEntity Create(TType type)
     {
         if (!_prefabs.ContainsKey(type))

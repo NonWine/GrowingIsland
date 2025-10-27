@@ -7,7 +7,7 @@ using Zenject;
 
 public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
 {
-    [field: SerializeField, ReadOnly] public EnemyStats Stats { get; private set; }
+    [field: SerializeField, ReadOnly, InjectOptional] public EnemyStats Stats { get; private set; }
     [SerializeField] protected HealthUI HealthUI;
     [SerializeField] protected NavMeshAgent NavMesh;
     [SerializeField] protected Rigidbody Rigidbody;
@@ -82,6 +82,7 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
         get => EnemyHealth.IsAlive;
         set => EnemyHealth.IsAlive = value;
     }
+    
 
     #region Editor
 

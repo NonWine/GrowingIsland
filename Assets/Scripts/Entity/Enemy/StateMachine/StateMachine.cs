@@ -43,7 +43,6 @@ public class EnemyStateMachine
     public void Update()
     {
         _currentState.UpdateState();
-        Debug.Log(_currentState);
     }
     
     

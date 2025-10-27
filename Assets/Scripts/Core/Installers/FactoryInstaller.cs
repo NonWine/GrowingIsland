@@ -1,15 +1,22 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 
 public class FactoryInstaller : MonoInstaller
 {
     [SerializeField] private List<ResourcePartObj> _resourcePartObjs;
-    
+
     public override void InstallBindings()
     {
-        
+
         BindResourcesFactory();
+  
+        Container.BindInterfacesAndSelfTo<EnemyFactory>().AsSingle()
+            .WithArguments( Resources.LoadAll<EnemyConfig>("EnemyConfigs").ToList()).NonLazy();
+
+
+
     }
 
     private void BindResourcesFactory()
