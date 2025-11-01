@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Extensions;
+using UnityEngine;
 
 public class PlayerAttackState : PlayerState
 {
@@ -21,7 +22,7 @@ public class PlayerAttackState : PlayerState
     public override void Enter()
     {
         player.PlayerAnimatorEvent.OnFarming += TryLumber;
-        _playerAnimator.SetStateBehaviour(1);
+        _playerAnimator.SetAnimataionLayerWeightBehaviour(1);
         
     }
 
@@ -30,31 +31,21 @@ public class PlayerAttackState : PlayerState
         Debug.Log(_currentTarget);
         if(_currentTarget == null)
             return;
+        
         _playerRotating.SetTargetRotate(_currentTarget);
     }
 
     private void TryLumber()
     {
         _damageableHandler.HandDamage(_playerStats.Damage, out bool detected, out Transform[] targets);
+        
         if (detected == false)
         {
             stateMachine.ChangeState(PlayerStateKey.Idle);
             return;
         }
         
-        float minDistanceSqr = float.MaxValue;
-        Transform nearTarget = null;
-        foreach (Transform target in targets)
-        {
-            float distanceSqr = (target.position - player.transform.position).sqrMagnitude;
-            if (distanceSqr < minDistanceSqr)
-            {
-                minDistanceSqr = distanceSqr;
-                nearTarget = target;
-            }
-        }
-        
-        _currentTarget = nearTarget;
+        _currentTarget =  player.transform.GetNearestTarget(targets);
 
     }
 
@@ -63,7 +54,7 @@ public class PlayerAttackState : PlayerState
     {
         player.PlayerAnimatorEvent.OnFarming -= TryLumber;
         _playerRotating.UnLockTarget();
-        _playerAnimator.SetStateBehaviour(0);
+        _playerAnimator.SetAnimataionLayerWeightBehaviour(0);
     }
 
     public void Dispose()
@@ -71,3 +62,4 @@ public class PlayerAttackState : PlayerState
         
     }
 }
+

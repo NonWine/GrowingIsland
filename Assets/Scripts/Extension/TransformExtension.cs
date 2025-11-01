@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Extensions
@@ -38,6 +39,28 @@ namespace Extensions
 
         public static void FadeIn(this Transform transform, float time, Action action = null) 
             => transform.DOScale(Vector3.zero, time).OnComplete(() => action?.Invoke());
+        
+        public static Transform GetNearestTarget(this Transform origin, IEnumerable<Transform> targets)
+        {
+            Transform nearest = null;
+            float minDistanceSqr = float.MaxValue;
+
+            Vector3 originPos = origin.position;
+
+            foreach (var target in targets)
+            {
+                if (target == null) continue;
+
+                float distanceSqr = (target.position - originPos).sqrMagnitude;
+                if (distanceSqr < minDistanceSqr)
+                {
+                    minDistanceSqr = distanceSqr;
+                    nearest = target;
+                }
+            }
+
+            return nearest;
+        }
     }
 }
 

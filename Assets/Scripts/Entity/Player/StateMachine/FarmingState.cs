@@ -20,7 +20,7 @@ public class FarmingState : PlayerState
     public override void Enter()
     {
         player.PlayerAnimatorEvent.OnFarming += TryLumber;
-        _playerAnimator.SetStateBehaviour(1);
+        _playerAnimator.SetAnimataionLayerWeightBehaviour(1);
         
     }
 
@@ -47,7 +47,7 @@ public class FarmingState : PlayerState
     public override void Exit()
     {
         player.PlayerAnimatorEvent.OnFarming -= TryLumber;
-        _playerAnimator.SetStateBehaviour(0);
+        _playerAnimator.SetAnimataionLayerWeightBehaviour(0);
     }
     
 }

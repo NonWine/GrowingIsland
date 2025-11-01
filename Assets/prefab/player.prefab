@@ -157,10 +157,10 @@ MonoBehaviour:
   _body: {fileID: 8941515168476634447}
   _player: {fileID: 8941515168467645195}
   _playerStats:
-    _health: 100
-    _moveSpeed: 5
-    _roateSpeed: 45
-    _radiusDetection: 1.64
+    <MaxHealth>k__BackingField: 100
+    <MoveSpeed>k__BackingField: 4
+    <RotateSpeed>k__BackingField: 40
+    <RadiusDetection>k__BackingField: 3.8721323
     <TimeBeetwenHit>k__BackingField: 0.55
     <DamageHit>k__BackingField: 5.13
     _axeDamage: 15

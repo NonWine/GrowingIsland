@@ -31,7 +31,7 @@ public class PlayerAnimator : IEntityAnimateable
         }
     }
 
-    public void SetStateBehaviour(int state)
+    public void SetAnimataionLayerWeightBehaviour(int state)
     {
         if (state == 0)
         {
