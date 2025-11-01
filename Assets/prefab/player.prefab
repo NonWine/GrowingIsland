@@ -160,19 +160,23 @@ MonoBehaviour:
     <MaxHealth>k__BackingField: 100
     <MoveSpeed>k__BackingField: 4
     <RotateSpeed>k__BackingField: 40
-    <RadiusDetection>k__BackingField: 3.8721323
-    <TimeBeetwenHit>k__BackingField: 0.55
-    <DamageHit>k__BackingField: 5.13
+    <RadiusDetection>k__BackingField: 4.0342193
+    <TimeBeetwenHit>k__BackingField: 0.6159388
+    <DamageHit>k__BackingField: 19.180552
     _axeDamage: 15
     _pickAxeDamage: 5
     _digDamage: 5
     _damage: 10
     _coolDown: 0.8
     _maxEnemyDetection: 4
+    <perHitRadius>k__BackingField: 0
     <RadiusFarming>k__BackingField: 2
     <MiningCD>k__BackingField: 0.5
   _playerAnimatorEvent: {fileID: 7310931004945973}
   <PlayerTrigger>k__BackingField: {fileID: 8421645836444998454}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &4203139770830303457
 MonoBehaviour:
   m_ObjectHideFlags: 0

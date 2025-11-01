@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using Zenject;
 
@@ -9,9 +10,9 @@ public class Player : MonoBehaviour, IGameTickable
     [SerializeField] private HealthUI _healthUI;
     [Inject] private IGameСontroller _gameСontroller;
     [Inject] private OverlapSphereHandler _overlapSphereHandler;
+    [ShowInInspector] private PlayerStateMachine _playerStateMachine;
     private PlayerHandlersService _playerHandlersService;
     private PlayerController _playerController;
-    private PlayerStateMachine _playerStateMachine;
     private PlayerAnimator _playerAnimator;
     private PlayerFarmDetector _playerFarmDetector;
     private PlayerEnemyDetector _playerEnemyDetector;
@@ -20,7 +21,6 @@ public class Player : MonoBehaviour, IGameTickable
     
     public PlayerStateMachine PlayerStateMachine => _playerStateMachine;
     
-
     public PlayerController PlayerController => _playerController;
 
     public PlayerContainer PlayerContainer => _playerContainer;
@@ -65,7 +65,8 @@ public class Player : MonoBehaviour, IGameTickable
             },
             
              {
-                PlayerStateKey.Attack, new PlayerAttackState(_playerStateMachine, _playerContainer,_playerAnimator,_playerRotating, _playerHandlersService.DefaultRadiusDamageHandler )
+                PlayerStateKey.Attack, new PlayerAttackState(_playerStateMachine, _playerContainer,
+                    _playerAnimator,_playerRotating, _playerHandlersService.playerAttackHandler, _playerHandlersService.targetDetector )
             }
         };
         
@@ -95,13 +96,12 @@ public class Player : MonoBehaviour, IGameTickable
 
     public void Tick()
     {
-      //  _overlapSphereHandler.UpdateOverlapSphere();
         _playerController.Tick();
     }
 
     private void OnDrawGizmos()
-    {
-        if(_overlapSphereHandler != null)
-            _overlapSphereHandler.OnDrawGizmos();
+    {   
+        if(_playerStateMachine != null)
+            _playerStateMachine.CurrentState.OnDrawGizmos();
     }
 }

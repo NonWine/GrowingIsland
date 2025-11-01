@@ -7,11 +7,12 @@
 
     public override void Enter()
     {
-        
+        stateMachine.ChangeState(PlayerStateKey.Attack);
     }
 
     public override void LogicUpdate()
     {
+        
     }
 
     public override void Exit()

@@ -50,10 +50,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Stats>k__BackingField:
-    _health: 35
-    _moveSpeed: 4
-    _roateSpeed: 32
-    _radiusDetection: 4
+    <MaxHealth>k__BackingField: 0
+    <MoveSpeed>k__BackingField: 0
+    <RotateSpeed>k__BackingField: 0
+    <RadiusDetection>k__BackingField: 0
     <TimeBeetwenHit>k__BackingField: 1
     <DamageHit>k__BackingField: 2
     <DistanceFromSpawn>k__BackingField: 8.75
@@ -126,7 +126,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

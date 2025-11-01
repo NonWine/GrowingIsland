@@ -45,7 +45,7 @@ public class OverlapSphereHandler
     /// </summary>
     public List<T> GetFilteredObjects<T>(Vector3 position, float radius, LayerMask layerMask, Func<T, bool> filter = null, bool alwaysUpdate = false) 
     { 
-        //if(layerMask == 0)
+        if(layerMask == 0)
             layerMask = LayerMask.GetMask("Default");
         
         if (_resultsAreStale || position != _lastPosition || radius != _lastRadius || layerMask != _lastLayerMask || alwaysUpdate)

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Extensions;
 using UnityEngine;
 
 public class PlayerDefaultRadiusDamageHandler : IDamageableHandler
@@ -17,12 +19,7 @@ public class PlayerDefaultRadiusDamageHandler : IDamageableHandler
 
     private bool TryDamagingByRadius(float damage, out Transform[] taregt)
     {
-        var enemies = _overlapSphereHandler.GetFilteredObjects<IDamageable>(
-            _playerContainer.transform.position,
-            _playerContainer.PlayerStats.RadiusDetection,
-            0,
-            enemy => enemy.isAlive
-        );
+        var enemies = Damageables();
 
         List<Transform> damagedTargets = new List<Transform>();
         foreach (var enemy in enemies)
@@ -33,6 +30,35 @@ public class PlayerDefaultRadiusDamageHandler : IDamageableHandler
 
         taregt = damagedTargets.ToArray();
         return taregt.Length > 0;    
+    }
+
+    private List<IDamageable> Damageables()
+    {
+        var enemies = _overlapSphereHandler.GetFilteredObjects<IDamageable>(
+            _playerContainer.transform.position,
+            _playerContainer.PlayerStats.RadiusDetection,
+            0,
+            enemy => enemy.isAlive
+        );
+        return enemies;
+    }
+
+    public void HandDamageSingleTarget(float damage, out IDamageable damagedTarget, Action Ifnull = null)
+    {
+        var enemies = Damageables();
+
+        if (enemies.Count == 0)
+        {
+            Ifnull?.Invoke();
+            damagedTarget = null;
+            return;
+        }
+        
+        List<Transform>  damagedTargets = new List<Transform>();
+        enemies.ForEach(x => damagedTargets.Add(x.transform));
+        
+        damagedTarget = _playerContainer.transform.GetNearestTarget(damagedTargets).GetComponent<IDamageable>();
+        damagedTarget.GetDamage(damage);
     }
     
 

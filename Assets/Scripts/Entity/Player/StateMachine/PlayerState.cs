@@ -1,4 +1,6 @@
-﻿public abstract class PlayerState
+﻿
+[System.Serializable]
+public abstract class PlayerState
 {
     protected PlayerStateMachine stateMachine;
     protected PlayerContainer player;
@@ -12,5 +14,10 @@
 
     public abstract void Enter(); 
     public abstract void LogicUpdate(); 
-    public abstract void Exit(); 
+    public abstract void Exit();
+
+    public virtual void OnDrawGizmos()
+    {
+        
+    }
 }

@@ -13,6 +13,7 @@ public class PlayerContainer : MonoBehaviour
     [Inject] private Joystick _joystick;
     
     [field: SerializeField] public PlayerTrigger PlayerTrigger { get; private set; }
+    [field: SerializeField] public LayerMask enemyMask;
 
     public PlayerStateMachine PlayerStateMachine
     {

@@ -1,65 +1,77 @@
-﻿using Extensions;
-using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 
 public class PlayerAttackState : PlayerState
 {
-    private PlayerAnimator _playerAnimator;
-    private PlayerRotating _playerRotating;
-    private IDamageableHandler _damageableHandler;
-    private PlayerStats _playerStats => player.PlayerStats;
-    private Transform _currentTarget;
-    private float _timer;
-    
-    public PlayerAttackState( PlayerStateMachine stateMachine, PlayerContainer playerContainer
-        , PlayerAnimator playerAnimator, PlayerRotating playerRotating,
-        IDamageableHandler damageableHandler) : base( stateMachine, playerContainer)
+    private readonly PlayerAnimator _animator;
+    private readonly PlayerRotating _rotator;
+    private readonly PlayerAttackHandler _attackHandler;
+    private readonly TargetDetector _detector;
+
+    [ShowInInspector] private IDamageable _currentTarget;
+
+    public PlayerAttackState(
+        PlayerStateMachine stateMachine,
+        PlayerContainer playerContainer,
+        PlayerAnimator animator,
+        PlayerRotating rotator,
+        PlayerAttackHandler attackHandler,
+        TargetDetector detector)
+        : base(stateMachine, playerContainer)
     {
-        _playerAnimator = playerAnimator;
-        _damageableHandler = damageableHandler;
-        _playerRotating = playerRotating;
+        _animator = animator;
+        _rotator = rotator;
+        _attackHandler = attackHandler;
+        _detector = detector;
     }
 
     public override void Enter()
     {
-        player.PlayerAnimatorEvent.OnFarming += TryLumber;
-        _playerAnimator.SetAnimataionLayerWeightBehaviour(1);
-        
+        player.PlayerAnimatorEvent.OnFarming += TryAttack;
     }
 
     public override void LogicUpdate()
     {
-        Debug.Log(_currentTarget);
-        if(_currentTarget == null)
-            return;
-        
-        _playerRotating.SetTargetRotate(_currentTarget);
-    }
+        _currentTarget ??= _detector.GetNearestTarget();
 
-    private void TryLumber()
-    {
-        _damageableHandler.HandDamage(_playerStats.Damage, out bool detected, out Transform[] targets);
-        
-        if (detected == false)
+        if (_currentTarget == null)
         {
-            stateMachine.ChangeState(PlayerStateKey.Idle);
+            ResetTarget();
             return;
         }
         
-        _currentTarget =  player.transform.GetNearestTarget(targets);
+        _animator.SetAnimataionLayerWeightBehaviour(1);
+        _animator.Lumbering();
+        _rotator.SetTargetRotate(_currentTarget.transform);
 
+        if (!_currentTarget.isAlive ||
+            !_detector.IsTargetWithinRange(_currentTarget.transform.position))
+        {
+            ResetTarget();
+        }
     }
 
- 
+    private void TryAttack()
+    {
+        _attackHandler.TryAttack(_currentTarget, ResetTarget);
+    }
+
+    private void ResetTarget()
+    {
+        _animator.SetAnimataionLayerWeightBehaviour(0);
+        _currentTarget = null;
+        _rotator.UnLockTarget();
+    }
+
     public override void Exit()
     {
-        player.PlayerAnimatorEvent.OnFarming -= TryLumber;
-        _playerRotating.UnLockTarget();
-        _playerAnimator.SetAnimataionLayerWeightBehaviour(0);
+        player.PlayerAnimatorEvent.OnFarming -= TryAttack;
+        ResetTarget();
     }
 
-    public void Dispose()
+    public override void OnDrawGizmos()
     {
-        
+        base.OnDrawGizmos();
+        _detector.DrawGizmos();
     }
 }
-

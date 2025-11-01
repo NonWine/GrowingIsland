@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 
 public class PlayerStateMachine
 {
-    private Dictionary<PlayerStateKey, PlayerState> _playerStates;
-    public PlayerState CurrentState { get; private set; }
+    [ShowInInspector] private Dictionary<PlayerStateKey, PlayerState> _playerStates;
+    
+    [ShowInInspector] public PlayerState CurrentState { get; private set; }
     
     public PlayerStateKey CurrentStateKey { get; private set; }
 
