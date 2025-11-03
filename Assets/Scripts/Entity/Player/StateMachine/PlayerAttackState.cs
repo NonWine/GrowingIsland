@@ -1,5 +1,7 @@
-﻿using Sirenix.OdinInspector;
+﻿using Codice.Client.Common;
+using Sirenix.OdinInspector;
 using Sirenix.Serialization;
+using Time = UnityEngine.Time;
 
 public class PlayerAttackState : PlayerState
 {
@@ -7,7 +9,7 @@ public class PlayerAttackState : PlayerState
     private readonly PlayerRotating _rotator;
     private readonly PlayerAttackHandler _attackHandler;
     private readonly TargetDetector _detector;
-
+    private float timer;
     [ShowInInspector] private IDamageable _currentTarget;
 
     public PlayerAttackState(
@@ -39,14 +41,19 @@ public class PlayerAttackState : PlayerState
             ResetTarget();
             return;
         }
-        
-        _animator.SetAnimataionLayerWeightBehaviour(1);
-        _animator.Lumbering();
-        _rotator.SetTargetRotate(_currentTarget.transform);
+
+        //tiemr for smooth rotation to target
+        timer += Time.deltaTime;
+        if (timer >= 0.3f)
+        {
+            _animator.SetAnimataionLayerWeightBehaviour(1);
+            _animator.Lumbering();
+            _rotator.SetTargetRotate(_currentTarget.transform);
+        }
 
         if (!_currentTarget.isAlive ||
             !_detector.IsTargetWithinRange(_currentTarget.transform.position))
-        {
+        { 
             ResetTarget();
         }
     }
@@ -61,6 +68,7 @@ public class PlayerAttackState : PlayerState
         _animator.SetAnimataionLayerWeightBehaviour(0);
         _currentTarget = null;
         _rotator.UnLockTarget();
+        timer = 0f;
     }
 
     public override void Exit()

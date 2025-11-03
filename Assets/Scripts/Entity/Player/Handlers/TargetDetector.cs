@@ -27,7 +27,8 @@ public class TargetDetector
             _playerTransform.position,
             _radius,
             _enemyMask,
-            e => e.isAlive);
+            e => e.isAlive,
+            true);
 
         if (enemies.Count == 0)
         {
@@ -42,19 +43,22 @@ public class TargetDetector
 
     public bool IsTargetWithinRange(Vector3 targetPos)
     {
-        return (targetPos - _playerTransform.position).sqrMagnitude <= _radius * _radius;
+        Vector3 playerPos = _playerTransform.position;
+        playerPos.y = targetPos.y; // вирівняли по висоті
+        return (targetPos - playerPos).sqrMagnitude <= _radius * _radius;
     }
+
 
     public void DrawGizmos()
     {
-        if (_playerTransform == null) return;
 
         // Радіус детекції
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(_playerTransform.position, _radius);
-
+        
+        if (_playerTransform == null || _lastDetectedTarget == null) return;
         // Активна ціль
-        if (_lastDetectedTarget != null && _lastDetectedTarget is Component c)
+        if (IsTargetWithinRange(_lastDetectedTarget.transform.position) && _lastDetectedTarget is Component c)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(c.transform.position, 0.3f);

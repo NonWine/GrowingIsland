@@ -159,14 +159,14 @@ MonoBehaviour:
   _playerStats:
     <MaxHealth>k__BackingField: 100
     <MoveSpeed>k__BackingField: 4
-    <RotateSpeed>k__BackingField: 40
-    <RadiusDetection>k__BackingField: 4.0342193
+    <RotateSpeed>k__BackingField: 14
+    <RadiusDetection>k__BackingField: 2.2428331
     <TimeBeetwenHit>k__BackingField: 0.6159388
     <DamageHit>k__BackingField: 19.180552
-    _axeDamage: 15
+    _axeDamage: 2.08
     _pickAxeDamage: 5
     _digDamage: 5
-    _damage: 10
+    _damage: 2
     _coolDown: 0.8
     _maxEnemyDetection: 4
     <perHitRadius>k__BackingField: 0

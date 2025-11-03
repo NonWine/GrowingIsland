@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18bfceefca6f4787b997d426107a6928, type: 3}
   m_Name: 123
   m_EditorClassIdentifier: 
-  guId: 638f1853-573c-4db3-9b45-3934dd3a4755
+  guId: c4882060-378c-41bf-b857-d84aeb3acc09
   EnemyPrefab: {fileID: 623646733521070313, guid: de8dcb89f71bf014fb46b7c1ebc0c698,
     type: 3}
   enemyStats:
-    <MaxHealth>k__BackingField: 54.95497
-    <MoveSpeed>k__BackingField: 9
+    <MaxHealth>k__BackingField: 62.38541
+    <MoveSpeed>k__BackingField: 3
     <RotateSpeed>k__BackingField: 49
-    <RadiusDetection>k__BackingField: 51.97185
-    <TimeBeetwenHit>k__BackingField: 23.33394
-    <DamageHit>k__BackingField: 5.4352465
-    <DistanceFromSpawn>k__BackingField: 48.98874
-    <TargetDistance>k__BackingField: 15.279529
+    <RadiusDetection>k__BackingField: 5.0428457
+    <TimeBeetwenHit>k__BackingField: 0.9972101
+    <DamageHit>k__BackingField: 13.383369
+    <DistanceFromSpawn>k__BackingField: 14.557592
+    <TargetDistance>k__BackingField: 1.0930094

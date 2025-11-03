@@ -12,12 +12,12 @@ public class PlayerRotating : IRotateable
 
     public void  Rotate()
     {
-       if(_isTargeting)
+        if(Input.GetKey(KeyCode.Space)) Debug.Log(_isTargeting);
+       
+        if(_isTargeting || _playerContainer.Direction == Vector3.zero)
            return;
         
-            if (_playerContainer.Direction != Vector3.zero)
-                _playerContainer.Body.rotation = Quaternion.Slerp(_playerContainer.Body.rotation,
-                    Quaternion.LookRotation(_playerContainer.Direction),
+        _playerContainer.Body.rotation = Quaternion.Slerp(_playerContainer.Body.rotation, Quaternion.LookRotation(_playerContainer.Direction, Vector3.up),
                     _playerContainer.PlayerStats.RotateSpeed * Time.deltaTime);
 
        
