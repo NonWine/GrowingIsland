@@ -36,7 +36,7 @@ public class PlayerDefaultRadiusDamageHandler : IDamageableHandler
     {
         var enemies = _overlapSphereHandler.GetFilteredObjects<IDamageable>(
             _playerContainer.transform.position,
-            _playerContainer.PlayerStats.RadiusDetection,
+            _playerContainer.PlayerStats.AggroRadius,
             0,
             enemy => enemy.isAlive
         );

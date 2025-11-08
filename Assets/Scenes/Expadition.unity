@@ -1360,15 +1360,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster1
       objectReference: {fileID: 0}
-    - target: {fileID: 5584440710094712107, guid: de8dcb89f71bf014fb46b7c1ebc0c698,
+    - target: {fileID: 623646733521070313, guid: de8dcb89f71bf014fb46b7c1ebc0c698,
         type: 3}
-      propertyPath: m_AnchorMax.x
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5584440710094712107, guid: de8dcb89f71bf014fb46b7c1ebc0c698,
         type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5584440710094712107, guid: de8dcb89f71bf014fb46b7c1ebc0c698,
+        type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8397992355244198945, guid: de8dcb89f71bf014fb46b7c1ebc0c698,
         type: 3}

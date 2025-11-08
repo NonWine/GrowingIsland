@@ -16,7 +16,7 @@ public class PlayerResourceDetector
     {
         var resources = _overlapSphereHandler.GetFilteredObjects<ResourcePartObj>(
             _playerContainer.transform.position,
-            _playerContainer.PlayerStats.RadiusDetection,
+            _playerContainer.PlayerStats.AggroRadius,
             0,
             resource => !resource.IsPicked
         );
@@ -90,7 +90,7 @@ public class PlayerEnemyDetector
     {
         var farmObjects = _overlapSphereHandler.GetFilteredObjects<BaseEnemy>(
             _playerContainer.transform.position,
-            _playerContainer.PlayerStats.RadiusDetection,
+            _playerContainer.PlayerStats.AggroRadius,
             0,
             resource => resource.isAlive,
             true

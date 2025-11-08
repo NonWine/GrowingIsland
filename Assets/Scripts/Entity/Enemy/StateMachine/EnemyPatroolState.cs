@@ -28,9 +28,9 @@ public class EnemyPatroolState : EnemyState
 
     public override void UpdateState()
     {
-        if(Vector3.Distance(_player.transform.position, EnemyStateMachine.Enemy.transform.position) <= EnemyStateMachine.Enemy.Stats.RadiusDetection)
+        if(Vector3.Distance(_player.transform.position, EnemyStateMachine.Enemy.transform.position) <= EnemyStateMachine.Enemy.Stats.AggroRadius)
         {
-            EnemyStateMachine.ChangeState<MoveState>();
+            EnemyStateMachine.ChangeState<ChaseState>();
         }
 
         if (!_navMeshAgent.pathPending && _navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)

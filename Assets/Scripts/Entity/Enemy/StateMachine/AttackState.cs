@@ -16,7 +16,13 @@
 
     public override void UpdateState()
     {
-        EnemyStateMachine.Enemy.EnemyRotator.RotateToPlayer();
+        if (!Enemy.IsPlayerInRange(Enemy.Stats.AttackRadius))
+        {
+            EnemyStateMachine.ChangeState<ChaseState>();
+            return;
+        }
+        
+        Enemy.EnemyRotator.RotateToPlayer();
         _attackable.Attack();
     }
 

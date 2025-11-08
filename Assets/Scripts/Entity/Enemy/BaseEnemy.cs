@@ -12,9 +12,10 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
     [SerializeField] protected NavMeshAgent NavMesh;
     [SerializeField] protected Rigidbody Rigidbody;
     [SerializeField] protected Animator Animator;
-    [Inject] protected Player Player;
     [Inject] protected IGameСontroller GameСontroller;
-    protected EnemyStateMachine EnemyStateMachine;
+    [ShowInInspector] protected EnemyStateMachine EnemyStateMachine;
+    
+    [Inject] public Player Player { get; private set; }
     public  EnemyAnimator EnemyAnimator { get; private set; }
     public  EnemyRotator EnemyRotator { get; private set; }
     public  EnemyHealth EnemyHealth { get; private set; }
@@ -51,6 +52,22 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
         EnemyHealth.Tick();
     }
     
+    public bool IsPlayerInRange(float range)
+    {
+        return Vector3.Distance(transform.position, Player.transform.position) 
+               <= range;
+    }
+    
+    public void OnProvoked()
+    {
+        // Якщо ворог відступає, але отримав урон — переключаємось у Chase
+
+        if (EnemyStateMachine.CurrentState.GetType() == typeof(EnemyBackHomeState))
+        {
+            EnemyStateMachine.ChangeState<ChaseState>();
+        }
+    }
+    
     public override void ResetPool()
     {
         EnemyStateMachine.ChangeState<ResetingState>();
@@ -66,9 +83,9 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
     {
         return new Dictionary<Type, EnemyState>
         {
-            { typeof(EnemyIdleState), new EnemyIdleState(EnemyAnimator, EnemyStateMachine, Player) },
+            { typeof(EnemyIdleState), new EnemyIdleState(EnemyAnimator, EnemyStateMachine) },
             { typeof(AttackState), new AttackState(EnemyAnimator, EnemyStateMachine, new EnemyAttackIdle(Player, EnemyStateMachine)) },
-            { typeof(MoveState), new MoveState(EnemyStateMachine, EnemyAnimator, new EnemyMovingIdle(transform.position, NavMesh, Player.PlayerContainer, EnemyStateMachine)) },
+            { typeof(ChaseState), new ChaseState(EnemyStateMachine, EnemyAnimator, new EnemyMovingIdle(transform.position, NavMesh, Player.PlayerContainer, EnemyStateMachine)) },
             { typeof(DieState), new DieState(EnemyAnimator, EnemyStateMachine, NavMesh) },
             { typeof(ResetingState), new ResetingState(EnemyStateMachine, EnemyAnimator, NavMesh, Rigidbody, HealthUI) },
             { typeof(EnemyBackHomeState), new EnemyBackHomeState(EnemyAnimator, EnemyStateMachine, Player, NavMesh, transform.position) }
@@ -115,3 +132,4 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
 
     #endregion
 }
+

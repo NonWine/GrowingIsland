@@ -26,9 +26,9 @@ public abstract class EnemyAttack : IAttackable
              
         }
 
-        if (Vector3.Distance(Player.transform.position, Enemy.transform.position) > Enemy.Stats.TargetDistance)
+        if (Vector3.Distance(Player.transform.position, Enemy.transform.position) > Enemy.Stats.AttackRadius)
         {
-            EnemyStateMachine.ChangeState<MoveState>();
+            EnemyStateMachine.ChangeState<ChaseState>();
         }
         
     }

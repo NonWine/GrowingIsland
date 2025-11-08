@@ -16,7 +16,7 @@ public class PlayerHandlersService
         _playerResourceDetector = new PlayerResourceDetector(playerContainer,_overlapSphereHandler);
         _defaultRadiusDamageHandler = new PlayerDefaultRadiusDamageHandler(playerContainer,_overlapSphereHandler);
         playerAttackHandler = new PlayerAttackHandler(playerContainer.PlayerStats.Damage);
-        targetDetector = new TargetDetector(playerContainer.transform, playerContainer.PlayerStats.RadiusDetection, playerContainer.enemyMask);
+        targetDetector = new TargetDetector(playerContainer.transform, playerContainer.PlayerStats.AggroRadius, playerContainer.enemyMask);
     }
     
 }

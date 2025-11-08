@@ -7,6 +7,8 @@ public abstract class BaseEnemyMoving : IEnemyMoveable
     protected EnemyStateMachine EnemyStateMachine;
     protected NavMeshAgent NavMeshAgent;
     protected Vector3 SpawnPoint;
+
+    protected BaseEnemy enemy => EnemyStateMachine.Enemy;
     
     public BaseEnemyMoving(NavMeshAgent navMeshAgent,PlayerContainer playerContainer, EnemyStateMachine enemyStateMachine, Vector3 spawnPoint)
     {
@@ -18,18 +20,13 @@ public abstract class BaseEnemyMoving : IEnemyMoveable
 
     public virtual void Move()
     {
+        NavMeshAgent.SetDestination(PlayerContainer.transform.position);
 
-        if (Vector3.Distance(NavMeshAgent.transform.position, PlayerContainer.transform.position) <
-            EnemyStateMachine.Enemy.Stats.TargetDistance)
+        if (enemy.IsPlayerInRange(enemy.Stats.AttackRadius))
         {
             NavMeshAgent.isStopped = true;
             NavMeshAgent.velocity = Vector3.zero;
             EnemyStateMachine.ChangeState<AttackState>();
-        }
-        else
-        {
-            EnemyStateMachine.ChangeState<MoveState>();
-
         }
         
     }
@@ -37,7 +34,6 @@ public abstract class BaseEnemyMoving : IEnemyMoveable
     public virtual void StartMove()
     {
         NavMeshAgent.isStopped = false;
-        NavMeshAgent.SetDestination(PlayerContainer.transform.position);
     }
     
     

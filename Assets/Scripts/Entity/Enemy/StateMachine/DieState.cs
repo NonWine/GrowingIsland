@@ -34,7 +34,7 @@ public class DieState : EnemyState
     {
     
         await UniTask.Delay(4000);
-        EnemyStateMachine.Enemy.gameObject.SetActive(false);
+        Enemy.gameObject.SetActive(false);
 
     }
 
