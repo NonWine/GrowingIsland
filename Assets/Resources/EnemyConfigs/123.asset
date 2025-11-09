@@ -18,9 +18,9 @@ MonoBehaviour:
   enemyStats:
     <MaxHealth>k__BackingField: 62.38541
     <MoveSpeed>k__BackingField: 3
-    <RotateSpeed>k__BackingField: 26
+    <RotateSpeed>k__BackingField: 5
     <AggroRadius>k__BackingField: 4.9772196
     <TimeBeetwenHit>k__BackingField: 0.9972101
-    <DamageHit>k__BackingField: 13.383369
-    <LeashRadius>k__BackingField: 19.991112
+    <DamageHit>k__BackingField: 12.09905
+    <LeashRadius>k__BackingField: 10.907171
     <AttackRadius>k__BackingField: 1.9891126

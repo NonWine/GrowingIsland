@@ -14,13 +14,13 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
     [SerializeField] protected Animator Animator;
     [Inject] protected IGameСontroller GameСontroller;
     [ShowInInspector] protected EnemyStateMachine EnemyStateMachine;
-    
     [Inject] public Player Player { get; private set; }
     public  EnemyAnimator EnemyAnimator { get; private set; }
     public  EnemyRotator EnemyRotator { get; private set; }
     public  EnemyHealth EnemyHealth { get; private set; }
     
     private bool _isDeath;
+    private Vector3 spawnPoint;
 
     public bool IsDeath
     {
@@ -38,7 +38,9 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
 
     private void Start()
     {
+        spawnPoint = transform.position;
         CreateComponents();
+        NavMesh.updateRotation = false;
         EnemyStateMachine = new EnemyStateMachine(this);
         EnemyStateMachine.Initialize<EnemyIdleState>(CreateStates());
         EnemyHealth = new EnemyHealth(Stats, HealthUI, this, GameСontroller , EnemyStateMachine);
@@ -76,7 +78,7 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
     protected virtual void CreateComponents()
     {
         EnemyAnimator = new EnemyAnimator(Animator);
-        EnemyRotator = new EnemyRotator(transform, Player.transform, Stats.RotateSpeed);
+        EnemyRotator = new EnemyRotator(transform, Player.transform,spawnPoint ,Stats);
     }
     
     protected virtual Dictionary<Type, EnemyState> CreateStates()
@@ -88,7 +90,7 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
             { typeof(ChaseState), new ChaseState(EnemyStateMachine, EnemyAnimator, new EnemyMovingIdle(transform.position, NavMesh, Player.PlayerContainer, EnemyStateMachine)) },
             { typeof(DieState), new DieState(EnemyAnimator, EnemyStateMachine, NavMesh) },
             { typeof(ResetingState), new ResetingState(EnemyStateMachine, EnemyAnimator, NavMesh, Rigidbody, HealthUI) },
-            { typeof(EnemyBackHomeState), new EnemyBackHomeState(EnemyAnimator, EnemyStateMachine, Player, NavMesh, transform.position) }
+            { typeof(EnemyBackHomeState), new EnemyBackHomeState(EnemyAnimator, EnemyStateMachine, Player, NavMesh, spawnPoint) }
         };
     }
     

@@ -16,6 +16,7 @@ public class EnemyBackHomeState : EnemyState
 
     public override void EnterState(BaseEnemy baseEnemy)
     {
+        _navMeshAgent_.velocity = Vector3.zero;
         _navMeshAgent_.SetDestination(_spawnPoint);
         Enemy.EnemyHealth.OnGetDamage += AttackState;
         EnemyAnimator.Move();
@@ -24,6 +25,7 @@ public class EnemyBackHomeState : EnemyState
 
     public override void UpdateState()
     {
+        Enemy.EnemyRotator.RotateToSpawnPoint();
         if (!_navMeshAgent_.pathPending && _navMeshAgent_.remainingDistance <= _navMeshAgent_.stoppingDistance)
         {
             EnemyStateMachine.ChangeState<EnemyIdleState>();

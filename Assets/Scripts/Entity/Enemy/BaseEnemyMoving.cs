@@ -34,6 +34,7 @@ public abstract class BaseEnemyMoving : IEnemyMoveable
     public virtual void StartMove()
     {
         NavMeshAgent.isStopped = false;
+        NavMeshAgent.velocity = Vector3.zero;
     }
     
     
