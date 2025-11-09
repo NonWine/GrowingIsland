@@ -6,11 +6,11 @@ public class EnemyPatroolState : EnemyState
     private Player _player;
     private OverlapSphereHandler _overlapSphereHandler;
     private EnemyAnimator _enemyAnimator;
-    private PatroolArea _patroolArea;
+    private PatrolArea _patroolArea;
     private NavMeshAgent _navMeshAgent;
     
     public EnemyPatroolState(EnemyAnimator enemyAnimator, EnemyStateMachine enemyStateMachine, Player player, 
-        PatroolArea patroolArea, NavMeshAgent agent) : base(enemyStateMachine, enemyAnimator)
+        PatrolArea patroolArea, NavMeshAgent agent) : base(enemyStateMachine, enemyAnimator)
     {
         _navMeshAgent = agent;
         _patroolArea = patroolArea;
@@ -28,7 +28,8 @@ public class EnemyPatroolState : EnemyState
 
     public override void UpdateState()
     {
-        if(Vector3.Distance(_player.transform.position, EnemyStateMachine.Enemy.transform.position) <= EnemyStateMachine.Enemy.Stats.AggroRadius)
+        Enemy.EnemyRotator.RotateToPoint(_navMeshAgent.destination);
+        if(Enemy.IsPlayerInRange(Enemy.Stats.AggroRadius))
         {
             EnemyStateMachine.ChangeState<ChaseState>();
         }

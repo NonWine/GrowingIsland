@@ -13,7 +13,7 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
     [SerializeField] protected Rigidbody Rigidbody;
     [SerializeField] protected Animator Animator;
     [Inject] protected IGameСontroller GameСontroller;
-    [ShowInInspector] protected EnemyStateMachine EnemyStateMachine;
+    [ShowInInspector, ReadOnly] protected EnemyStateMachine EnemyStateMachine;
     [Inject] public Player Player { get; private set; }
     public  EnemyAnimator EnemyAnimator { get; private set; }
     public  EnemyRotator EnemyRotator { get; private set; }

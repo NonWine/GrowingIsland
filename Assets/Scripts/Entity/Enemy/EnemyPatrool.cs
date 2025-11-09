@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyPatrool : BaseEnemy
 {
-    [SerializeField] private PatroolArea _patroolArea;
+    [SerializeField] private PatrolArea _patroolArea;
     
 
     protected override Dictionary<Type, EnemyState> CreateStates()
@@ -15,12 +15,4 @@ public class EnemyPatrool : BaseEnemy
         return states;
     }
 
-}
-
-public class PatroolArea
-{
-    public Vector3 GetRandomPointInCollider()
-    {
-        throw new NotImplementedException();
-    }
 }

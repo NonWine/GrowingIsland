@@ -26,14 +26,18 @@ public class EnemyRotator
 
     public void RotateToSpawnPoint()
     {
-        Vector3 enemyPos = _enemyTransform.position;
-        Vector3 targetPos = spawnPoint;
+        RotateToPoint(spawnPoint);
+    }
 
-        // Ігноруємо різницю по висоті
+    public void RotateToPoint(Vector3 point)
+    {
+        Vector3 enemyPos = _enemyTransform.position;
+        Vector3 targetPos = point;
+
         targetPos.y = enemyPos.y;
 
         Vector3 direction = (targetPos - enemyPos).normalized;
-        if (direction.sqrMagnitude < 0.001f) return; // щоб уникнути LookRotation(Vector3.zero)
+        if (direction.sqrMagnitude < 0.001f) return;
 
         Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
         _enemyTransform.rotation = Quaternion.Slerp(
@@ -42,5 +46,4 @@ public class EnemyRotator
             Time.deltaTime * enemyStats.RotateSpeed
         );
     }
-
 }
