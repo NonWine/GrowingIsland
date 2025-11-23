@@ -19,7 +19,7 @@ MonoBehaviour:
     <MaxHealth>k__BackingField: 100
     <MoveSpeed>k__BackingField: 3
     <RotateSpeed>k__BackingField: 8
-    <AggroRadius>k__BackingField: 6.9904394
+    <AggroRadius>k__BackingField: 4.8250237
     <TimeBeetwenHit>k__BackingField: 0.94101995
     <DamageHit>k__BackingField: 8.245094
     <LeashRadius>k__BackingField: 10.447212

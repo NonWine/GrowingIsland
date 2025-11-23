@@ -160,9 +160,9 @@ MonoBehaviour:
     <MaxHealth>k__BackingField: 100
     <MoveSpeed>k__BackingField: 4
     <RotateSpeed>k__BackingField: 14
-    <RadiusDetection>k__BackingField: 2.2428331
-    <TimeBeetwenHit>k__BackingField: 0.6159388
-    <DamageHit>k__BackingField: 19.180552
+    <AggroRadius>k__BackingField: 1.4558742
+    <TimeBeetwenHit>k__BackingField: 1.3069141
+    <DamageHit>k__BackingField: 4.890388
     _axeDamage: 2.08
     _pickAxeDamage: 5
     _digDamage: 5

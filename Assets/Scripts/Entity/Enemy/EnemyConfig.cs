@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class EnemyConfig : ScriptableObject
     [Space(20)]
     
     
+    
     [HideLabel] [HorizontalGroup(width:0.3f)] [ValueDropdown("GetAllScriptableObjects", AppendNextDrawer = true)] [PreviewField(180, ObjectFieldAlignment.Left)] 
     public GameObject EnemyPrefab;
     
@@ -28,9 +30,8 @@ public class EnemyConfig : ScriptableObject
     [HorizontalGroup(width:0.7f)] [InlineProperty] [HideLabel] [SerializeField] 
     public EnemyStats enemyStats;
 
-    
 
-    private IEnumerable<GameObject> GetAllScriptableObjects() => EnemyConfigResolver.GetAllScriptableObjects();
 }
+
 
 

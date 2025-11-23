@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Demos.RPGEditor;
 using Sirenix.OdinInspector.Editor;
 using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
@@ -34,7 +29,7 @@ using UnityEngine;
             odinMenuTree = new OdinMenuTree(true);
             odinMenuTree.DefaultMenuStyle.IconSize = 28.00f;
             odinMenuTree.Config.DrawSearchToolbar = true;
-            enemyTable = new EnemyTable(UpdateEnemiesFromFolder());
+            enemyTable = new EnemyTable(EnemyConfigAssetUtility.LoadAllEnemyConfigs());
             Debug.Log(enemyTable.AllEnemies.Count);
             // Adds the character overview table.
             odinMenuTree.Add("General", editorGeneralSettings);
@@ -61,16 +56,6 @@ using UnityEngine;
                 Selection.activeObject = enemy;
                 Debug.Log($"Selected enemy: {enemy.name}");
             }
-        }
-
-        public IEnumerable<EnemyConfig> UpdateEnemiesFromFolder()
-        {
-            // Finds and assigns all scriptable objects of type Character
-            var enemies = AssetDatabase.FindAssets("t:EnemyConfig")
-                .Select(guid => AssetDatabase.LoadAssetAtPath<EnemyConfig>(AssetDatabase.GUIDToAssetPath(guid)))
-                .ToArray();
-            
-            return enemies;
         }
 
         protected override void OnBeginDrawEditors()
