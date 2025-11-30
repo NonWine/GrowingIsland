@@ -11,19 +11,37 @@ public class EnemyFactory : IFactory<EnemyConfig, BaseEnemy>
         _configs = configs;
     }
 
-    public BaseEnemy Create(EnemyConfig config)
-    {
-        var tryGetConfig = _configs.Find(x => x.guId == config.guId);
+    public BaseEnemy  Create(DiContainer container, EnemyConfig config)
+{
+    return Create(container, config);
+}
 
-        if (tryGetConfig != null)
+public BaseEnemy Create(DiContainer container, EnemyConfig config, params object[] extraArgs)
+{
+    var tryGetConfig = _configs.Find(x => x.guId == config.guId);
+
+    if (tryGetConfig != null)
+    {
+        var enemyStats = tryGetConfig.enemyStats;
+        container.Bind<EnemyStats>().FromInstance(enemyStats).AsCached();
+        var args = new List<object> { enemyStats };
+        if (extraArgs != null && extraArgs.Length > 0)
         {
-            var enemyStats = tryGetConfig.enemyStats;
-            
-            var instance = _container.InstantiatePrefabForComponent<BaseEnemy>(tryGetConfig.EnemyPrefab, 
-                new object[] {enemyStats});
-            return instance;
+            args.AddRange(extraArgs);
         }
 
-        return null;
+        var instance = container.InstantiatePrefabForComponent<BaseEnemy>(
+            tryGetConfig.EnemyPrefab);
+
+        return instance;
     }
+
+    return null;
+}
+
+    public BaseEnemy Create(EnemyConfig param)
+    {
+        return Create(_container, param);
+    }
+
 }

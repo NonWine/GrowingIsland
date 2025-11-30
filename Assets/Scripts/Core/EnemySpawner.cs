@@ -8,33 +8,22 @@ using Zenject;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Inject] private EnemyFactory enemyFactory;
+    [Inject] private GameObjectContext _context;
     
-    [SerializeField, HideLabel]
-    [ValueDropdown(nameof(GetEnemyConfigs), IsUniqueList = true, DrawDropdownForListElements = false,
-        ExcludeExistingValuesInList = true)]
-    private EnemyConfig config;
+    [Inject] private EnemyConfig config;
   
-    
-    [SerializeField] private Transform startPoint;
-    
+        
     private void Start()
     {
-      var enemy =  enemyFactory.Create(config);
-      enemy.transform.position = transform.position;
-      enemy.name = config.name + config.guId;
-      enemy.transform.SetParent(startPoint);
-    }
+        var enemy = _context.Container.InstantiatePrefab(config.EnemyPrefab, transform);
+     
+        if (enemy == null)
+        {
+            return;
+        }
 
-    #if UNITY_EDITOR
-        private static IEnumerable<EnemyConfig> GetEnemyConfigs()
-        {
-            return EnemyConfigAssetUtility.LoadAllEnemyConfigs();
-        }
-    #else
-        private static IEnumerable<EnemyConfig> GetEnemyConfigs()
-        {
-            return System.Array.Empty<EnemyConfig>();
-        }
-    #endif
+        enemy.transform.position = transform.position;
+        enemy.name = config.name + config.guId;
+        enemy.transform.SetParent(transform);
+    }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class EnemyPatrool : BaseEnemy
 {
-    [SerializeField] private PatrolArea _patroolArea;
+    [Inject] private PatrolArea _patroolArea;
     
 
     protected override Dictionary<Type, EnemyState> CreateStates()
