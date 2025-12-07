@@ -6,14 +6,12 @@ public class BootControllerInstaller : MonoInstaller
 {
     [SerializeField] private GameController _gameController;
     [SerializeField] private Player _playerPrefab;
-    private PlayerContainer _playerContainer;
 
-        
     public override void InstallBindings()
     {
         BindHandlers();
         BindGameController();
-        RegirsterPlayer();
+        RegisterPlayer();
     }
 
     private void BindHandlers()
@@ -28,10 +26,14 @@ public class BootControllerInstaller : MonoInstaller
         Container.BindInterfacesTo<GameController>().FromInstance(_gameController).AsSingle();
     }
 
-    private void RegirsterPlayer()
+    private void RegisterPlayer()
     {
-        Container.Bind<Player>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();
-    }
+        var playerGO = Object.Instantiate(_playerPrefab.gameObject);
+        var playerInstance = playerGO.GetComponent<Player>();
+
+        PlayerInstaller.Install(Container, playerInstance);
+        Container.InjectGameObject(playerGO);
+       }
 
  
     

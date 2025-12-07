@@ -1,19 +1,18 @@
 ﻿using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Zenject;
 
 public class PlayerResourcesTrigger : PlayerTrigger
 {
     
-    [SerializeField,ReadOnly] private Player _player;
+    [Inject] private Player _player;
 
-    private PlayerStateMachine _playerStateMachine;
     public event Action<eCollectable> CurrentResourceTrigger;
 
     protected  void Awake()
     {
         _player = GetComponentInParent<Player>();
-        _playerStateMachine = _player.PlayerStateMachine;
     }
     
     
@@ -23,7 +22,7 @@ public class PlayerResourcesTrigger : PlayerTrigger
         
         if (other.TryGetComponent(out EnvironmentResource environmentResource))
         {
-            _playerStateMachine.ChangeState(PlayerStateKey.Farming);
+            _player.PlayerStateMachine.ChangeState(PlayerStateKey.Farming);
             CurrentResourceTrigger?.Invoke(environmentResource.ResourceType);
         }
 
@@ -34,7 +33,7 @@ public class PlayerResourcesTrigger : PlayerTrigger
         base.OnTriggerExit(other);
         if (other.TryGetComponent(out EnvironmentResource environmentResource))
         {
-            _playerStateMachine.ChangeState(PlayerStateKey.Idle);
+            _player.PlayerStateMachine.ChangeState(PlayerStateKey.Idle);
         }
     }
 }

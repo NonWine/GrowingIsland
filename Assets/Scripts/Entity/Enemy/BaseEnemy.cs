@@ -1,4 +1,4 @@
-п»їusing System;
+using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -12,7 +12,7 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
     [SerializeField] protected NavMeshAgent NavMesh;
     [SerializeField] protected Rigidbody Rigidbody;
     [SerializeField] protected Animator Animator;
-    [Inject] protected IGameРЎontroller GameРЎontroller;
+    [Inject] protected IGameController GameController;
     [ShowInInspector, ReadOnly] protected EnemyStateMachine EnemyStateMachine;
     [Inject] public Player Player { get; private set; }
     public  EnemyAnimator EnemyAnimator { get; private set; }
@@ -33,7 +33,7 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
         NavMesh.speed = Stats.MoveSpeed;
         Stats.CurrentHealth = Stats.MaxHealth;
         HealthUI.SetHealth(Stats.CurrentHealth);
-        GameРЎontroller.RegisterInTick(this);
+        GameController.RegisterInTick(this);
     }
 
     private void Start()
@@ -43,7 +43,7 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
         NavMesh.updateRotation = false;
         EnemyStateMachine = new EnemyStateMachine(this);
         EnemyStateMachine.Initialize<EnemyIdleState>(CreateStates());
-        EnemyHealth = new EnemyHealth(Stats, HealthUI, this, GameРЎontroller , EnemyStateMachine);
+        EnemyHealth = new EnemyHealth(Stats, HealthUI, this, GameController , EnemyStateMachine);
 
     }
 
@@ -62,7 +62,7 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
     
     public void OnProvoked()
     {
-        // РЇРєС‰Рѕ РІРѕСЂРѕРі РІС–РґСЃС‚СѓРїР°С”, Р°Р»Рµ РѕС‚СЂРёРјР°РІ СѓСЂРѕРЅ вЂ” РїРµСЂРµРєР»СЋС‡Р°С”РјРѕСЃСЊ Сѓ Chase
+        // Якщо ворог відступає, але отримав урон — переключаємось у Chase
 
         if (EnemyStateMachine.CurrentState.GetType() == typeof(EnemyBackHomeState))
         {
@@ -122,10 +122,10 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
             Gizmos.color = Color.green;
             Gizmos.DrawLine(transform.position, Player.transform.position);
 
-            // Р’С‹С‡РёСЃР»СЏРµРј СЂР°СЃСЃС‚РѕСЏРЅРёРµ
+            // Вычисляем расстояние
             float distance = Vector3.Distance(transform.position, Player.transform.position);
 
-            // РџРѕРєР°Р·С‹РІР°РµРј С‚РµРєСЃС‚ СЃ СЂР°СЃСЃС‚РѕСЏРЅРёРµРј
+            // Показываем текст с расстоянием
             UnityEditor.Handles.color = Color.black;
             UnityEditor.Handles.Label((transform.position + Player.transform.position) / 2, distance.ToString("F2"));
         }

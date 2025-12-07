@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 public class ResourcePartObj : PoolAble , IGameTickable
 {
      [field: SerializeField] public eCollectable TypeE { get; private set; }
-    [Inject] private IGameСontroller _gameController;
+    [Inject] private IGameController _gameController;
     [Inject] private CollectableManager _collectableWallet;
     private bool _isPicked = true;
     private bool _canPickUp;

@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using Zenject;
 
-public class GameController : MonoBehaviour , IGameСontroller
+public class GameController : MonoBehaviour , IGameController
 {
     [SerializeField] private List<IGameTickable> _tickables = new List<IGameTickable>();
 
