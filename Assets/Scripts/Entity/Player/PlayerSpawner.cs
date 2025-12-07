@@ -5,7 +5,7 @@ public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] private Transform _point;
     [Inject] private Player _playerContainer;
-
+    
     private void Awake()
     {
         _playerContainer.PlayerContainer.Agent.Warp(_point.position);

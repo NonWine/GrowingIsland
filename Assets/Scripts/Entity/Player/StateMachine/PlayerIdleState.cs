@@ -7,7 +7,14 @@
 
     public override void Enter()
     {
-        stateMachine.ChangeState(PlayerStateKey.Attack);
+        if (GameManager.GameState == GameState.Expedition)
+        {
+            stateMachine.ChangeState(PlayerStateKey.Attack);
+        }
+        else if(GameManager.GameState == GameState.HomeVillage)
+        {
+            stateMachine.ChangeState(PlayerStateKey.Farming);
+        }
     }
 
     public override void LogicUpdate()

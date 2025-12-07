@@ -27,11 +27,13 @@ public class Player : MonoBehaviour, IGameTickable
     
     private void Awake()
     {
-        _gameСontroller.RegisterInTick(this);
+         _gameСontroller.RegisterInTick(this);
         InitializeHandler();
         InitializePlayerStateMachine();
-        _playerFarmDetector = new PlayerFarmDetector(_playerContainer, _overlapSphereHandler, _playerStateMachine, _playerAnimator);
-        _playerEnemyDetector = new PlayerEnemyDetector(_playerContainer, _overlapSphereHandler, _playerStateMachine, _playerAnimator);
+        var farmDetectionHandler = new PlayerFarmDetectionHandler(_playerStateMachine, _playerAnimator);
+        var enemyDetectionHandler = new PlayerEnemyDetectionHandler(_playerStateMachine);
+        _playerFarmDetector = new PlayerFarmDetector(_playerContainer, _overlapSphereHandler, _playerStateMachine, farmDetectionHandler);
+        _playerEnemyDetector = new PlayerEnemyDetector(_playerContainer, _overlapSphereHandler, _playerStateMachine, enemyDetectionHandler);
         
         PlayerInitialize();
         _playerContainer.PlayerStats.CurrentHealth = _playerContainer.PlayerStats.MaxHealth;

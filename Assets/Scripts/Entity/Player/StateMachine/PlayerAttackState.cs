@@ -1,5 +1,4 @@
-﻿using Codice.Client.Common;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using Time = UnityEngine.Time;
 
@@ -29,6 +28,7 @@ public class PlayerAttackState : PlayerState
 
     public override void Enter()
     {
+        _animator.SetFarmingAnim(eCollectable.Wood); //will be change later
         player.PlayerAnimatorEvent.OnFarming += TryAttack;
     }
 

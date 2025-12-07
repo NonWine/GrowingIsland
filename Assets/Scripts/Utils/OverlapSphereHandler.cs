@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class OverlapSphereHandler
 {
-       private Collider[] _overlapResults;
-    private int _lastCount;
+    private Collider[] _overlapResults;
     private Vector3 _lastPosition;
-    private float _lastRadius;
     private LayerMask _lastLayerMask;
+    private int _lastCount;
+    private float _lastRadius;
     private bool _resultsAreStale;
 
     private List<Collider> _debugColliders = new List<Collider>();

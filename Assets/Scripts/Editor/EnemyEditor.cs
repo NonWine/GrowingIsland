@@ -8,7 +8,6 @@ using UnityEngine;
     public class EnemyEditor : OdinMenuEditorWindow
     {
        [SerializeField] private EnemyEditorGeneralSettings editorGeneralSettings;
-       private EnemyTable enemyTable;
        private OdinMenuTree  odinMenuTree;
         [MenuItem("Custom/Enemy Editor")]
         private static void Open()
@@ -29,7 +28,7 @@ using UnityEngine;
             odinMenuTree = new OdinMenuTree(true);
             odinMenuTree.DefaultMenuStyle.IconSize = 28.00f;
             odinMenuTree.Config.DrawSearchToolbar = true;
-            enemyTable = new EnemyTable(EnemyConfigAssetUtility.LoadAllEnemyConfigs());
+           var enemyTable = new EnemyTable(EnemyConfigAssetUtility.LoadAllEnemyConfigs());
             Debug.Log(enemyTable.AllEnemies.Count);
             // Adds the character overview table.
             odinMenuTree.Add("General", editorGeneralSettings);

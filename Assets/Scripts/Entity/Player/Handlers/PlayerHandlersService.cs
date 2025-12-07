@@ -13,8 +13,9 @@ public class PlayerHandlersService
     public PlayerHandlersService(PlayerContainer playerContainer, OverlapSphereHandler overlapSphereHandler)
     {
         _overlapSphereHandler = overlapSphereHandler;
-        _playerResourceDetector = new PlayerResourceDetector(playerContainer,_overlapSphereHandler);
-        _defaultRadiusDamageHandler = new PlayerDefaultRadiusDamageHandler(playerContainer,_overlapSphereHandler);
+        var resourceDetectionHandler = new PlayerResourceDetectionHandler(playerContainer);
+        _playerResourceDetector = new PlayerResourceDetector(playerContainer, _overlapSphereHandler, resourceDetectionHandler);
+        _defaultRadiusDamageHandler = new PlayerDefaultRadiusDamageHandler(playerContainer, _overlapSphereHandler);
         playerAttackHandler = new PlayerAttackHandler(playerContainer.PlayerStats.Damage);
         targetDetector = new TargetDetector(playerContainer.transform, playerContainer.PlayerStats.AggroRadius, playerContainer.enemyMask);
     }
