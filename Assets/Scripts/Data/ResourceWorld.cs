@@ -6,6 +6,6 @@ public class ResourceWorld : ScriptableObject
     public GameObject DropPrefab;
     public eCollectable TypeWallet;
     public float Health;
-    [Range(1, 5)] public int VisualDrop;
+    [Range(1, 100)] public int VisualDrop;
     
 }

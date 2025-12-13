@@ -12,6 +12,7 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
     [SerializeField] private List<ResourceRequirement> requiredResources; // Потрібні ресурси
     [SerializeField] private Transform _throwPointTarget;
     [SerializeField] private Transform _canvasZone;
+    [SerializeField] private ResourceThrowSettings _throwSettings = new();
     [Inject] private CollectableManager _collectableManager;
     [Inject] private ResourcePartObjFactory _resourceFactory;
     [Inject] private Player _playerContainer;
@@ -25,11 +26,7 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
 
     private void Start()
     {
-        // Ініціалізуємо поточний список ресурсів
-        foreach (var resource in requiredResources)
-        {
-            currentResources.TryAdd(resource.WalletObj.TypeWallet, 0);
-        }
+        InitializeResourceCounters();
 
         // Оновлюємо UI
      //   constructionUI.InitializeUI(requiredResources);
@@ -37,8 +34,18 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
 
     private void OnValidate()
     {
-       constructionUI.InitializeUI(requiredResources);
+        if (constructionUI != null)
+            constructionUI.InitializeUI(requiredResources);
+        InitializeResourceCounters();
+    }
 
+    private void InitializeResourceCounters()
+    {
+        currentResources.Clear();
+        foreach (var resource in requiredResources)
+        {
+            currentResources.TryAdd(resource.WalletObj.TypeWallet, 0);
+        }
     }
 
     private IEnumerator TransferResources()
@@ -47,64 +54,7 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
 
         foreach (var requirement in requiredResources)
         {
-        
-            
-            int totalNeeded = requirement.amount - currentResources[requirement.WalletObj.TypeWallet];
-            int totalAvailable = _collectableManager.GetWallet(requirement.WalletObj.TypeWallet).Amount;
-
-            if (totalNeeded <= 0)
-                continue; // Якщо ресурси вже достатні, переходимо до наступної вимоги
-
-            // Кількість реальних ресурсів для кожної ітерації
-            float resourcesPerDrop = totalNeeded > totalAvailable
-                ? (float)totalAvailable / 10f
-                : (float)totalNeeded / 10f;
-
-            for (int i = 0; i < _resourceData.CountResourceInAnimation; i++)
-            {
-                if (totalNeeded <= 0 || totalAvailable <= 0)
-                    break; // Якщо ресурси закінчилися, зупиняємо цикл
-
-                int toRemove = Mathf.CeilToInt(resourcesPerDrop);
-
-                // Перевіряємо, чи гравець має достатньо ресурсів
-                if (_collectableManager.GetWallet(requirement.WalletObj.TypeWallet).TryRemove(toRemove))
-                {
-                    // Якщо ресурс успішно забрано, оновлюємо цільовий лічильник
-                    totalNeeded -= toRemove;
-                    totalAvailable -= toRemove;
-                    currentResources[requirement.WalletObj.TypeWallet] += toRemove;
-                }
-                else
-                {
-                    Debug.Log("Недостатньо ресурсів у гравця!");
-                    break; // Вихід, якщо недостатньо ресурсів
-                }
-
-                // Створюємо об'єкт для анімації
-                var res = _resourceFactory.Create(type: requirement.WalletObj.TypeWallet);
-                res.transform.parent = _throwPointTarget;
-                res.transform.position = _playerContainer.ResourceStartPoint.transform.position;
-                res.transform.rotation = _resourceData.StartRotation;
-
-                // Анімація ресурсу
-                
-                res.transform.DOLocalJump(Vector3.zero, _resourceData.JumpPower, _resourceData.NumJumps, _resourceData.Duration)
-                    .SetEase(Ease.OutQuad)
-                    .OnComplete(() =>
-                    {
-                        res.DestroyAnim();
-                    });
-
-                // Оновлюємо UI
-                constructionUI.UpdateUI(requirement.WalletObj.TypeWallet, currentResources[requirement.WalletObj.TypeWallet], requirement.amount);
-
-                if(requiredResources.All(r => currentResources[r.WalletObj.TypeWallet] >= r.amount))
-                    constructionUI.Hide();
-                
-                yield return new WaitForSeconds(delay); // Затримка між ресурсами
-            }
-
+            yield return TransferRequirement(requirement, delay);
         }
         yield return new WaitForSeconds(_resourceData.DelayPerResource);
         CheckCompletion();
@@ -157,6 +107,81 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
         isPlayerInZone = false;
         StopResourceDelivery();
     }
+
+    private IEnumerator TransferRequirement(ResourceRequirement requirement, float delay)
+    {
+        var wallet = _collectableManager.GetWallet(requirement.WalletObj.TypeWallet);
+        if (wallet == null)
+            yield break;
+
+        int totalNeeded = requirement.amount - currentResources[requirement.WalletObj.TypeWallet];
+        int totalAvailable = wallet.Amount;
+
+        if (totalNeeded <= 0 || totalAvailable <= 0)
+            yield break;
+
+        float resourcesPerDrop = totalNeeded > totalAvailable
+            ? (float)totalAvailable / _resourceData.CountResourceInAnimation
+            : (float)totalNeeded / _resourceData.CountResourceInAnimation;
+
+        for (int i = 0; i < _resourceData.CountResourceInAnimation; i++)
+        {
+            if (totalNeeded <= 0 || totalAvailable <= 0)
+                break;
+
+            int toRemove = Mathf.Min(Mathf.CeilToInt(resourcesPerDrop), totalNeeded, totalAvailable);
+
+            if (!wallet.TryRemove(toRemove))
+            {
+                Debug.Log("Недостатньо ресурсів у гравця!");
+                break;
+            }
+
+            totalNeeded -= toRemove;
+            totalAvailable -= toRemove;
+            currentResources[requirement.WalletObj.TypeWallet] += toRemove;
+
+            AnimateResourceDrop(requirement, toRemove);
+            UpdateUi(requirement);
+
+            if (AllRequirementsMet())
+                constructionUI.Hide();
+
+            yield return new WaitForSeconds(delay);
+        }
+    }
+
+    private void AnimateResourceDrop(ResourceRequirement requirement, int count)
+    {
+        var res = _resourceFactory.Create(type: requirement.WalletObj.TypeWallet);
+        res.transform.SetParent(_throwPointTarget, true);
+        res.transform.position = _playerContainer.ResourceStartPoint.transform.position;
+        res.transform.rotation = _resourceData.StartRotation;
+
+        var targetOffset2D = UnityEngine.Random.insideUnitCircle * _throwSettings.LandingSpread;
+        var targetLocal = new Vector3(targetOffset2D.x, 0f, targetOffset2D.y);
+
+        var seq = DOTween.Sequence();
+        seq.Append(res.transform.DOLocalJump(targetLocal, _resourceData.JumpPower, _resourceData.NumJumps, _resourceData.Duration)
+            .SetEase(Ease.OutQuad));
+        seq.Join(res.transform.DOLocalRotate(new Vector3(0f, 360f * _throwSettings.SpinRevolutions, 0f),
+            _resourceData.Duration, RotateMode.FastBeyond360).SetEase(Ease.OutCubic));
+        seq.Append(res.transform.DOScale(_throwSettings.ArrivalPopScale, _throwSettings.ArrivalPopDuration).SetEase(Ease.OutBack));
+        seq.Append(res.transform.DOScale(1f, _throwSettings.ArrivalPopReturnDuration).SetEase(Ease.InOutSine));
+        seq.OnComplete(res.DestroyAnim);
+    }
+
+    private void UpdateUi(ResourceRequirement requirement)
+    {
+        constructionUI.UpdateUI(requirement.WalletObj.TypeWallet,
+            currentResources[requirement.WalletObj.TypeWallet],
+            requirement.amount);
+    }
+
+    private bool AllRequirementsMet() => requiredResources.All(IsRequirementComplete);
+
+    private bool IsRequirementComplete(ResourceRequirement requirement) =>
+        currentResources.TryGetValue(requirement.WalletObj.TypeWallet, out var current) && current >= requirement.amount;
 }
 
 [System.Serializable]
@@ -164,4 +189,14 @@ public class ResourceRequirement
 {
     public WalletObj WalletObj;
     public int amount;        // Необхідна кількість
+}
+
+[System.Serializable]
+public class ResourceThrowSettings
+{
+    public float LandingSpread = 0.2f;
+    public float SpinRevolutions = 1.25f;
+    public float ArrivalPopScale = 1.2f;
+    public float ArrivalPopDuration = 0.12f;
+    public float ArrivalPopReturnDuration = 0.08f;
 }
