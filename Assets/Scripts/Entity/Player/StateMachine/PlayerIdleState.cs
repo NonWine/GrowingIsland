@@ -11,10 +11,6 @@
         {
             stateMachine.ChangeState(PlayerStateKey.Attack);
         }
-        else if(GameManager.GameState == GameState.HomeVillage)
-        {
-            stateMachine.ChangeState(PlayerStateKey.Farming);
-        }
     }
 
     public override void LogicUpdate()

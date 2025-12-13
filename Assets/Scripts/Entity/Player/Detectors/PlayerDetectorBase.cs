@@ -26,7 +26,7 @@ public abstract class PlayerDetectorBase<TTarget> : IPlayerDetector
         }
 
         var detectedObjects = OverlapSphereHandler.GetFilteredObjects<TTarget>(
-            PlayerContainer.transform.position,
+            DetectionPoint(),
             GetRadius(),
             GetLayerMask(),
             GetFilter(),
@@ -43,6 +43,7 @@ public abstract class PlayerDetectorBase<TTarget> : IPlayerDetector
     protected abstract float GetRadius();
     protected virtual void OnDetected(List<TTarget> detectedObjects)
     {
+        detectedObjects.ForEach(x => Debug.Log(x.GetType()));
         _detectionHandler?.Handle(detectedObjects);
     }
 
@@ -50,4 +51,6 @@ public abstract class PlayerDetectorBase<TTarget> : IPlayerDetector
     protected virtual LayerMask GetLayerMask() => 0;
     protected virtual bool ShouldForceUpdate() => false;
     protected virtual Func<TTarget, bool> GetFilter() => null;
+    
+    protected virtual Vector3 DetectionPoint() => PlayerContainer.transform.position; 
 }

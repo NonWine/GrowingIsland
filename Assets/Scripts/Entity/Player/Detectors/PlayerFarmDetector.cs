@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class PlayerFarmDetector : PlayerDetectorBase<EnvironmentResource>
 {
@@ -17,9 +18,16 @@ public class PlayerFarmDetector : PlayerDetectorBase<EnvironmentResource>
 
     public void FindFarmingResources() => Detect();
 
-    protected override bool CanDetect() => _playerStateMachine.CurrentStateKey != PlayerStateKey.Farming;
+    protected override bool CanDetect() => true;
 
     protected override float GetRadius() => PlayerContainer.PlayerStats.RadiusFarming;
 
     protected override Func<EnvironmentResource, bool> GetFilter() => AvailableFarmObjectFilter;
+
+    protected override bool ShouldForceUpdate() => true;
+
+    protected override Vector3 DetectionPoint()
+    {
+        return PlayerContainer.FarmDetectionPoint.position;
+    }
 }

@@ -18,4 +18,9 @@ public class PlayerEnemyDetectionHandler : IDetectionHandler<BaseEnemy>
 
         _playerStateMachine.ChangeState(PlayerStateKey.Attack);
     }
+
+    public void NoDetection()
+    {
+        
+    }
 }

@@ -5,6 +5,7 @@ using Zenject;
 
 public class PlayerContainer : MonoBehaviour
 {
+    [field: SerializeField] public Transform FarmDetectionPoint {get; private set;}
     [SerializeField] private NavMeshAgent _navMeshAgent;
     [SerializeField] private Transform _body;
     [SerializeField] private Animator _player;

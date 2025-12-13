@@ -20,4 +20,8 @@ public class PlayerResourceDetectionHandler : IDetectionHandler<ResourcePartObj>
             Debug.Log("Picked up a resource!");
         }
     }
+
+    public void NoDetection()
+    {
+    }
 }

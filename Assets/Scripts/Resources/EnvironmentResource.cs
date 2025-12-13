@@ -26,7 +26,7 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
     {
         transform.DOScale(1.05f, 0.3f / 2)
             .SetEase(Ease.OutBounce) // Use an ease type that fits your animation
-            .OnComplete(() =>
+            .OnComplete(() => 
             {
                 // Scale back down to 1
                 transform.DOScale(1f, 0.3f / 2)

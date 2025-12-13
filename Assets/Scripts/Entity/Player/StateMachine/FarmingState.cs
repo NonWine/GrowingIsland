@@ -21,6 +21,7 @@ public class FarmingState : PlayerState
     {
         player.PlayerAnimatorEvent.OnFarming += TryLumber;
         _playerAnimator.SetAnimataionLayerWeightBehaviour(1);
+        _playerAnimator.SetFarmingAnim(eCollectable.Wood);
         
     }
 
@@ -48,6 +49,7 @@ public class FarmingState : PlayerState
     {
         player.PlayerAnimatorEvent.OnFarming -= TryLumber;
         _playerAnimator.SetAnimataionLayerWeightBehaviour(0);
+        Debug.Log("Exit State");
     }
     
 }

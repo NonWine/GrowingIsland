@@ -7423,6 +7423,36 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5132539548029716920}
     m_Modifications:
+    - target: {fileID: 1565284827374875123, guid: c87c9c52355f79540bb845e074714ee4,
+        type: 3}
+      propertyPath: _animSettings.ShakeVibrato
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565284827374875123, guid: c87c9c52355f79540bb845e074714ee4,
+        type: 3}
+      propertyPath: _animSettings.ShakeDuration
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565284827374875123, guid: c87c9c52355f79540bb845e074714ee4,
+        type: 3}
+      propertyPath: _animSettings.ReturnDuration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565284827374875123, guid: c87c9c52355f79540bb845e074714ee4,
+        type: 3}
+      propertyPath: _animSettings.ShakeStrength.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565284827374875123, guid: c87c9c52355f79540bb845e074714ee4,
+        type: 3}
+      propertyPath: _animSettings.ShakeStrength.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565284827374875123, guid: c87c9c52355f79540bb845e074714ee4,
+        type: 3}
+      propertyPath: _animSettings.ShakeStrength.z
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8726898542225756211, guid: c87c9c52355f79540bb845e074714ee4,
         type: 3}
       propertyPath: m_LocalPosition.x

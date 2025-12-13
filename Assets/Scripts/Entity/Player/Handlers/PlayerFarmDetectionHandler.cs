@@ -13,12 +13,14 @@ public class PlayerFarmDetectionHandler : IDetectionHandler<EnvironmentResource>
 
     public void Handle(List<EnvironmentResource> farmObjects)
     {
-        if (farmObjects.Count == 0)
-        {
-            return;
-        }
-
-        _playerAnimator.SetFarmingAnim(farmObjects[0].ResourceType);
         _playerStateMachine.ChangeState(PlayerStateKey.Farming);
+    }
+
+    public void NoDetection()
+    {
+        if (_playerStateMachine.CurrentStateKey == PlayerStateKey.Farming)
+        {
+            _playerStateMachine.ChangeState(PlayerStateKey.Idle);
+        }
     }
 }

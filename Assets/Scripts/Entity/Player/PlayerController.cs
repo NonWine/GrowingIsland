@@ -1,5 +1,8 @@
 using System.Collections.Generic;
-
+using System.Diagnostics;
+using Sirenix.Utilities;
+using UnityEngine;
+using Debug = UnityEngine.Debug;
 public class PlayerController
 {
     private readonly IMoveable _moveable;
@@ -19,6 +22,8 @@ public class PlayerController
         _rotateable = rotateable;
         _playerStateMachine = playerStateMachine;
         _detectors = detectors;
+        detectors.ForEach( x => Debug.Log(x.GetType()));
+        
     }
 
     public void Tick()
