@@ -15,4 +15,4 @@ MonoBehaviour:
   DropPrefab: {fileID: 0}
   TypeWallet: 1
   Health: 100
-  VisualDrop: 3
+  VisualDrop: 28
