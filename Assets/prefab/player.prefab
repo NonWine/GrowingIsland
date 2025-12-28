@@ -344,7 +344,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _layerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1088
 --- !u!1001 &389049789714895083
 PrefabInstance:
   m_ObjectHideFlags: 0

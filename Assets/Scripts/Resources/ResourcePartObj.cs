@@ -8,11 +8,11 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Rigidbody))]
 public class ResourcePartObj : PoolAble , IGameTickable
 {
-     [field: SerializeField] public eCollectable TypeE { get; private set; }
+    [field: SerializeField] public eCollectable TypeE { get; private set; }
     [Inject] private IGameController _gameController;
     [Inject] private CollectableManager _collectableWallet;
     private bool _isPicked = true;
-    private bool _canPickUp;
+    
     public bool IsPicked => _isPicked;
     
     
@@ -40,16 +40,17 @@ public class ResourcePartObj : PoolAble , IGameTickable
 
     public void PickUp()
     {
-  
+        if(_isPicked) return;
+        
         _isPicked = true;
         _collectableWallet.GetWallet(TypeE).Add(1);
-      Debug.Log("Pick this ");
-      DestroyAnim();
+        Debug.Log("Pick this ");
+         DestroyAnim();
     }
 
     public void DestroyAnim()
     {
-            transform.DOScale(0f, 0.25f).SetEase(Ease.InBack).OnComplete(() => { gameObject.SetActive(false); });
+        transform.DOScale(0f, 0.25f).SetEase(Ease.InBack).OnComplete(() => { gameObject.SetActive(false); });
     }
 
     public void SetIdle()

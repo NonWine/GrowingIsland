@@ -15,6 +15,10 @@ public class PlayerTrigger : MonoBehaviour
         {
             playerEnterTriggable.PlayerEnter();
         }
+        else if(other.transform.parent.TryGetComponent(out playerEnterTriggable))
+        {
+            playerEnterTriggable.PlayerEnter();
+        }
     }
 
     protected virtual void OnTriggerExit(Collider other)
@@ -23,5 +27,10 @@ public class PlayerTrigger : MonoBehaviour
         {
             playerExitTriggable.PlayerExit();
         }
+        else if (other.transform.parent.TryGetComponent(out playerExitTriggable))
+        {
+            playerExitTriggable.PlayerExit();
+        }
+        
     }
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 410087040}
-  m_IndirectSpecularColor: {r: 0.18046114, g: 0.22592656, b: 0.30702394, a: 1}
+  m_IndirectSpecularColor: {r: 0.1804614, g: 0.2259268, b: 0.30702454, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -339,7 +339,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 247
+    m_Bits: 1271
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1551,6 +1551,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 868767078}
     m_Modifications:
+    - target: {fileID: 5752161442290781569, guid: ca99f324d7f634241a8bb87159884819,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7194788334907970531, guid: ca99f324d7f634241a8bb87159884819,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1601,6 +1606,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7858898146140588268, guid: ca99f324d7f634241a8bb87159884819,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8157707350987837744, guid: ca99f324d7f634241a8bb87159884819,
         type: 3}
       propertyPath: m_Name
@@ -1609,8 +1619,80 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7858898146140588268, guid: ca99f324d7f634241a8bb87159884819,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3806177834390665237}
+    - targetCorrespondingSourceObject: {fileID: 5752161442290781569, guid: ca99f324d7f634241a8bb87159884819,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3806177834390665235}
   m_SourcePrefab: {fileID: 100100000, guid: ca99f324d7f634241a8bb87159884819, type: 3}
+--- !u!4 &3806177834390665231 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4194351702521504141, guid: ca99f324d7f634241a8bb87159884819,
+    type: 3}
+  m_PrefabInstance: {fileID: 3806177834390665230}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3806177834390665232 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4942728042737866555, guid: ca99f324d7f634241a8bb87159884819,
+    type: 3}
+  m_PrefabInstance: {fileID: 3806177834390665230}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3806177834390665233 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5752161442290781569, guid: ca99f324d7f634241a8bb87159884819,
+    type: 3}
+  m_PrefabInstance: {fileID: 3806177834390665230}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3806177834390665234 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7858898146140588268, guid: ca99f324d7f634241a8bb87159884819,
+    type: 3}
+  m_PrefabInstance: {fileID: 3806177834390665230}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &3806177834390665235
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3806177834390665233}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.76
+  m_Center: {x: 0.0000004172325, y: 0.46705595, z: -0.0000009685755}
+--- !u!114 &3806177834390665237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3806177834390665234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58e3d65aecbaeba48af1b415190ad9f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lootTime: 3
+  _lootItems:
+  - Type: 0
+    Amount: 3
+  _spawnPoint: {fileID: 3806177834390665231}
+  _chestVisual: {fileID: 3806177834390665232}
+  _timerUI: {fileID: 0}
 --- !u!1001 &9172261639900866477
 PrefabInstance:
   m_ObjectHideFlags: 0
