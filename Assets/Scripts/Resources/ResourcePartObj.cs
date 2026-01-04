@@ -47,6 +47,12 @@ public class ResourcePartObj : PoolAble , IGameTickable
       DestroyAnim();
     }
 
+    public void PickUpSilent()
+    {
+        _isPicked = true;
+        DestroyAnim();
+    }
+
     public void DestroyAnim()
     {
             transform.DOScale(0f, 0.25f).SetEase(Ease.InBack).OnComplete(() => { gameObject.SetActive(false); });

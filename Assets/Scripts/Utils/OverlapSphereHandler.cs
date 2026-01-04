@@ -13,7 +13,7 @@ public class OverlapSphereHandler
 
     private List<Collider> _debugColliders = new List<Collider>();
 
-    public OverlapSphereHandler(int maxColliders = 20)
+    public OverlapSphereHandler(int maxColliders = 40)
     {
         _overlapResults = new Collider[maxColliders];
         _resultsAreStale = true;

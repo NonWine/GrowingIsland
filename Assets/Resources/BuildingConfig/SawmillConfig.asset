@@ -9,10 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dfc186a3cd144f3b9995b65bc44f57c, type: 3}
-  m_Name: Tree
+  m_Script: {fileID: 11500000, guid: 2233718bdd186314d95ab25ad17e454a, type: 3}
+  m_Name: SawmillConfig
   m_EditorClassIdentifier: 
-  DropPrefab: {fileID: 0}
-  TypeWallet: 0
-  Health: 25
-  VisualDrop: 3
+  _levels:
+  - StorageCapacity: 5
+    ChopInterval: 1.5
+    CarryCapacity: 1
+  - StorageCapacity: 10
+    ChopInterval: 1.5
+    CarryCapacity: 2

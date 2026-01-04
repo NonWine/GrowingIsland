@@ -8,6 +8,7 @@ using Zenject;
 public class GameController : MonoBehaviour , IGameController
 {
     [SerializeField] private List<IGameTickable> _tickables = new List<IGameTickable>();
+    private readonly List<IGameTickable> _tickablesSnapshot = new List<IGameTickable>();
 
     public void RegisterInTick(IGameTickable tickable)
     {
@@ -29,9 +30,15 @@ public class GameController : MonoBehaviour , IGameController
     
     private void Update()
     {
-        foreach (var gameTickable in _tickables)
+        // iterate over a snapshot to avoid "collection modified" when tickables register/unregister during Tick
+        _tickablesSnapshot.Clear();
+        _tickablesSnapshot.AddRange(_tickables);
+
+        for (int i = 0; i < _tickablesSnapshot.Count; i++)
         {
-            gameTickable.Tick();
+            var gameTickable = _tickablesSnapshot[i];
+            if (gameTickable != null)
+                gameTickable.Tick();
         }
 
     }
