@@ -21,58 +21,61 @@ public class WoodcutterCollectState : WoodcutterState
     public override void Tick()
     {
         
+        if (!TryFindWood()) return;
+        
 
-        if (_targetDrop == null)
-        {
-            _targetDrop = Ctx.ResourceDetector.AcquireNearestDrop();
-            if(_targetDrop == null)
-                return;
-        }
-        if (Ctx.HasWood)
-        {
-            StateMachine.ChangeState(WoodcutterStateKey.ReturnToSawmill);
-        }
-
-        var targetPos = _targetDrop.transform.position;
-        var distance = Vector3.Distance(Ctx.Transform.position, targetPos);
-
+        //move for wood
+        var distance = Vector3.Distance(Ctx.Transform.position,  _targetDrop.transform.position);
         if (distance > Ctx.WorkSettings.LootCollectionRadius)
         {
-            if (Ctx.Agent != null)
-            {
-                Ctx.Agent.isStopped = false;
-                Ctx.Agent.SetDestination(targetPos);
-            }
+            Ctx.Agent.isStopped = false;
+            Ctx.Agent.SetDestination( _targetDrop.transform.position);
             return;
         }
 
-        // close enough to pick
-        if (Ctx.Agent != null)
-            Ctx.Agent.isStopped = true;
 
-        if (_targetDrop != null && !_targetDrop.IsPicked)
-        {
-            _targetDrop.PickUpSilent();
-            Ctx.AddWood(1);
-        }
+        TryPickUp();
 
-        _targetDrop = null;
+        CheckCapacity();
 
+    }
+
+    private bool CheckCapacity()
+    {
         if (Ctx.CarriedWood >= Ctx.CarryCapacity)
         {
             StateMachine.ChangeState(WoodcutterStateKey.ReturnToSawmill);
-            return;
+            return true;
         }
 
-        // look for next drop same tick
+        return false;
+    }
+
+    private void TryPickUp()
+    {
+        Ctx.Agent.isStopped = true;
+        if (_targetDrop.PickUpSilent())
+        {
+            Ctx.AddWood(1);
+        }
+        _targetDrop = null;
+    }
+
+    private bool TryFindWood()
+    {
+        if (_targetDrop != null) return true;
+        
         _targetDrop = Ctx.ResourceDetector.AcquireNearestDrop();
-        if (_targetDrop == null)
+        
+        if(_targetDrop == null)
         {
             if (Ctx.HasWood)
                 StateMachine.ChangeState(WoodcutterStateKey.ReturnToSawmill);
             else
                 StateMachine.ChangeState(WoodcutterStateKey.SearchTree);
         }
+
+        return true;
     }
 
     public override void Exit()

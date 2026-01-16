@@ -11,7 +11,7 @@ public class ResourcePartObj : PoolAble , IGameTickable
     [field: SerializeField] public eCollectable TypeE { get; private set; }
     [Inject] private IGameController _gameController;
     [Inject] private CollectableManager _collectableWallet;
-    private bool _isPicked = true;
+    private bool _isPicked = false;
     
     public bool IsPicked => _isPicked;
     
@@ -48,10 +48,13 @@ public class ResourcePartObj : PoolAble , IGameTickable
          DestroyAnim();
     }
 
-    public void PickUpSilent()
+    public bool PickUpSilent()
     {
+        if (_isPicked) return false;
+        
         _isPicked = true;
         DestroyAnim();
+        return true;
     }
 
     public void DestroyAnim()
