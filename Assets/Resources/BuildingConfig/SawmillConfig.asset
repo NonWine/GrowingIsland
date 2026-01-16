@@ -15,7 +15,7 @@ MonoBehaviour:
   _levels:
   - StorageCapacity: 5
     ChopInterval: 1.5
-    CarryCapacity: 1
+    CarryCapacity: 3
   - StorageCapacity: 10
     ChopInterval: 1.5
     CarryCapacity: 2

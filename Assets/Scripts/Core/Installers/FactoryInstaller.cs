@@ -10,13 +10,14 @@ public class FactoryInstaller : MonoInstaller
     public override void InstallBindings()
     {
 
+        //test
+        Container.BindInstance(new CollectStrategyRegistry()).AsSingle();
+
         BindResourcesFactory();
   
         Container.BindInterfacesAndSelfTo<EnemyFactory>().AsSingle()
             .WithArguments( Resources.LoadAll<EnemyConfig>("EnemyConfigs").ToList()).NonLazy();
-
-
-
+        
     }
 
     private void BindResourcesFactory()

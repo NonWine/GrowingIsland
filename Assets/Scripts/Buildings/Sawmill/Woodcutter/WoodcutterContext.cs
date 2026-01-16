@@ -26,10 +26,12 @@ public class WoodcutterContext
         TreeMask = treeMask;
         ResourcePartMask = resourcePartMask;
         ResourceDetector = new WoodcutterResourceDetector(this);
+        NpcAnimator = new NPCAnimator(animator,1);
     }
 
     public NavMeshAgent Agent { get; }
     public Animator Animator { get; }
+    public NPCAnimator NpcAnimator { get; private set; }
     public WoodcutterWorkSettings WorkSettings { get; }
     public OverlapSphereHandler OverlapSphereHandler { get; }
     public LayerMask TreeMask { get; }

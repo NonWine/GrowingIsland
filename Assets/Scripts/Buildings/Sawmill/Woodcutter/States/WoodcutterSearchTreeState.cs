@@ -24,12 +24,6 @@ public class WoodcutterSearchTreeState : WoodcutterState
             return;
         }
 
-        if (Ctx.ResourceDetector.AcquireNearestDrop() != null)
-        {
-            StateMachine.ChangeState(WoodcutterStateKey.CollectDrops);
-            return;
-        }
-
         if (Time.time < _nextSearchTime)
             return;
 

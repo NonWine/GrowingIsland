@@ -2,23 +2,21 @@ using System;
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
-using Zenject.Asteroids;
-using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
-public class ResourcePartObj : PoolAble , IGameTickable
+public class ResourcePartObj : PoolAble, IGameTickable
 {
     [field: SerializeField] public eCollectable TypeE { get; private set; }
-    [Inject] private IGameController _gameController;
-    [Inject] private CollectableManager _collectableWallet;
-    private bool _isPicked = false;
-    
-    public bool IsPicked => _isPicked;
-    
-    
+    [Inject] private IGameController gameController;
+    [Inject] private CollectableManager collectableWallet;
+    [Inject] private CollectStrategyRegistry collectStrategyRegistry;
+    private bool isPicked = false;
+
+    public bool IsPicked => isPicked;
+
     private void Awake()
     {
-        _gameController.RegisterInTick(this);
+        gameController.RegisterInTick(this);
     }
 
     protected virtual void Rotate()
@@ -26,45 +24,30 @@ public class ResourcePartObj : PoolAble , IGameTickable
         transform.Rotate(Vector3.up, 300 * Time.deltaTime);
     }
 
-
     public void Tick()
     {
-
         Rotate();
     }
 
     public override void ResetPool()
     {
         gameObject.SetActive(true);
+        isPicked = false;
+        transform.localScale = Vector3.one;
     }
 
-    public void PickUp()
+    public bool PickUp(Transform collector, CollectStrategyType strategy, int amount = 1)
     {
-        if(_isPicked) return;
-        
-        _isPicked = true;
-        _collectableWallet.GetWallet(TypeE).Add(1);
-        Debug.Log("Pick this ");
-         DestroyAnim();
-    }
-
-    public bool PickUpSilent()
-    {
-        if (_isPicked) return false;
-        
-        _isPicked = true;
-        DestroyAnim();
+        if (isPicked) return false;
+        isPicked = true;
+        collectableWallet.GetWallet(TypeE).Add(amount);
+        collectStrategyRegistry.GetStrategy(strategy).Collect(transform, collector);
         return true;
     }
-
-    public void DestroyAnim()
-    {
-        transform.DOScale(0f, 0.25f).SetEase(Ease.InBack).OnComplete(() => { gameObject.SetActive(false); });
-    }
+    
 
     public void SetIdle()
     {
-        _isPicked = false;
+        isPicked = false;
     }
-
 }

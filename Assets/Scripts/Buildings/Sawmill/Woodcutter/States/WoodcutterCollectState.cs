@@ -29,6 +29,7 @@ public class WoodcutterCollectState : WoodcutterState
         if (distance > Ctx.WorkSettings.LootCollectionRadius)
         {
             Ctx.Agent.isStopped = false;
+            Ctx.NpcAnimator.SetMove();
             Ctx.Agent.SetDestination( _targetDrop.transform.position);
             return;
         }
@@ -54,10 +55,12 @@ public class WoodcutterCollectState : WoodcutterState
     private void TryPickUp()
     {
         Ctx.Agent.isStopped = true;
-        if (_targetDrop.PickUpSilent())
+        Ctx.NpcAnimator.SetIdle();
+        if (_targetDrop.PickUp(Ctx.Transform, CollectStrategyType.NPC,0))
         {
             Ctx.AddWood(1);
         }
+        
         _targetDrop = null;
     }
 

@@ -168,7 +168,10 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
             _resourceData.Duration, RotateMode.FastBeyond360).SetEase(Ease.OutCubic));
         seq.Append(res.transform.DOScale(_throwSettings.ArrivalPopScale, _throwSettings.ArrivalPopDuration).SetEase(Ease.OutBack));
         seq.Append(res.transform.DOScale(1f, _throwSettings.ArrivalPopReturnDuration).SetEase(Ease.InOutSine));
-        seq.OnComplete(res.DestroyAnim);
+        seq.OnComplete(() =>
+        {
+            res.PickUp(transform, CollectStrategyType.Player,0);
+        });
     }
 
     private void UpdateUi(ResourceRequirement requirement)

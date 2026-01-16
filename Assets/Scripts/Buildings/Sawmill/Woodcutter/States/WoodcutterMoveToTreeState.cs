@@ -6,11 +6,6 @@ public class WoodcutterMoveToTreeState : WoodcutterState
 
     public override void Enter()
     {
-        if (Ctx.Agent == null)
-        {
-            StateMachine.ChangeState(WoodcutterStateKey.SearchTree);
-            return;
-        }
 
         Ctx.Agent.isStopped = false;
         SetDestination();
@@ -43,6 +38,7 @@ public class WoodcutterMoveToTreeState : WoodcutterState
     {
         if (Ctx.HasTree)
         {
+            Ctx.NpcAnimator.SetMove();
             Ctx.Agent.SetDestination(Ctx.CurrentTree.transform.position);
         }
     }

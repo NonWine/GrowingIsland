@@ -6,11 +6,9 @@ public class WoodcutterWaitingState : WoodcutterState
 
     public override void Enter()
     {
-        if (Ctx.Agent != null)
-            Ctx.Agent.isStopped = true;
-
-        if (Ctx.Sawmill != null)
-            Ctx.Sawmill.StorageChanged += OnStorageChanged;
+        Ctx.Agent.isStopped = true;
+        Ctx.NpcAnimator.SetIdle();
+        Ctx.Sawmill.StorageChanged += OnStorageChanged;
     }
 
     public override void Tick()

@@ -41,7 +41,7 @@ public class WoodcutterResourceDetector
         return nearestDrop;
     }
 
-    private List<ResourcePartObj> GetDropsWithFallback(float radius)
+    public List<ResourcePartObj> GetDropsWithFallback(float radius)
     {
 
         var primary = _context.OverlapSphereHandler.GetFilteredObjects(

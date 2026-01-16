@@ -14,11 +14,12 @@ public class WoodcutterChopState : WoodcutterState
 
         if (Ctx.Agent != null)
             Ctx.Agent.isStopped = true;
+        Ctx.NpcAnimator.SetAttack();
     }
 
     public override void Tick()
     {
-        if (Ctx.StorageFull && !Ctx.HasWood)
+        if (Ctx.StorageFull)
         {
             StateMachine.ChangeState(WoodcutterStateKey.WaitingStorage);
             return;
@@ -45,12 +46,17 @@ public class WoodcutterChopState : WoodcutterState
         Ctx.CurrentTree.GetDamage(Ctx.WorkSettings.TreeDamage);
         if (!Ctx.CurrentTree.isAlive)
         {
+            foreach (var resourcePartObj in Ctx.ResourceDetector.GetDropsWithFallback(15))
+            {
+                resourcePartObj.PickUp(Ctx.Transform, CollectStrategyType.NPC, 0);
+            }
+
             Ctx.ClearTree();
-            StateMachine.ChangeState(WoodcutterStateKey.CollectDrops);
         }
     }
 
     public override void Exit()
     {
+        Ctx.NpcAnimator.SetIdle();
     }
 }

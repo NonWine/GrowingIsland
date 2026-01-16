@@ -8,7 +8,6 @@ public enum WoodcutterStateKey
     SearchTree,
     MoveToTree,
     ChopTree,
-    CollectDrops,
     ReturnToSawmill,
     WaitingStorage
 }
@@ -29,7 +28,6 @@ public class WoodcutterStateMachine
         machine.Register(WoodcutterStateKey.SearchTree, new WoodcutterSearchTreeState(context, machine));
         machine.Register(WoodcutterStateKey.MoveToTree, new WoodcutterMoveToTreeState(context, machine));
         machine.Register(WoodcutterStateKey.ChopTree, new WoodcutterChopState(context, machine));
-        machine.Register(WoodcutterStateKey.CollectDrops, new WoodcutterCollectState(context, machine));
         machine.Register(WoodcutterStateKey.ReturnToSawmill, new WoodcutterReturnState(context, machine));
         machine.Register(WoodcutterStateKey.WaitingStorage, new WoodcutterWaitingState(context, machine));
 
@@ -47,10 +45,8 @@ public class WoodcutterStateMachine
     {
         if (!_states.TryGetValue(key, out var next))
         {
-            Debug.LogError($"Woodcutter state {key} not found");
             return;
         }
-        Debug.Log(next + "next State");
         CurrentState?.Exit();
         CurrentState = next;
         CurrentKey = key;

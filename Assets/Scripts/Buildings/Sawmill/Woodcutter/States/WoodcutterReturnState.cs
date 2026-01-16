@@ -11,12 +11,9 @@ public class WoodcutterReturnState : WoodcutterState
     public override void Enter()
     {
         _targetDrop = null;
-        if (Ctx.Agent != null)
-        {
-            Ctx.Agent.isStopped = false;
-            if (Ctx.Sawmill != null)
-                Ctx.Agent.SetDestination(Ctx.Sawmill.DepositPoint.position);
-        }
+        Ctx.Agent.isStopped = false;
+        Ctx.NpcAnimator.SetMove();
+        Ctx.Agent.SetDestination(Ctx.Sawmill.DepositPoint.position);
     }
 
     public override void Tick()
@@ -34,11 +31,7 @@ public class WoodcutterReturnState : WoodcutterState
             Ctx.RemoveWood(stored);
         }
         // Check for drops along the way if we have capacity
-
-        if (Ctx.ResourceDetector.AcquireNearestDrop() != null)
-        {
-            StateMachine.ChangeState(WoodcutterStateKey.CollectDrops);
-        }
+        
         
         
         if (Ctx.StorageFull)
@@ -54,5 +47,6 @@ public class WoodcutterReturnState : WoodcutterState
     public override void Exit()
     {
         _targetDrop = null;
+        Ctx.NpcAnimator.SetIdle();
     }
 }

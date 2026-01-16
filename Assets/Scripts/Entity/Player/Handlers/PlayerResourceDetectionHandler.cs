@@ -15,7 +15,7 @@ public class PlayerResourceDetectionHandler : IDetectionHandler<ResourcePartObj>
     {
         foreach (var resource in resources)
         {
-            resource.PickUp();
+            resource.PickUp(_playerContainer.Body, CollectStrategyType.Player);
             resource.transform.DOMove(_playerContainer.transform.position, 0.25f).SetEase(Ease.InBack);
             Debug.Log("Picked up a resource!");
         }
