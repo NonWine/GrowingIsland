@@ -71,6 +71,15 @@ public class WoodcutterContext
         _sawmill = sawmill;
     }
 
+    public void TryDepositWood()
+    {
+        if (HasWood)
+        {
+            var stored = Sawmill.DepositWood(CarriedWood);
+            RemoveWood(stored);
+        }
+    }
+
     public bool TryAcquireTree(out EnvironmentResource tree)
     {
         return _woodcutter.TryFindNearestTree(out tree);

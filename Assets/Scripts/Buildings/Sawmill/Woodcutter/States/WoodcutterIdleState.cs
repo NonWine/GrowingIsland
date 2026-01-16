@@ -6,7 +6,7 @@ public class WoodcutterIdleState : WoodcutterState
 
     public override void Enter()
     {
-        if (Ctx.StorageFull && !Ctx.HasWood)
+        if (Ctx.StorageFull)
         {
             StateMachine.ChangeState(WoodcutterStateKey.WaitingStorage);
             return;

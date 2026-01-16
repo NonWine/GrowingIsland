@@ -18,22 +18,16 @@ public class WoodcutterReturnState : WoodcutterState
 
     public override void Tick()
     {
-        
-        if (Ctx.Agent.pathPending)
-            return;
 
         if (Ctx.Agent.remainingDistance > Ctx.WorkSettings.DepositDistance)
             return;
         
-        if (Ctx.HasWood)
-        {
-            var stored = Ctx.Sawmill.DepositWood(Ctx.CarriedWood);
-            Ctx.RemoveWood(stored);
-        }
-        // Check for drops along the way if we have capacity
-        
-        
-        
+        Ctx.TryDepositWood();
+        ChangeState();
+    }
+
+    private void ChangeState()
+    {
         if (Ctx.StorageFull)
         {
             StateMachine.ChangeState(WoodcutterStateKey.WaitingStorage);

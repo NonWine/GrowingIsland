@@ -11,14 +11,12 @@ public class WoodcutterSearchTreeState : WoodcutterState
     public override void Enter()
     {
         _nextSearchTime = 0f;
-
-        if (Ctx.Agent != null)
-            Ctx.Agent.isStopped = true;
+        Ctx.Agent.isStopped = true;
     }
 
     public override void Tick()
     {
-        if (Ctx.StorageFull && !Ctx.HasWood)
+        if (Ctx.StorageFull)
         {
             StateMachine.ChangeState(WoodcutterStateKey.WaitingStorage);
             return;

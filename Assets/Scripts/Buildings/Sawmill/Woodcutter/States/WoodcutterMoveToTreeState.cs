@@ -6,28 +6,11 @@ public class WoodcutterMoveToTreeState : WoodcutterState
 
     public override void Enter()
     {
-
-        Ctx.Agent.isStopped = false;
         SetDestination();
     }
 
     public override void Tick()
     {
-        if (Ctx.StorageFull && !Ctx.HasWood)
-        {
-            StateMachine.ChangeState(WoodcutterStateKey.WaitingStorage);
-            return;
-        }
-
-        if (!Ctx.HasTree)
-        {
-            StateMachine.ChangeState(WoodcutterStateKey.SearchTree);
-            return;
-        }
-
-        if (Ctx.Agent.pathPending)
-            return;
-
         if (Ctx.Agent.remainingDistance <= Ctx.WorkSettings.ChopDistance)
         {
             StateMachine.ChangeState(WoodcutterStateKey.ChopTree);
@@ -36,14 +19,13 @@ public class WoodcutterMoveToTreeState : WoodcutterState
 
     private void SetDestination()
     {
-        if (Ctx.HasTree)
-        {
-            Ctx.NpcAnimator.SetMove();
-            Ctx.Agent.SetDestination(Ctx.CurrentTree.transform.position);
-        }
+        Ctx.Agent.isStopped = false;
+        Ctx.NpcAnimator.SetMove();
+        Ctx.Agent.SetDestination(Ctx.CurrentTree.transform.position);
     }
 
     public override void Exit()
     {
+        
     }
 }
