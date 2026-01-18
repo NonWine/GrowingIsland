@@ -5,11 +5,13 @@ using Zenject;
 public class Sawmill : MonoBehaviour, IPlayerEnterTriggable, IPlayerExitTriggable
 {
     [SerializeField] private SawmillConfig _config;
-    [SerializeField, Min(0)] private int _startLevelIndex;
     [SerializeField] private Transform _dropPoint;
-    [SerializeField] private Woodcutter _woodcutter;
+    [SerializeField] private Transform woodCutterSpawnPoint;
+    [Header("Woodcutter Spawn")]
+    [SerializeField] private bool _spawnWoodcutterOnStart = true;
 
     [Inject] private CollectableManager _collectableManager;
+    [Inject] private Woodcutter.Factory _woodcutterFactory;
 
     private SawmillStorage _storage;
     private int _currentLevelIndex;
@@ -30,19 +32,19 @@ public class Sawmill : MonoBehaviour, IPlayerEnterTriggable, IPlayerExitTriggabl
 
     private void Awake()
     {
-        _currentLevelIndex = Mathf.Max(0, _startLevelIndex);
+        _currentLevelIndex = Mathf.Max(0, _config.StartLevelIndex);
         _storage = new SawmillStorage(CurrentLevel.StorageCapacity);
         _storage.OnStorageChanged += OnStorageChangedInternal;
-
-        if (_woodcutter != null)
-        {
-            _woodcutter.SetSawmill(this);
-        }
     }
 
     private void Start()
     {
         NotifyLevelChanged();
+        
+        if (_spawnWoodcutterOnStart)
+        {
+            SpawnWoodcutter();
+        }
     }
 
     private void OnDestroy()
@@ -53,13 +55,10 @@ public class Sawmill : MonoBehaviour, IPlayerEnterTriggable, IPlayerExitTriggabl
         }
     }
 
-    public void SetWoodcutter(Woodcutter woodcutter)
+    public void SpawnWoodcutter()
     {
-        _woodcutter = woodcutter;
-        if (_woodcutter != null)
-        {
-            _woodcutter.SetSawmill(this);
-        }
+      var woodcutter =  _woodcutterFactory.Create(this);
+      woodcutter.transform.position = woodCutterSpawnPoint.position;
     }
 
     public int DepositWood(int amount)

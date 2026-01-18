@@ -11,7 +11,6 @@ public class WoodcutterSearchTreeState : WoodcutterState
     public override void Enter()
     {
         _nextSearchTime = 0f;
-        Ctx.Agent.isStopped = true;
     }
 
     public override void Tick()
@@ -25,7 +24,7 @@ public class WoodcutterSearchTreeState : WoodcutterState
         if (Time.time < _nextSearchTime)
             return;
 
-        if (Ctx.TryAcquireTree(out var tree))
+        if (Ctx.Sensor.TryFindNearestTree(out var tree))
         {
             Ctx.SetTree(tree);
             StateMachine.ChangeState(WoodcutterStateKey.MoveToTree);

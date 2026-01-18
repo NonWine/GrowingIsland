@@ -9,7 +9,8 @@ public enum WoodcutterStateKey
     MoveToTree,
     ChopTree,
     ReturnToSawmill,
-    WaitingStorage
+    WaitingStorage,
+    CollectState
 }
 
 [System.Serializable]
@@ -30,12 +31,13 @@ public class WoodcutterStateMachine
         machine.Register(WoodcutterStateKey.ChopTree, new WoodcutterChopState(context, machine));
         machine.Register(WoodcutterStateKey.ReturnToSawmill, new WoodcutterReturnState(context, machine));
         machine.Register(WoodcutterStateKey.WaitingStorage, new WoodcutterWaitingState(context, machine));
+        machine.Register(WoodcutterStateKey.CollectState, new WoodcutterCollectState(context, machine));
 
         machine.ChangeState(WoodcutterStateKey.Idle);
 
         return machine;
     }
-
+ 
     public void Register(WoodcutterStateKey key, WoodcutterState state)
     {
         _states[key] = state;

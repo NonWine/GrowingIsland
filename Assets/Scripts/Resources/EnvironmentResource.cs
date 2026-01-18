@@ -44,9 +44,7 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
         AnimTrigDamage();
         if (_health <= 0)
         {
-            SpawnResources();
             StartCoroutine(RespawmProp());
-
         }
     }
 
@@ -58,7 +56,6 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
             resource.transform.position = transform.position;
             var offset = transform.position + Random.insideUnitSphere * 2f;
             offset.y = resource.transform.position.y;
-            resource.SetIdle();
             resource.transform.DOMove(offset, 0.8f).SetEase(Ease.OutQuart);
             resource.ResetPool();
         }
@@ -68,8 +65,9 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
 
     private IEnumerator RespawmProp()
     {
-        ShowMeshObjects(false);
+        SpawnResources();
         isAlive = false;
+        ShowMeshObjects(false);
         yield return new WaitForSeconds(_respawnTime);
         isAlive = true;
         _health = _resourceWorld.Health;

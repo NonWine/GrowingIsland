@@ -109,11 +109,9 @@ public class ChestLootSystem : MonoBehaviour, IPlayerEnterTriggable, IPlayerExit
                 // Jump out animation
                 Vector3 jumpTarget = startPos + Random.insideUnitSphere * 3f;
                 jumpTarget.y = startPos.y; // Keep it on the same plane or adjust as needed
-                
+
                 resource.transform.DOJump(jumpTarget, 2f, 1, 0.5f)
-                    .SetEase(Ease.OutQuad)
-                    .OnComplete(resource.SetIdle);
-                
+                    .SetEase(Ease.OutQuad);
                 resource.ResetPool();
             }
         }

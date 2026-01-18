@@ -45,9 +45,4 @@ public class ResourcePartObj : PoolAble, IGameTickable
         return true;
     }
     
-
-    public void SetIdle()
-    {
-        isPicked = false;
-    }
 }

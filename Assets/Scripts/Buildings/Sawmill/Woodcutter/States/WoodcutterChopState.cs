@@ -27,33 +27,11 @@ public class WoodcutterChopState : WoodcutterState
         
         if (!Ctx.CurrentTree.isAlive)
         {
-            PickUpWood();
             Ctx.ClearTree();
-            ChangeState();
+            StateMachine.ChangeState(WoodcutterStateKey.CollectState);
         }
     }
-
-    private void PickUpWood()
-    {
-        foreach (var resourcePartObj in Ctx.ResourceDetector.GetDropsWithFallback(15))
-        {
-            resourcePartObj.PickUp(Ctx.Transform, CollectStrategyType.NPC, 0);
-            Ctx.AddWood(1);
-        }
-    }
-
-    private void ChangeState()
-    {
-        if (Ctx.CarryCapacity <= Ctx.CarriedWood)
-        {
-            StateMachine.ChangeState(WoodcutterStateKey.ReturnToSawmill);
-        }
-        else
-        {
-            StateMachine.ChangeState(WoodcutterStateKey.SearchTree);
-        }
-    }
-
+    
     public override void Exit()
     {
         Ctx.NpcAnimator.SetIdle();

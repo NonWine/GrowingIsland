@@ -5,6 +5,8 @@ using UnityEngine;
 public class SawmillConfig : ScriptableObject
 {
     [SerializeField] private List<SawmillLevelSettings> _levels = new() { new SawmillLevelSettings() };
+    [SerializeField, Min(0)] private int _startLevelIndex;
+    public int StartLevelIndex => _startLevelIndex;
 
     public IReadOnlyList<SawmillLevelSettings> Levels => _levels;
 
