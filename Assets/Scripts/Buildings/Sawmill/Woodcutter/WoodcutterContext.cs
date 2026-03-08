@@ -10,18 +10,18 @@ using Zenject;
 public class WoodcutterContext
 {
     private Sawmill _sawmill;
-    private readonly Transform _transform;
+    private readonly WoodcutterView woodcutterView;
 
     [Inject]
     public WoodcutterContext(
-        Transform transform,
+        WoodcutterView woodcutterView,
         Sawmill sawmill,
         NavMeshAgent agent,
         NPCAnimator npcAnimator,
         WoodcutterWorkSettings workSettings,
         WoodcutterSensor sensor)
     {
-        _transform = transform;
+        this.woodcutterView = woodcutterView;
         _sawmill = sawmill;
         Agent = agent;
         NpcAnimator = npcAnimator;
@@ -34,7 +34,7 @@ public class WoodcutterContext
     public NPCAnimator NpcAnimator { get; }
     public WoodcutterWorkSettings WorkSettings { get; }
     public WoodcutterSensor Sensor { get; }
-    public Transform Transform => _transform;
+    public Transform Transform => woodcutterView.transform;
     public Sawmill Sawmill => _sawmill;
     #endregion
 

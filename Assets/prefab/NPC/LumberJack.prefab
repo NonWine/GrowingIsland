@@ -480,6 +480,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a0098a950ee9f458ec6e485985dbc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Agent>k__BackingField: {fileID: 966686033726180774}
+  <Animator>k__BackingField: {fileID: 4260682501464150737}
+  <Settings>k__BackingField: {fileID: 11400000, guid: 69de15a66df7c1e4cb94553df10387fc,
+    type: 2}
 --- !u!114 &767084963754801810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,9 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0ec7a04a2ef0a48bd37eeb5b4c7810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _agent: {fileID: 966686033726180774}
-  _animator: {fileID: 4260682501464150737}
-  _settings: {fileID: 11400000, guid: 69de15a66df7c1e4cb94553df10387fc, type: 2}
+  woodcutterView: {fileID: 1040056560557771822}
 --- !u!114 &3428317033834664141
 MonoBehaviour:
   m_ObjectHideFlags: 0

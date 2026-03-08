@@ -4,12 +4,7 @@ using Zenject;
 
 public class WoodcutterInstaller : MonoInstaller
 {
-    [Header("Unity Components")]
-    [SerializeField] private NavMeshAgent _agent;
-    [SerializeField] private Animator _animator;
-    
-    [Header("Settings")]
-    [SerializeField] private WoodcutterWorkSettings _settings;
+    [SerializeField] private WoodcutterView woodcutterView;
 
     private Sawmill _sawmill;
 
@@ -22,13 +17,9 @@ public class WoodcutterInstaller : MonoInstaller
     public override void InstallBindings()
     {
         // У WoodcutterInstaller.cs додайте:
-        Container.Bind<Woodcutter>().FromComponentInHierarchy().AsSingle();
-        Container.Bind<NavMeshAgent>().FromInstance(_agent).AsSingle();
-        Container.Bind<Animator>().FromInstance(_animator).AsSingle();
-        Container.Bind<WoodcutterWorkSettings>().FromInstance(_settings).AsSingle();
-        Container.Bind<Sawmill>().FromInstance(_sawmill).AsSingle();
-        Container.Bind<Transform>().FromInstance(transform).AsSingle();
+        Components();
 
+        Container.Bind<Sawmill>().FromInstance(_sawmill).AsSingle();
         Container.Bind<NPCAnimator>().AsSingle().WithArguments(1);
         Container.Bind<WoodcutterSensor>().AsSingle();
         Container.Bind<WoodcutterContext>().AsSingle().NonLazy();
@@ -38,5 +29,15 @@ public class WoodcutterInstaller : MonoInstaller
             var woodContext = ctx.Container.Resolve<WoodcutterContext>();
             return WoodcutterStateMachine.CreateDefault(woodContext);
         }).AsSingle();
+        Container.BindInterfacesAndSelfTo<WoodCutterFacade>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<NavMeshAgentInitializer>().FromNew().AsSingle();
+    }
+
+    private void Components()
+    {
+        Container.Bind<WoodcutterView>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<NavMeshAgent>().FromInstance(woodcutterView.Agent).AsSingle();
+        Container.Bind<Animator>().FromInstance(woodcutterView.Animator).AsSingle();
+        Container.Bind<WoodcutterWorkSettings>().FromInstance(woodcutterView.Settings).AsSingle();
     }
 }

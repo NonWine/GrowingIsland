@@ -7,7 +7,7 @@ public class SceneInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        Container.BindFactory<Sawmill, Woodcutter, Woodcutter.Factory>()
+        Container.BindFactory<Sawmill, WoodcutterView, WoodCutterFacade.Factory>()
             .FromSubContainerResolve()
             .ByNewContextPrefab<WoodcutterInstaller>(woodcutterPrefab)
             .AsSingle(); 

@@ -11,7 +11,7 @@ public class Sawmill : MonoBehaviour, IPlayerEnterTriggable, IPlayerExitTriggabl
     [SerializeField] private bool _spawnWoodcutterOnStart = true;
 
     [Inject] private CollectableManager _collectableManager;
-    [Inject] private Woodcutter.Factory _woodcutterFactory;
+    [Inject] private WoodCutterFacade.Factory _woodcutterFactory;
 
     private SawmillStorage _storage;
     private int _currentLevelIndex;

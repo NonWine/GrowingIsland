@@ -10,14 +10,14 @@ public class WoodcutterSensor
 {
     private readonly OverlapSphereHandler _overlap;
     private readonly WoodcutterWorkSettings _settings;
-    private readonly Transform _transform;
+    private readonly WoodcutterView woodcutterView;
 
     [Inject]
-    public WoodcutterSensor(OverlapSphereHandler overlap, WoodcutterWorkSettings settings, Transform transform)
+    public WoodcutterSensor(OverlapSphereHandler overlap, WoodcutterWorkSettings settings, WoodcutterView woodcutterView)
     {
         _overlap = overlap ?? throw new ArgumentNullException(nameof(overlap));
         _settings = settings ?? throw new ArgumentNullException(nameof(settings));
-        _transform = transform != null ? transform : throw new ArgumentNullException(nameof(transform));
+        this.woodcutterView = woodcutterView != null ? woodcutterView : throw new ArgumentNullException(nameof(woodcutterView));
     }
 
     #region Public API
@@ -70,7 +70,7 @@ public class WoodcutterSensor
 
         T nearest = null;
         float minSqrDist = float.MaxValue;
-        Vector3 origin = _transform.position;
+        Vector3 origin = woodcutterView.transform.position;
 
         for (int i = 0; i < objects.Count; i++)
         {
@@ -91,7 +91,7 @@ public class WoodcutterSensor
     private List<T> GetFiltered<T>(float radius, LayerMask mask, Func<T, bool> filter) where T : Component
     {
         return _overlap.GetFilteredObjects<T>(
-            _transform.position,
+            woodcutterView.transform.position,
             radius,
             mask,
             filter,
