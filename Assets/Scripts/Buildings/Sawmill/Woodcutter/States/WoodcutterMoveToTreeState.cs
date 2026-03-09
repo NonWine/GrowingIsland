@@ -1,6 +1,8 @@
 public class WoodcutterMoveToTreeState : WoodcutterState
 {
-    public WoodcutterMoveToTreeState(WoodcutterContext context, WoodcutterStateMachine stateMachine) : base(context, stateMachine)
+    private NPCAnimator _animator;
+
+    public WoodcutterMoveToTreeState(WoodcutterView context, WoodcutterStateMachine stateMachine) : base(context, stateMachine)
     {
     }
 
@@ -11,21 +13,20 @@ public class WoodcutterMoveToTreeState : WoodcutterState
 
     public override void Tick()
     {
-        if (Ctx.Agent.remainingDistance <= Ctx.WorkSettings.ChopDistance)
+        if (Ctx.Agent.remainingDistance <= workSettings.ChopDistance)
         {
-            StateMachine.ChangeState(WoodcutterStateKey.ChopTree);
+            StateMachine.ChangeState<WoodcutterChopState>();
         }
     }
 
     private void SetDestination()
     {
         Ctx.Agent.isStopped = false;
-        Ctx.NpcAnimator.SetMove();
-        Ctx.Agent.SetDestination(Ctx.CurrentTree.transform.position);
+        _animator.SetMove();
+        Ctx.Agent.SetDestination(woodCutterFacade.CurrentTree.transform.position);
     }
 
     public override void Exit()
     {
-        
     }
 }

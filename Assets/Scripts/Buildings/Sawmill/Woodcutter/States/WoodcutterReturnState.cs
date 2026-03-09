@@ -1,46 +1,37 @@
-using UnityEngine;
-
 public class WoodcutterReturnState : WoodcutterState
 {
-    private ResourcePartObj _targetDrop;
+    private NPCAnimator _npcAnimator;
 
-    public WoodcutterReturnState(WoodcutterContext context, WoodcutterStateMachine stateMachine) : base(context, stateMachine)
+    public WoodcutterReturnState(WoodcutterView context, WoodcutterStateMachine stateMachine) : base(context, stateMachine)
     {
     }
 
     public override void Enter()
     {
-        _targetDrop = null;
         Ctx.Agent.isStopped = false;
-        Ctx.NpcAnimator.SetMove();
-        Ctx.Agent.SetDestination(Ctx.Sawmill.DepositPoint.position);
+        _npcAnimator.SetMove();
+        Ctx.Agent.SetDestination(woodCutterFacade.Sawmill.DepositPoint.position);
     }
 
     public override void Tick()
     {
-
-        if (Ctx.Agent.remainingDistance > Ctx.WorkSettings.DepositDistance)
+        if (Ctx.Agent.remainingDistance > workSettings.DepositDistance)
             return;
-        
-        Ctx.TryDepositWood();
-        ChangeState();
+
+        woodCutterFacade.TryDepositWood();
+        ChangeNext();
     }
 
-    private void ChangeState()
+    private void ChangeNext()
     {
-        if (Ctx.StorageFull)
-        {
-            StateMachine.ChangeState(WoodcutterStateKey.WaitingStorage);
-        }
+        if (woodCutterFacade.StorageFull)
+            StateMachine.ChangeState<WoodcutterWaitingState>();
         else
-        {
-            StateMachine.ChangeState(WoodcutterStateKey.SearchTree);
-        }
+            StateMachine.ChangeState<WoodcutterSearchTreeState>();
     }
 
     public override void Exit()
     {
-        _targetDrop = null;
-        Ctx.NpcAnimator.SetIdle();
+        _npcAnimator.SetIdle();
     }
 }

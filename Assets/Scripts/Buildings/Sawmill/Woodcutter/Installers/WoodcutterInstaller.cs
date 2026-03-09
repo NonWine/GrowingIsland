@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
@@ -16,19 +17,14 @@ public class WoodcutterInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        // У WoodcutterInstaller.cs додайте:
         Components();
 
         Container.Bind<Sawmill>().FromInstance(_sawmill).AsSingle();
         Container.Bind<NPCAnimator>().AsSingle().WithArguments(1);
-        Container.Bind<WoodcutterSensor>().AsSingle();
-        Container.Bind<WoodcutterContext>().AsSingle().NonLazy();
+        Container.Bind<IWoodcutterSensor>().To<WoodcutterSensor>().AsSingle();
+
+        StateMachine();
         
-        Container.Bind<WoodcutterStateMachine>().FromMethod(ctx => 
-        {
-            var woodContext = ctx.Container.Resolve<WoodcutterContext>();
-            return WoodcutterStateMachine.CreateDefault(woodContext);
-        }).AsSingle();
         Container.BindInterfacesAndSelfTo<WoodCutterFacade>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<NavMeshAgentInitializer>().FromNew().AsSingle();
     }
@@ -39,5 +35,18 @@ public class WoodcutterInstaller : MonoInstaller
         Container.Bind<NavMeshAgent>().FromInstance(woodcutterView.Agent).AsSingle();
         Container.Bind<Animator>().FromInstance(woodcutterView.Animator).AsSingle();
         Container.Bind<WoodcutterWorkSettings>().FromInstance(woodcutterView.Settings).AsSingle();
+    }
+    
+    private void StateMachine()
+    {
+        Container.BindInterfacesAndSelfTo<WoodcutterStateMachine>().AsSingle().NonLazy();
+        Container.Bind<IState>().To<WoodcutterWaitingState>().AsSingle();
+        Container.Bind<IState>().To<WoodcutterChopState>().AsSingle();
+        Container.Bind<IState>().To<WoodcutterCollectState>().AsSingle();
+        Container.Bind<IState>().To<WoodcutterIdleState>().AsSingle();
+        Container.Bind<IState>().To<WoodcutterMoveToTreeState>().AsSingle();
+        Container.Bind<IState>().To<WoodcutterReturnState>().AsSingle();
+        Container.Bind<IState>().To<WoodcutterSearchTreeState>().AsSingle();
+
     }
 }

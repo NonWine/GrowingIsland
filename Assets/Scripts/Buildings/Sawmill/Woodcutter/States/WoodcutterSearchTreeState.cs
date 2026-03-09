@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class WoodcutterSearchTreeState : WoodcutterState
 {
+    private readonly IWoodcutterSensor _sensor;
     private float _nextSearchTime;
 
-    public WoodcutterSearchTreeState(WoodcutterContext context, WoodcutterStateMachine stateMachine) : base(context, stateMachine)
+    public WoodcutterSearchTreeState(WoodcutterView context, WoodcutterStateMachine stateMachine, IWoodcutterSensor sensor) : base(context, stateMachine)
     {
+        _sensor = sensor;
     }
 
     public override void Enter()
@@ -15,23 +17,23 @@ public class WoodcutterSearchTreeState : WoodcutterState
 
     public override void Tick()
     {
-        if (Ctx.StorageFull)
+        if (woodCutterFacade.StorageFull)
         {
-            StateMachine.ChangeState(WoodcutterStateKey.WaitingStorage);
+            StateMachine.ChangeState<WoodcutterWaitingState>();
             return;
         }
 
         if (Time.time < _nextSearchTime)
             return;
 
-        if (Ctx.Sensor.TryFindNearestTree(out var tree))
+        if (_sensor.TryFindNearest(out var tree))
         {
-            Ctx.SetTree(tree);
-            StateMachine.ChangeState(WoodcutterStateKey.MoveToTree);
+            woodCutterFacade.SetTree(tree);
+            StateMachine.ChangeState<WoodcutterMoveToTreeState>();
         }
         else
         {
-            _nextSearchTime = Time.time + Mathf.Max(0.05f, Ctx.WorkSettings.RetargetCooldown);
+            _nextSearchTime = Time.time + Mathf.Max(0.05f, workSettings.RetargetCooldown);
         }
     }
 

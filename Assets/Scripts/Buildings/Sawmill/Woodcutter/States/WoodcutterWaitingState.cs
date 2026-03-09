@@ -1,14 +1,17 @@
 public class WoodcutterWaitingState : WoodcutterState
 {
-    public WoodcutterWaitingState(WoodcutterContext context, WoodcutterStateMachine stateMachine) : base(context, stateMachine)
+    private readonly NPCAnimator _npcAnimator;
+
+    public WoodcutterWaitingState(WoodcutterView context, WoodcutterStateMachine stateMachine, NPCAnimator npcAnimator) : base(context, stateMachine)
     {
+        _npcAnimator = npcAnimator;
     }
 
     public override void Enter()
     {
         Ctx.Agent.isStopped = true;
-        Ctx.NpcAnimator.SetIdle();
-        Ctx.Sawmill.StorageChanged += OnStorageChanged;
+        _npcAnimator.SetIdle();
+        woodCutterFacade.Sawmill.StorageChanged += OnStorageChanged;
     }
 
     public override void Tick()
@@ -17,24 +20,22 @@ public class WoodcutterWaitingState : WoodcutterState
 
     public override void Exit()
     {
-        if (Ctx.Sawmill != null)
-            Ctx.Sawmill.StorageChanged -= OnStorageChanged;
+        if (woodCutterFacade.Sawmill != null)
+            woodCutterFacade.Sawmill.StorageChanged -= OnStorageChanged;
     }
 
     private void OnStorageChanged(int current, int capacity)
     {
-        if (Ctx.Sawmill == null)
+        if (woodCutterFacade.Sawmill == null)
             return;
 
-        if (Ctx.HasWood)
+        if (woodCutterFacade.HasWood)
         {
-            StateMachine.ChangeState(WoodcutterStateKey.ReturnToSawmill);
+            StateMachine.ChangeState<WoodcutterReturnState>();
             return;
         }
 
-        if (!Ctx.StorageFull)
-        {
-            StateMachine.ChangeState(WoodcutterStateKey.SearchTree);
-        }
+        if (!woodCutterFacade.StorageFull)
+            StateMachine.ChangeState<WoodcutterSearchTreeState>();
     }
 }

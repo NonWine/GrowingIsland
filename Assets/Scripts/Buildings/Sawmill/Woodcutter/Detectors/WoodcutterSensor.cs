@@ -6,7 +6,7 @@ using Zenject;
 /// <summary>
 /// Відповідає за виявлення ігрових об'єктів (дерев, ресурсів) у радіусі дії дроворуба.
 /// </summary>
-public class WoodcutterSensor
+public class WoodcutterSensor : IWoodcutterSensor
 {
     private readonly OverlapSphereHandler _overlap;
     private readonly WoodcutterWorkSettings _settings;
@@ -25,7 +25,7 @@ public class WoodcutterSensor
     /// <summary>
     /// Знаходить найближче живе дерево для рубки.
     /// </summary>
-    public bool TryFindNearestTree(out EnvironmentResource tree)
+    public bool TryFindNearest(out EnvironmentResource tree)
     {
         tree = FindNearest<EnvironmentResource>(
             _settings.TreeSearchRadius, 
@@ -34,6 +34,8 @@ public class WoodcutterSensor
             
         return tree != null;
     }
+
+
 
     /// <summary>
     /// Знаходить найближчий випавший ресурс (деревину).
