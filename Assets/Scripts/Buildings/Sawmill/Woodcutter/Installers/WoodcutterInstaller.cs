@@ -34,7 +34,6 @@ public class WoodcutterInstaller : MonoInstaller
         Container.Bind<WoodcutterView>().FromComponentInHierarchy().AsSingle();
         Container.Bind<NavMeshAgent>().FromInstance(woodcutterView.Agent).AsSingle();
         Container.Bind<Animator>().FromInstance(woodcutterView.Animator).AsSingle();
-        Container.Bind<WoodcutterWorkSettings>().FromInstance(woodcutterView.Settings).AsSingle();
     }
     
     private void StateMachine()

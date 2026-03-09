@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using Sirenix.OdinInspector;
+using UnityEngine;
 
-[CreateAssetMenu(fileName = "WoodcutterWorkSettings", menuName = "ScriptableObjects/WoodcutterWorkSettings", order = 1)]
-public class WoodcutterWorkSettings : ScriptableObject
+[InlineProperty, Serializable, HideLabel]
+public class WoodcutterWorkSettings
 {
     [SerializeField] public LayerMask ResourceMask = ~0;
     [SerializeField] public LayerMask ResourcePartMask = ~0;
