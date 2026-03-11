@@ -1,7 +1,7 @@
  using System;
 using UnityEngine;
 
-public class SawmillStorage
+public class SawmillStorage : IStorage
 {
     public event Action<int, int> OnStorageChanged;
 

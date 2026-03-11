@@ -11,7 +11,7 @@ public class WoodcutterWaitingState : WoodcutterState
     {
         Ctx.Agent.isStopped = true;
         _npcAnimator.SetIdle();
-        woodCutterFacade.Sawmill.StorageChanged += OnStorageChanged;
+        woodCutterFacade.StorageChanged += OnStorageChanged;
     }
 
     public override void Tick()
@@ -20,15 +20,11 @@ public class WoodcutterWaitingState : WoodcutterState
 
     public override void Exit()
     {
-        if (woodCutterFacade.Sawmill != null)
-            woodCutterFacade.Sawmill.StorageChanged -= OnStorageChanged;
+        woodCutterFacade.StorageChanged -= OnStorageChanged;
     }
 
     private void OnStorageChanged(int current, int capacity)
     {
-        if (woodCutterFacade.Sawmill == null)
-            return;
-
         if (woodCutterFacade.HasWood)
         {
             ChangeState<WoodcutterReturnState>();

@@ -15,7 +15,9 @@ public class WoodcutterWorkSettings
     public float RetargetCooldown = 0.5f;
     public float TreeDamage;
     public int WoodPerHit = 1;
-    
+    public float ChopInterval = 1.5f;
+    public int CarryCapacity = 5;
+
     public WoodcutterWorkSettings() { }
 
     public WoodcutterWorkSettings(WoodcutterWorkSettings template)
@@ -30,6 +32,8 @@ public class WoodcutterWorkSettings
         RetargetCooldown = template.RetargetCooldown;
         TreeDamage = template.TreeDamage;
         WoodPerHit = template.WoodPerHit;
+        ChopInterval = template.ChopInterval;
+        CarryCapacity = template.CarryCapacity;
     }
 
 

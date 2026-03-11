@@ -8,7 +8,7 @@ public class WoodcutterReturnState : WoodcutterState
     {
         Ctx.Agent.isStopped = false;
         _npcAnimator.SetMove();
-        Ctx.Agent.SetDestination(woodCutterFacade.Sawmill.DepositPoint.position);
+        Ctx.Agent.SetDestination(woodCutterFacade.DepositPoint.position);
     }
 
     public override void Tick()
