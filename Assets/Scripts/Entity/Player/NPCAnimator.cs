@@ -2,11 +2,15 @@
 
 public class NPCAnimator : IEntityAnimateable
 {
+    private readonly Animator animator;
     private const string MOVING_KEY = "Speed";
     private const string STATE_KEY = "State";
     private const string STATE_LAYER_KEY = "StateBehavior";
-    private readonly Animator animator;
     private readonly int attackStateIndex;
+
+    public Animator Animator => animator;
+    
+    
     public NPCAnimator(Animator animator, int attackStateIndex)
     {
         this.animator = animator;
@@ -38,4 +42,3 @@ public class NPCAnimator : IEntityAnimateable
         UpdateAnimator();
     }
 }
-

@@ -13,6 +13,8 @@ public class WoodcutterChopState : WoodcutterState
 
     public override void Enter()
     {
+        _npcAnimator.Animator.SetFloat("AttackSpeed", 1f / woodCutterFacade.ChopInterval);
+        Ctx.AnimationEventsView.OnDamageTriger.AddListener(SetDamage);
         _timer = 0f;
         Ctx.Agent.isStopped = true;
         _npcAnimator.SetAttack();
@@ -20,12 +22,14 @@ public class WoodcutterChopState : WoodcutterState
 
     public override void Tick()
     {
-        _timer += Time.deltaTime;
-        if (_timer < woodCutterFacade.ChopInterval)
-            return;
+        
+    }
 
-        _timer = 0f;
+
+    private void SetDamage()
+    {
         Debug.Log("Chop Tree damage: " + workSettings.TreeDamage );
+
         woodCutterFacade.CurrentTree.GetDamage(workSettings.TreeDamage);
 
         if (!woodCutterFacade.CurrentTree.isAlive)
@@ -37,6 +41,7 @@ public class WoodcutterChopState : WoodcutterState
 
     public override void Exit()
     {
+        Ctx.AnimationEventsView.OnDamageTriger.RemoveListener(SetDamage);
         _npcAnimator.SetIdle();
     }
 }

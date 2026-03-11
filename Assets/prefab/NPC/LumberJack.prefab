@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5151313298476249276}
   - component: {fileID: 4260682501464150737}
+  - component: {fileID: 8616404601974535688}
   m_Layer: 0
   m_Name: NPC_Lumberjack5
   m_TagString: Untagged
@@ -94,6 +95,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8616404601974535688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70139564571669608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77ffdb6cd6894ae1bd1ad40ab18d185d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnDamageTriger:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &413335749892279540
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,6 +499,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Agent>k__BackingField: {fileID: 966686033726180774}
   <Animator>k__BackingField: {fileID: 4260682501464150737}
+  <AnimationEventsView>k__BackingField: {fileID: 8616404601974535688}
 --- !u!114 &767084963754801810
 MonoBehaviour:
   m_ObjectHideFlags: 0
