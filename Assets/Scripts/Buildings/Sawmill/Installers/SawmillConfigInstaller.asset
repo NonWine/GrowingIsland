@@ -9,13 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2233718bdd186314d95ab25ad17e454a, type: 3}
-  m_Name: SawmillConfig
+  m_Script: {fileID: 11500000, guid: d0bc81ce3d88abd4d84d009f4426f1d9, type: 3}
+  m_Name: SawmillConfigInstaller
   m_EditorClassIdentifier: 
-  _levels:
-  - StorageCapacity: 5
-    ChopInterval: 1.5
-    CarryCapacity: 3
-  - StorageCapacity: 10
-    ChopInterval: 1.5
-    CarryCapacity: 2
+  _config: {fileID: 0}
