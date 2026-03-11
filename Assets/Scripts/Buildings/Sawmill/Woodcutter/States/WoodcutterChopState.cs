@@ -1,11 +1,12 @@
 using UnityEngine;
 
+[System.Serializable]
 public class WoodcutterChopState : WoodcutterState
 {
     private readonly NPCAnimator _npcAnimator;
     private float _timer;
 
-    public WoodcutterChopState(WoodcutterView context, WoodcutterStateMachine stateMachine, NPCAnimator npcAnimator) : base(context, stateMachine)
+    public WoodcutterChopState(NPCAnimator npcAnimator)
     {
         _npcAnimator = npcAnimator;
     }
@@ -24,12 +25,13 @@ public class WoodcutterChopState : WoodcutterState
             return;
 
         _timer = 0f;
+        Debug.Log("Chop Tree damage: " + workSettings.TreeDamage );
         woodCutterFacade.CurrentTree.GetDamage(workSettings.TreeDamage);
 
         if (!woodCutterFacade.CurrentTree.isAlive)
         {
             woodCutterFacade.ClearTree();
-            StateMachine.ChangeState<WoodcutterCollectState>();
+            ChangeState<WoodcutterCollectState>();
         }
     }
 

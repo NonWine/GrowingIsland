@@ -1,17 +1,17 @@
+using System;
 using Zenject;
 
 [System.Serializable]
 public abstract class WoodcutterState : IState
 {
-    [Inject] protected readonly WoodCutterFacade woodCutterFacade;
-    [Inject] protected readonly WoodcutterWorkSettings workSettings;
-    protected readonly WoodcutterView Ctx;
-    protected readonly WoodcutterStateMachine StateMachine;
+    [Inject] protected WoodCutterFacade woodCutterFacade;
+    [Inject] protected WoodcutterWorkSettings workSettings;
+    [Inject] protected WoodcutterView Ctx;
+    [Inject] protected SignalBus signalBus;
 
-    protected WoodcutterState(WoodcutterView context, WoodcutterStateMachine stateMachine)
+    protected void ChangeState<T>() where T : IState
     {
-        Ctx = context;
-        StateMachine = stateMachine;
+        signalBus.Fire(new ChangeWoodcutterStateSignal { TargetStateType = typeof(T) });
     }
 
     public abstract void Enter();

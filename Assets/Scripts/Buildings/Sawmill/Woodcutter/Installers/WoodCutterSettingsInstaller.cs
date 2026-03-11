@@ -9,6 +9,10 @@ public class WoodCutterSettingsInstaller : ScriptableObjectInstaller<WoodCutterS
    
     public override void InstallBindings()
     {
-        Container.Bind<WoodcutterWorkSettings>().AsSingle().NonLazy();
+        var runtimeSettings = woodcutterWorkSettings != null
+            ? new WoodcutterWorkSettings(woodcutterWorkSettings)
+            : new WoodcutterWorkSettings();
+
+        Container.BindInstance(runtimeSettings);
     }
 }

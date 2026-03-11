@@ -9,6 +9,7 @@ public class BootControllerInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+        SignalBusInstaller.Install(Container);
         BindHandlers();
         BindGameController();
         RegisterPlayer();

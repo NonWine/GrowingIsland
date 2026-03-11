@@ -25,5 +25,5 @@ MonoBehaviour:
     LootCollectionRadius: 3
     DropDetectionRadius: 25
     RetargetCooldown: 0.5
-    TreeDamage: 1
+    TreeDamage: 15
     WoodPerHit: 1

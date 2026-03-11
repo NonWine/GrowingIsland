@@ -2,9 +2,8 @@
 using UnityEngine;
 using Zenject;
 
-public class WoodCutterFacade : ITickable
+public class WoodCutterFacade
 {
-    private readonly WoodcutterStateMachine stateMachine;
     private readonly Sawmill sawmill;
 
     public Sawmill Sawmill => sawmill;
@@ -14,9 +13,8 @@ public class WoodCutterFacade : ITickable
    
 
 
-    private WoodCutterFacade(WoodcutterStateMachine stateMachine, Sawmill sawmill)
+    private WoodCutterFacade( Sawmill sawmill)
     {
-        this.stateMachine = stateMachine;
         this.sawmill = sawmill;
     }
     
@@ -46,8 +44,4 @@ public class WoodCutterFacade : ITickable
     }
     #endregion
     
-    public void Tick()
-    {
-        stateMachine?.Tick();
-    }
 }

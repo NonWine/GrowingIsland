@@ -5,7 +5,7 @@ public class WoodcutterSearchTreeState : WoodcutterState
     private readonly IWoodcutterSensor _sensor;
     private float _nextSearchTime;
 
-    public WoodcutterSearchTreeState(WoodcutterView context, WoodcutterStateMachine stateMachine, IWoodcutterSensor sensor) : base(context, stateMachine)
+    public WoodcutterSearchTreeState(IWoodcutterSensor sensor)
     {
         _sensor = sensor;
     }
@@ -19,7 +19,7 @@ public class WoodcutterSearchTreeState : WoodcutterState
     {
         if (woodCutterFacade.StorageFull)
         {
-            StateMachine.ChangeState<WoodcutterWaitingState>();
+            ChangeState<WoodcutterWaitingState>();
             return;
         }
 
@@ -29,7 +29,7 @@ public class WoodcutterSearchTreeState : WoodcutterState
         if (_sensor.TryFindNearest(out var tree))
         {
             woodCutterFacade.SetTree(tree);
-            StateMachine.ChangeState<WoodcutterMoveToTreeState>();
+            ChangeState<WoodcutterMoveToTreeState>();
         }
         else
         {

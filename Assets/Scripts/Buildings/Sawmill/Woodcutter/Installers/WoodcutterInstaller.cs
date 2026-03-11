@@ -38,7 +38,7 @@ public class WoodcutterInstaller : MonoInstaller
     
     private void StateMachine()
     {
-        Container.BindInterfacesAndSelfTo<WoodcutterStateMachine>().AsSingle().NonLazy();
+        Container.DeclareSignal<ChangeWoodcutterStateSignal>();
         Container.Bind<IState>().To<WoodcutterWaitingState>().AsSingle();
         Container.Bind<IState>().To<WoodcutterChopState>().AsSingle();
         Container.Bind<IState>().To<WoodcutterCollectState>().AsSingle();
@@ -46,6 +46,7 @@ public class WoodcutterInstaller : MonoInstaller
         Container.Bind<IState>().To<WoodcutterMoveToTreeState>().AsSingle();
         Container.Bind<IState>().To<WoodcutterReturnState>().AsSingle();
         Container.Bind<IState>().To<WoodcutterSearchTreeState>().AsSingle();
+        Container.BindInterfacesAndSelfTo<WoodcutterStateMachine>().AsSingle().NonLazy();
 
     }
 }

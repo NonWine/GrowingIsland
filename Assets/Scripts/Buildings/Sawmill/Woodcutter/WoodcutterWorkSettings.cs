@@ -13,6 +13,24 @@ public class WoodcutterWorkSettings
     public float LootCollectionRadius = 3f;
     public float DropDetectionRadius = 25f;
     public float RetargetCooldown = 0.5f;
-    public float TreeDamage = 1f;
+    public float TreeDamage;
     public int WoodPerHit = 1;
+    
+    public WoodcutterWorkSettings() { }
+
+    public WoodcutterWorkSettings(WoodcutterWorkSettings template)
+    {
+        ResourceMask = template.ResourceMask;
+        ResourcePartMask = template.ResourcePartMask;
+        TreeSearchRadius = template.TreeSearchRadius;
+        ChopDistance = template.ChopDistance;
+        DepositDistance = template.DepositDistance;
+        LootCollectionRadius = template.LootCollectionRadius;
+        DropDetectionRadius = template.DropDetectionRadius;
+        RetargetCooldown = template.RetargetCooldown;
+        TreeDamage = template.TreeDamage;
+        WoodPerHit = template.WoodPerHit;
+    }
+
+
 }

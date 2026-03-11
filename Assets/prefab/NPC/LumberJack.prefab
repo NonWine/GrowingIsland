@@ -359,6 +359,7 @@ GameObject:
   - component: {fileID: 1040056560557771822}
   - component: {fileID: 767084963754801810}
   - component: {fileID: 3428317033834664141}
+  - component: {fileID: 3363044810557689159}
   m_Layer: 0
   m_Name: LumberJack
   m_TagString: Untagged
@@ -514,6 +515,18 @@ MonoBehaviour:
   _installerPrefabs: []
   _autoRun: 1
   _kernel: {fileID: 0}
+--- !u!114 &3363044810557689159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061448406986322893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d54b8d117805435e81cf7db1adaca90f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1237885657983385674
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,10 +1,8 @@
+using Zenject;
+
 public class WoodcutterMoveToTreeState : WoodcutterState
 {
-    private NPCAnimator _animator;
-
-    public WoodcutterMoveToTreeState(WoodcutterView context, WoodcutterStateMachine stateMachine) : base(context, stateMachine)
-    {
-    }
+    [Inject] private NPCAnimator _animator;
 
     public override void Enter()
     {
@@ -15,7 +13,7 @@ public class WoodcutterMoveToTreeState : WoodcutterState
     {
         if (Ctx.Agent.remainingDistance <= workSettings.ChopDistance)
         {
-            StateMachine.ChangeState<WoodcutterChopState>();
+            ChangeState<WoodcutterChopState>();
         }
     }
 

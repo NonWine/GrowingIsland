@@ -2,7 +2,7 @@ public class WoodcutterWaitingState : WoodcutterState
 {
     private readonly NPCAnimator _npcAnimator;
 
-    public WoodcutterWaitingState(WoodcutterView context, WoodcutterStateMachine stateMachine, NPCAnimator npcAnimator) : base(context, stateMachine)
+    public WoodcutterWaitingState(NPCAnimator npcAnimator)
     {
         _npcAnimator = npcAnimator;
     }
@@ -31,11 +31,11 @@ public class WoodcutterWaitingState : WoodcutterState
 
         if (woodCutterFacade.HasWood)
         {
-            StateMachine.ChangeState<WoodcutterReturnState>();
+            ChangeState<WoodcutterReturnState>();
             return;
         }
 
         if (!woodCutterFacade.StorageFull)
-            StateMachine.ChangeState<WoodcutterSearchTreeState>();
+            ChangeState<WoodcutterSearchTreeState>();
     }
 }

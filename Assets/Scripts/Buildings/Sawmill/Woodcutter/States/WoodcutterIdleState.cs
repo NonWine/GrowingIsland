@@ -1,18 +1,15 @@
 public class WoodcutterIdleState : WoodcutterState
 {
-    public WoodcutterIdleState(WoodcutterView context, WoodcutterStateMachine stateMachine) : base(context, stateMachine)
-    {
-    }
 
     public override void Enter()
     {
         if (woodCutterFacade.StorageFull)
         {
-            StateMachine.ChangeState<WoodcutterWaitingState>();
+            ChangeState<WoodcutterWaitingState>();
             return;
         }
 
-        StateMachine.ChangeState<WoodcutterSearchTreeState>();
+        ChangeState<WoodcutterSearchTreeState>();
     }
 
     public override void Tick()

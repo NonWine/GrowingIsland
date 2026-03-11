@@ -1,10 +1,8 @@
+using Zenject;
+
 public class WoodcutterReturnState : WoodcutterState
 {
-    private NPCAnimator _npcAnimator;
-
-    public WoodcutterReturnState(WoodcutterView context, WoodcutterStateMachine stateMachine) : base(context, stateMachine)
-    {
-    }
+    [Inject] private NPCAnimator _npcAnimator;
 
     public override void Enter()
     {
@@ -25,9 +23,9 @@ public class WoodcutterReturnState : WoodcutterState
     private void ChangeNext()
     {
         if (woodCutterFacade.StorageFull)
-            StateMachine.ChangeState<WoodcutterWaitingState>();
+            ChangeState<WoodcutterWaitingState>();
         else
-            StateMachine.ChangeState<WoodcutterSearchTreeState>();
+            ChangeState<WoodcutterSearchTreeState>();
     }
 
     public override void Exit()

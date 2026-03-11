@@ -6,7 +6,7 @@ public class WoodcutterCollectState : WoodcutterState
     private float _timer;
     private const float TimeAwait = 0.5f;
 
-    public WoodcutterCollectState(WoodcutterView context, WoodcutterStateMachine stateMachine, IWoodcutterSensor sensor) : base(context, stateMachine)
+    public WoodcutterCollectState(IWoodcutterSensor sensor)
     {
         _sensor = sensor;
     }
@@ -24,9 +24,9 @@ public class WoodcutterCollectState : WoodcutterState
         PickUpWood();
 
         if (woodCutterFacade.CarryCapacity <= woodCutterFacade.CarriedWood)
-            StateMachine.ChangeState<WoodcutterReturnState>();
+            ChangeState<WoodcutterReturnState>();
         else
-            StateMachine.ChangeState<WoodcutterSearchTreeState>();
+            ChangeState<WoodcutterSearchTreeState>();
     }
 
     private void PickUpWood()

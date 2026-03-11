@@ -1,37 +1,28 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using UnityEngine;
 using Zenject;
 
+[System.Serializable]
 public class WoodcutterStateMachine : ITickable, IInitializable, IDisposable
 {
-    private readonly Dictionary<Type, WoodcutterState> _states = new();
+    private readonly Dictionary<Type, IState> _states = new();
+    private readonly SignalBus signalBus;
 
-    [ShowInInspector] public WoodcutterState CurrentState { get; private set; }
+    [ShowInInspector] public IState CurrentState { get; private set; }
 
-    public WoodcutterStateMachine(List<WoodcutterState> states)
+    public WoodcutterStateMachine(SignalBus signalBus, List<IState> states)
     {
+        this.signalBus = signalBus;
         foreach (var state in states)
             _states[state.GetType()] = state;
     }
 
     public void Initialize()
     {
+        signalBus.Subscribe<ChangeWoodcutterStateSignal>(OnChangeStateSignal);
         ChangeState<WoodcutterIdleState>();
-    }
-
-    public void ChangeState<T>() where T : WoodcutterState
-    {
-        var type = typeof(T);
-        if (!_states.TryGetValue(type, out var next))
-        {
-            UnityEngine.Debug.LogError($"State {type} not registered!");
-            return;
-        }
-
-        CurrentState?.Exit();
-        CurrentState = next;
-        CurrentState.Enter();
     }
 
     public void Tick()
@@ -42,5 +33,26 @@ public class WoodcutterStateMachine : ITickable, IInitializable, IDisposable
     public void Dispose()
     {
         CurrentState?.Exit();
+        signalBus.TryUnsubscribe<ChangeWoodcutterStateSignal>(OnChangeStateSignal);
+    }
+
+    private void OnChangeStateSignal(ChangeWoodcutterStateSignal signal)
+    {
+        ChangeState(signal.TargetStateType);
+    }
+
+    public void ChangeState<T>() where T : IState => ChangeState(typeof(T));
+
+    private void ChangeState(Type stateType)
+    {
+        if (!_states.TryGetValue(stateType, out var next))
+        {
+            UnityEngine.Debug.LogError($"State {stateType} not registered!");
+            return;
+        }
+
+        CurrentState?.Exit();
+        CurrentState = next;
+        CurrentState.Enter();
     }
 }
