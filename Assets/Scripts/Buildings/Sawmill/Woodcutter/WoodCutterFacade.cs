@@ -7,6 +7,7 @@ public class WoodCutterFacade : IDisposable , IInitializable
 {
     private readonly IWoodcutterWorkplace workplace;
     private readonly WoodcutterWorkSettings workSettings;
+    private readonly Action<int, int> _storageChangedRelay;
 
     [ShowInInspector, ReadOnly] public EnvironmentResource CurrentTree { get; private set; }
     [ShowInInspector, ReadOnly] public int CarriedWood { get; private set; }
@@ -15,6 +16,7 @@ public class WoodCutterFacade : IDisposable , IInitializable
     {
         this.workplace = workplace;
         this.workSettings = workSettings;
+        _storageChangedRelay = (current, capacity) => StorageChanged?.Invoke(current, capacity);
     }
 
     public class Factory : PlaceholderFactory<IWoodcutterWorkplace, WoodcutterView> { }
@@ -45,20 +47,20 @@ public class WoodCutterFacade : IDisposable , IInitializable
         }
     }
 
-    public void DepositOneWood()
+    public void DepositOneWood(float impactStrength = 1f)
     {
-        var stored = workplace.DepositOneWood();
+        var stored = workplace.DepositOneWood(impactStrength);
         if (stored > 0) RemoveWood(stored);
     }
     #endregion
 
     public void Dispose()
     {
-        workplace.StorageChanged -= (current, capacity) => StorageChanged?.Invoke(current, capacity);
+        workplace.StorageChanged -= _storageChangedRelay;
     }
 
     public void Initialize()
     {
-        workplace.StorageChanged += (current, capacity) => StorageChanged?.Invoke(current, capacity);
+        workplace.StorageChanged += _storageChangedRelay;
     }
 }

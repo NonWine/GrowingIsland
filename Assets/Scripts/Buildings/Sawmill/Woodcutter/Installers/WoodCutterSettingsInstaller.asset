@@ -30,9 +30,9 @@ MonoBehaviour:
     ChopInterval: 1
     CarryCapacity: 5
     DepositAnimation:
-      LogPrefab: {fileID: 919132149155446097, guid: d7f996e6af6ca0046b6c9af4e43b798a,
+      LogPrefab: {fileID: 568719726346361867, guid: b5e1ce8434b81a740aaa9a7b62b3b047,
         type: 3}
-      RotationDuration: 0.3
-      DelayBetweenLogs: 0.15
-      LogFlightDuration: 0.4
+      RotationDuration: 0.12
+      DelayBetweenLogs: 0.04
+      LogFlightDuration: 0.2
       LogFlightEase: 6

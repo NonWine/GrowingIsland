@@ -7,6 +7,8 @@ public interface IStorage
     int Current { get; }
     bool IsFull { get; }
     bool TryStore(int amount, out int stored);
+    bool TryStoreSilently(int amount, out int stored);
+    void NotifyChanged();
     int TakeAll();
     void SetCapacity(int capacity);
 }

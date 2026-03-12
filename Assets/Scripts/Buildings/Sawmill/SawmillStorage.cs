@@ -17,6 +17,15 @@ public class SawmillStorage : IStorage , IInitializable
     }
 
     public bool TryStore(int amount, out int stored)
+        => TryStoreInternal(amount, out stored, notify: true);
+
+    public bool TryStoreSilently(int amount, out int stored)
+        => TryStoreInternal(amount, out stored, notify: false);
+
+    public void NotifyChanged()
+        => OnStorageChanged?.Invoke(Current, Capacity);
+
+    private bool TryStoreInternal(int amount, out int stored, bool notify)
     {
         stored = 0;
 
@@ -30,7 +39,9 @@ public class SawmillStorage : IStorage , IInitializable
             return false;
 
         Current += stored;
-        OnStorageChanged?.Invoke(Current, Capacity);
+        if (notify)
+            OnStorageChanged?.Invoke(Current, Capacity);
+
         return true;
     }
 

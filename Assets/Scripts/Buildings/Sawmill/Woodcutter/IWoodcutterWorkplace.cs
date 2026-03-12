@@ -7,7 +7,7 @@ public interface IWoodcutterWorkplace
     Vector3 WorkPlacePosition { get; }
     bool IsStorageFull { get; }
     event Action<int, int> StorageChanged;
-    event Action WoodDeposited;
+    event Action<float> WoodDeposited;
     int DepositWood(int amount);
-    int DepositOneWood();
+    int DepositOneWood(float impactStrength = 1f);
 }

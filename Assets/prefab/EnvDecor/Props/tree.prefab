@@ -49,6 +49,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _resourceWorld: {fileID: 11400000, guid: ef2874d161054134ab040017f794ebd1, type: 2}
   _respawnTime: 10
+  _animSettings:
+    LeanAngle: 10
+    HitPushDuration: 0.14
+    ReturnDuration: 0.26
+    ScaleBump: 1.02
+    ReboundElasticity: 0.25
+    ReboundPeriod: 0.08
+    ShakeDuration: 0.18
+    ShakeStrength: {x: 2, y: 0.3, z: 2}
+    ShakeVibrato: 12
+    ShakeRandomness: 80
 --- !u!65 &1572708498610918927
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -108,17 +119,17 @@ PrefabInstance:
     - target: {fileID: 73194043851096395, guid: 4d7f599b655a8ad48875a9180166b8f5,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.7585142
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 73194043851096395, guid: 4d7f599b655a8ad48875a9180166b8f5,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.7585142
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 73194043851096395, guid: 4d7f599b655a8ad48875a9180166b8f5,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.7585142
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 73194043851096395, guid: 4d7f599b655a8ad48875a9180166b8f5,
         type: 3}
@@ -169,6 +180,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 73194043851096395, guid: 4d7f599b655a8ad48875a9180166b8f5,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7742693667724147226, guid: 4d7f599b655a8ad48875a9180166b8f5,
         type: 3}

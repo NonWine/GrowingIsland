@@ -12,7 +12,7 @@ public class SawmillFacade : IWoodcutterWorkplace
         remove => storage.OnStorageChanged -= value;
     }
 
-    public event Action WoodDeposited;
+    public event Action<float> WoodDeposited;
 
     public Transform DepositPoint => view.DepositPoint;
     public Vector3 WorkPlacePosition => view.transform.position;
@@ -35,10 +35,16 @@ public class SawmillFacade : IWoodcutterWorkplace
         return stored;
     }
 
-    public int DepositOneWood()
+    public int DepositOneWood(float impactStrength = 1f)
     {
-        storage.TryStore(1, out var stored);
-        if (stored > 0) WoodDeposited?.Invoke();
+        storage.TryStoreSilently(1, out var stored);
+
+        if (stored > 0)
+        {
+            WoodDeposited?.Invoke(impactStrength);
+            storage.NotifyChanged();
+        }
+
         return stored;
     }
 }
