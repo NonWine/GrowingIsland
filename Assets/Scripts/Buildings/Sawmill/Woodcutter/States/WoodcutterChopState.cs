@@ -4,19 +4,21 @@ using UnityEngine;
 public class WoodcutterChopState : WoodcutterState
 {
     private readonly NPCAnimator _npcAnimator;
+    private WoodcutterWorkSettings woodcutterWorkSettings;
     private float _timer;
 
-    public WoodcutterChopState(NPCAnimator npcAnimator)
+    public WoodcutterChopState(NPCAnimator npcAnimator, WoodcutterWorkSettings woodcutterWorkSettings)
     {
         _npcAnimator = npcAnimator;
+        this.woodcutterWorkSettings = woodcutterWorkSettings;
     }
 
     public override void Enter()
     {
-        _npcAnimator.Animator.SetFloat("AttackSpeed", 1f / woodCutterFacade.ChopInterval);
-        Ctx.AnimationEventsView.OnDamageTriger.AddListener(SetDamage);
+        _npcAnimator.Animator.SetFloat("AttackSpeed", 1f / woodcutterWorkSettings.ChopInterval);
+        view.AnimationEventsView.OnDamageTriger.AddListener(SetDamage);
         _timer = 0f;
-        Ctx.Agent.isStopped = true;
+        view.Agent.isStopped = true;
         _npcAnimator.SetAttack();
     }
 
@@ -28,8 +30,6 @@ public class WoodcutterChopState : WoodcutterState
 
     private void SetDamage()
     {
-        Debug.Log("Chop Tree damage: " + workSettings.TreeDamage );
-
         woodCutterFacade.CurrentTree.GetDamage(workSettings.TreeDamage);
 
         if (!woodCutterFacade.CurrentTree.isAlive)
@@ -41,7 +41,7 @@ public class WoodcutterChopState : WoodcutterState
 
     public override void Exit()
     {
-        Ctx.AnimationEventsView.OnDamageTriger.RemoveListener(SetDamage);
+        view.AnimationEventsView.OnDamageTriger.RemoveListener(SetDamage);
         _npcAnimator.SetIdle();
     }
 }

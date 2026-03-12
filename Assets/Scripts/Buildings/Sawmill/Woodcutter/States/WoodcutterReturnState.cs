@@ -6,26 +6,17 @@ public class WoodcutterReturnState : WoodcutterState
 
     public override void Enter()
     {
-        Ctx.Agent.isStopped = false;
+        view.Agent.isStopped = false;
         _npcAnimator.SetMove();
-        Ctx.Agent.SetDestination(woodCutterFacade.DepositPoint.position);
+        view.Agent.SetDestination(woodCutterFacade.DepositPoint.position);
     }
 
     public override void Tick()
     {
-        if (Ctx.Agent.remainingDistance > workSettings.DepositDistance)
+        if (view.Agent.remainingDistance > workSettings.DepositDistance)
             return;
 
-        woodCutterFacade.TryDepositWood();
-        ChangeNext();
-    }
-
-    private void ChangeNext()
-    {
-        if (woodCutterFacade.StorageFull)
-            ChangeState<WoodcutterWaitingState>();
-        else
-            ChangeState<WoodcutterSearchTreeState>();
+        ChangeState<WoodcutterDepositState>();
     }
 
     public override void Exit()

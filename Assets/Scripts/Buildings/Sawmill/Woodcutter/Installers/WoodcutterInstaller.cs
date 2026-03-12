@@ -7,19 +7,19 @@ public class WoodcutterInstaller : MonoInstaller
 {
     [SerializeField] private WoodcutterView woodcutterView;
 
-    private Sawmill _sawmill;
+    private IWoodcutterWorkplace _workplace;
 
     [Inject]
-    public void Construct(Sawmill sawmill)
+    public void Construct(IWoodcutterWorkplace workplace)
     {
-        _sawmill = sawmill;
+        _workplace = workplace;
     }
 
     public override void InstallBindings()
     {
         Components();
 
-        Container.Bind<Sawmill>().FromInstance(_sawmill).AsSingle();
+        Container.Bind<IWoodcutterWorkplace>().FromInstance(_workplace).AsSingle();
         Container.Bind<NPCAnimator>().AsSingle().WithArguments(1);
         Container.Bind<IWoodcutterSensor>().To<WoodcutterSensor>().AsSingle();
 
@@ -39,6 +39,7 @@ public class WoodcutterInstaller : MonoInstaller
     private void StateMachine()
     {
         Container.DeclareSignal<ChangeWoodcutterStateSignal>();
+        Container.Bind<IState>().To<WoodcutterDepositState>().AsSingle();
         Container.Bind<IState>().To<WoodcutterWaitingState>().AsSingle();
         Container.Bind<IState>().To<WoodcutterChopState>().AsSingle();
         Container.Bind<IState>().To<WoodcutterCollectState>().AsSingle();

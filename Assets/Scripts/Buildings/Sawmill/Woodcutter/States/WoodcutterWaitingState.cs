@@ -9,7 +9,7 @@ public class WoodcutterWaitingState : WoodcutterState
 
     public override void Enter()
     {
-        Ctx.Agent.isStopped = true;
+        view.Agent.isStopped = true;
         _npcAnimator.SetIdle();
         woodCutterFacade.StorageChanged += OnStorageChanged;
     }
@@ -31,7 +31,7 @@ public class WoodcutterWaitingState : WoodcutterState
             return;
         }
 
-        if (!woodCutterFacade.StorageFull)
+        if (!woodCutterFacade.WorkPlaceStorageFull)
             ChangeState<WoodcutterSearchTreeState>();
     }
 }

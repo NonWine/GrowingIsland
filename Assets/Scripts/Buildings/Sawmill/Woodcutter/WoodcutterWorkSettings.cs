@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -18,6 +19,8 @@ public class WoodcutterWorkSettings
     public float ChopInterval = 1.5f;
     public int CarryCapacity = 5;
 
+    public DepositAnimationSettings DepositAnimation = new();
+
     public WoodcutterWorkSettings() { }
 
     public WoodcutterWorkSettings(WoodcutterWorkSettings template)
@@ -34,7 +37,16 @@ public class WoodcutterWorkSettings
         WoodPerHit = template.WoodPerHit;
         ChopInterval = template.ChopInterval;
         CarryCapacity = template.CarryCapacity;
+        DepositAnimation = template.DepositAnimation;
     }
+}
 
-
+[Serializable]
+public class DepositAnimationSettings
+{
+    public GameObject LogPrefab;
+    public float RotationDuration = 0.12f;
+    public float DelayBetweenLogs = 0.08f;
+    public float LogFlightDuration = 0.28f;
+    public Ease LogFlightEase = Ease.InBack;
 }

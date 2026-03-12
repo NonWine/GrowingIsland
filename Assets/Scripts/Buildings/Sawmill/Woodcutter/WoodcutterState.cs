@@ -6,7 +6,7 @@ public abstract class WoodcutterState : IState
 {
     [Inject] protected WoodCutterFacade woodCutterFacade;
     [Inject] protected WoodcutterWorkSettings workSettings;
-    [Inject] protected WoodcutterView Ctx;
+    [Inject] protected WoodcutterView view;
     [Inject] protected SignalBus signalBus;
 
     protected void ChangeState<T>() where T : IState

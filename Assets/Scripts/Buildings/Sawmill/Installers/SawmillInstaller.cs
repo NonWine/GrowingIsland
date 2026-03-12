@@ -6,15 +6,16 @@ public class SawmillInstaller : MonoInstaller
     {
         Container.Bind<SawmillView>().FromComponentInHierarchy().AsSingle();
 
-        Container.Bind<IStorage>().FromMethod(ctx =>
+        Container.BindInterfacesAndSelfTo<SawmillStorage>().FromMethod(ctx =>
         {
             var config = ctx.Container.Resolve<SawmillConfig>();
             return new SawmillStorage(config.GetLevel(config.StartLevelIndex).StorageCapacity);
         }).AsSingle();
-
-        Container.Bind<Sawmill>().AsSingle();
+        
         Container.Bind<SawmillUpgrader>().AsSingle();
         Container.BindInterfacesAndSelfTo<SawmillReward>().AsSingle();
+        
+        Container.Bind<IWoodcutterWorkplace>().To<SawmillFacade>().AsSingle();
         Container.BindInterfacesAndSelfTo<WoodcutterSpawner>().AsSingle();
     }
 }

@@ -1,7 +1,8 @@
  using System;
 using UnityEngine;
+using Zenject;
 
-public class SawmillStorage : IStorage
+public class SawmillStorage : IStorage , IInitializable
 {
     public event Action<int, int> OnStorageChanged;
 
@@ -46,5 +47,10 @@ public class SawmillStorage : IStorage
         Capacity = Mathf.Max(0, capacity);
         Current = Mathf.Min(Current, Capacity);
         OnStorageChanged?.Invoke(Current, Capacity);
+    }
+
+    public void Initialize()
+    {
+        SetCapacity(Capacity);
     }
 }

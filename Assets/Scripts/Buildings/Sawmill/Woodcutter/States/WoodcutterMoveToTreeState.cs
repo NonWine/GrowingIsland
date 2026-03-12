@@ -11,7 +11,7 @@ public class WoodcutterMoveToTreeState : WoodcutterState
 
     public override void Tick()
     {
-        if (Ctx.Agent.remainingDistance <= workSettings.ChopDistance)
+        if (view.Agent.remainingDistance <= workSettings.ChopDistance)
         {
             ChangeState<WoodcutterChopState>();
         }
@@ -19,9 +19,9 @@ public class WoodcutterMoveToTreeState : WoodcutterState
 
     private void SetDestination()
     {
-        Ctx.Agent.isStopped = false;
+        view.Agent.isStopped = false;
         _animator.SetMove();
-        Ctx.Agent.SetDestination(woodCutterFacade.CurrentTree.transform.position);
+        view.Agent.SetDestination(woodCutterFacade.CurrentTree.transform.position);
     }
 
     public override void Exit()

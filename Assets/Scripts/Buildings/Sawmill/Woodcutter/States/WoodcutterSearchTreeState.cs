@@ -17,7 +17,7 @@ public class WoodcutterSearchTreeState : WoodcutterState
 
     public override void Tick()
     {
-        if (woodCutterFacade.StorageFull)
+        if (woodCutterFacade.WorkPlaceStorageFull)
         {
             ChangeState<WoodcutterWaitingState>();
             return;

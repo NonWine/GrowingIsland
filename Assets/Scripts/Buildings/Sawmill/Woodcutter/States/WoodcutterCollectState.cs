@@ -3,12 +3,14 @@ using UnityEngine;
 public class WoodcutterCollectState : WoodcutterState
 {
     private readonly IWoodcutterSensor _sensor;
+    private readonly WoodcutterWorkSettings woodcutterWorkSettings;
     private float _timer;
     private const float TimeAwait = 0.5f;
 
-    public WoodcutterCollectState(IWoodcutterSensor sensor)
+    public WoodcutterCollectState(IWoodcutterSensor sensor, WoodcutterWorkSettings workSettings)
     {
         _sensor = sensor;
+        woodcutterWorkSettings = workSettings;
     }
 
     public override void Enter()
@@ -23,7 +25,7 @@ public class WoodcutterCollectState : WoodcutterState
 
         PickUpWood();
 
-        if (woodCutterFacade.CarryCapacity <= woodCutterFacade.CarriedWood)
+        if (woodcutterWorkSettings.CarryCapacity <= woodCutterFacade.CarriedWood)
             ChangeState<WoodcutterReturnState>();
         else
             ChangeState<WoodcutterSearchTreeState>();
@@ -33,7 +35,7 @@ public class WoodcutterCollectState : WoodcutterState
     {
         foreach (var drop in _sensor.GetDropsInRadius(15))
         {
-            drop.PickUp(Ctx.transform, CollectStrategyType.NPC, 0);
+            drop.PickUp(view.transform, CollectStrategyType.NPC, 0);
             woodCutterFacade.AddWood(1);
         }
     }

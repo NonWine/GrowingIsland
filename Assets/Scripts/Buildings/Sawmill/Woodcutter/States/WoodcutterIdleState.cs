@@ -3,7 +3,7 @@ public class WoodcutterIdleState : WoodcutterState
 
     public override void Enter()
     {
-        if (woodCutterFacade.StorageFull)
+        if (woodCutterFacade.WorkPlaceStorageFull)
         {
             ChangeState<WoodcutterWaitingState>();
             return;

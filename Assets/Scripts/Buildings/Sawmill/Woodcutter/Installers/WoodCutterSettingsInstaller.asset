@@ -29,3 +29,10 @@ MonoBehaviour:
     WoodPerHit: 1
     ChopInterval: 1
     CarryCapacity: 5
+    DepositAnimation:
+      LogPrefab: {fileID: 919132149155446097, guid: d7f996e6af6ca0046b6c9af4e43b798a,
+        type: 3}
+      RotationDuration: 0.3
+      DelayBetweenLogs: 0.15
+      LogFlightDuration: 0.4
+      LogFlightEase: 6

@@ -2,26 +2,26 @@ using Zenject;
 
 public class WoodcutterSpawner : IInitializable
 {
-    private readonly Sawmill _sawmill;
-    private readonly SawmillView _view;
-    private readonly WoodCutterFacade.Factory _factory;
+    private readonly IWoodcutterWorkplace workplace;
+    private readonly SawmillView view;
+    private readonly WoodCutterFacade.Factory factory;
 
-    public WoodcutterSpawner(Sawmill sawmill, SawmillView view, WoodCutterFacade.Factory factory)
+    public WoodcutterSpawner(IWoodcutterWorkplace workplace, SawmillView view, WoodCutterFacade.Factory factory)
     {
-        _sawmill = sawmill;
-        _view = view;
-        _factory = factory;
+        this.workplace = workplace;
+        this.view = view;
+        this.factory = factory;
     }
 
     public void Initialize()
     {
-        if (_view.SpawnWoodcutterOnStart)
+        if (view.SpawnWoodcutterOnStart)
             Spawn();
     }
 
     public void Spawn()
     {
-        var woodcutter = _factory.Create(_sawmill);
-        woodcutter.transform.position = _view.SpawnPoint.position;
+        var woodcutter = factory.Create(workplace);
+        woodcutter.transform.position = view.SpawnPoint.position;
     }
 }

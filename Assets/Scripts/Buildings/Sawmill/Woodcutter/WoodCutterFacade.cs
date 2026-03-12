@@ -3,35 +3,30 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using Zenject;
 
-public class WoodCutterFacade
+public class WoodCutterFacade : IDisposable , IInitializable
 {
-    private readonly Sawmill _sawmill;
-    private readonly WoodcutterWorkSettings _workSettings;
+    private readonly IWoodcutterWorkplace workplace;
+    private readonly WoodcutterWorkSettings workSettings;
 
     [ShowInInspector, ReadOnly] public EnvironmentResource CurrentTree { get; private set; }
     [ShowInInspector, ReadOnly] public int CarriedWood { get; private set; }
 
-    public WoodCutterFacade(Sawmill sawmill, WoodcutterWorkSettings workSettings)
+    public WoodCutterFacade(IWoodcutterWorkplace workplace, WoodcutterWorkSettings workSettings)
     {
-        _sawmill = sawmill;
-        _workSettings = workSettings;
+        this.workplace = workplace;
+        this.workSettings = workSettings;
     }
 
-    public class Factory : PlaceholderFactory<Sawmill, WoodcutterView> { }
+    public class Factory : PlaceholderFactory<IWoodcutterWorkplace, WoodcutterView> { }
 
-    public Transform DepositPoint => _sawmill != null ? _sawmill.DepositPoint : null;
+    public Transform DepositPoint => workplace?.DepositPoint;
+    public Vector3 WorkPlacePosition => workplace.WorkPlacePosition;
 
-    public event Action<int, int> StorageChanged
-    {
-        add => _sawmill.StorageChanged += value;
-        remove => _sawmill.StorageChanged -= value;
-    }
+    public event Action<int, int> StorageChanged;
 
-    public bool HasTree => CurrentTree != null && CurrentTree.isAlive;
+    public bool HasTree =>  CurrentTree.isAlive;
     public bool HasWood => CarriedWood > 0;
-    public bool StorageFull => _sawmill != null && _sawmill.IsStorageFull;
-    public int CarryCapacity => _workSettings.CarryCapacity;
-    public float ChopInterval => _workSettings.ChopInterval;
+    public bool WorkPlaceStorageFull =>  workplace.IsStorageFull;
 
     #region Actions
     public void SetTree(EnvironmentResource tree) => CurrentTree = tree;
@@ -43,11 +38,27 @@ public class WoodCutterFacade
 
     public void TryDepositWood()
     {
-        if (HasWood && _sawmill != null)
+        if (HasWood)
         {
-            var stored = _sawmill.DepositWood(CarriedWood);
+            var stored = workplace.DepositWood(CarriedWood);
             RemoveWood(stored);
         }
     }
+
+    public void DepositOneWood()
+    {
+        var stored = workplace.DepositOneWood();
+        if (stored > 0) RemoveWood(stored);
+    }
     #endregion
+
+    public void Dispose()
+    {
+        workplace.StorageChanged -= (current, capacity) => StorageChanged?.Invoke(current, capacity);
+    }
+
+    public void Initialize()
+    {
+        workplace.StorageChanged += (current, capacity) => StorageChanged?.Invoke(current, capacity);
+    }
 }
