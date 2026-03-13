@@ -38,15 +38,6 @@ public class WoodCutterFacade : IDisposable , IInitializable
     public void RemoveWood(int amount) => CarriedWood = Mathf.Max(0, CarriedWood - amount);
     public void ResetWood() => CarriedWood = 0;
 
-    public void TryDepositWood()
-    {
-        if (HasWood)
-        {
-            var stored = workplace.DepositWood(CarriedWood);
-            RemoveWood(stored);
-        }
-    }
-
     public void DepositOneWood(float impactStrength = 1f)
     {
         var stored = workplace.DepositOneWood(impactStrength);

@@ -53,11 +53,11 @@ MonoBehaviour:
     <MaxHealth>k__BackingField: 0
     <MoveSpeed>k__BackingField: 0
     <RotateSpeed>k__BackingField: 0
-    <RadiusDetection>k__BackingField: 0
+    <AggroRadius>k__BackingField: 0
     <TimeBeetwenHit>k__BackingField: 1
     <DamageHit>k__BackingField: 2
-    <DistanceFromSpawn>k__BackingField: 8.75
-    <TargetDistance>k__BackingField: 0.75
+    <LeashRadius>k__BackingField: 0
+    <AttackRadius>k__BackingField: 0
   HealthUI: {fileID: 209943772752738437}
   NavMesh: {fileID: 4842188062717599529}
   Rigidbody: {fileID: 8702557431408717527}

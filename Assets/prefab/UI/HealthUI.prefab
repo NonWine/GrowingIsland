@@ -296,7 +296,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slider: {fileID: 683376420776475225}
-  _hpText: {fileID: 0}
   _canvas: {fileID: 4582017036163959931}
 --- !u!1 &8263549410828870317
 GameObject:

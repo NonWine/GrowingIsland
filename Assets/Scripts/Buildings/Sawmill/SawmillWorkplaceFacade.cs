@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-public class SawmillFacade : IWoodcutterWorkplace
+public class SawmillWorkplaceFacade : IWoodcutterWorkplace
 {
-    private readonly SawmillView view;
+    private readonly ISawmillView view;
     private readonly IStorage storage;
 
     public event Action<int, int> StorageChanged
@@ -15,18 +15,14 @@ public class SawmillFacade : IWoodcutterWorkplace
     public event Action<float> WoodDeposited;
 
     public Transform DepositPoint => view.DepositPoint;
-    public Vector3 WorkPlacePosition => view.transform.position;
+    public Vector3 WorkPlacePosition => view.WorldPosition;
     public bool IsStorageFull => storage.IsFull;
     public int StoredWood => storage.Current;
 
-    public SawmillFacade(SawmillView view, IStorage storage, SawmillUpgrader upgrader)
+    public SawmillWorkplaceFacade(ISawmillView view, IStorage storage)
     {
         this.view = view;
         this.storage = storage;
-
-        storage.OnStorageChanged += view.OnStorageChanged;
-        upgrader.LevelChanged += view.OnLevelChanged;
-        WoodDeposited += view.PlayReceiveAnimation;
     }
 
     public int DepositWood(int amount)
