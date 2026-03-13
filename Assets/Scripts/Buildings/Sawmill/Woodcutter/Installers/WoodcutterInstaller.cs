@@ -22,11 +22,7 @@ public class WoodcutterInstaller : MonoInstaller
         Container.Bind<IWoodcutterWorkplace>().FromInstance(_workplace).AsSingle();
         Container.Bind<NPCAnimator>().AsSingle().WithArguments(1);
         Container.Bind<IWoodcutterSensor>().To<WoodcutterSensor>().AsSingle();
-        Container.BindInterfacesAndSelfTo<WoodcutterDepositPlanBuilder>().AsSingle();
-        Container.BindInterfacesAndSelfTo<WoodcutterDepositVisualController>().AsSingle();
-        Container.BindInterfacesAndSelfTo<WoodcutterDepositProjectileLauncher>().AsSingle();
-        Container.BindInterfacesAndSelfTo<WoodcutterDepositThrowSequence>().AsSingle();
-        Container.BindInterfacesAndSelfTo<WoodcutterDepositRoutine>().AsSingle();
+        WoodcutterDepositAnimationInstaller.Install(Container);
 
         StateMachine();
         
