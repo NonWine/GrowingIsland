@@ -4,22 +4,24 @@ using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class CameraFollowing : MonoBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera _cinemachineVirtual;
+    [FormerlySerializedAs("_cinemachineVirtual")]
+    [SerializeField] private CinemachineVirtualCamera cinemachineVirtual;
 
-    [Inject] private Player _playerContainer;
+    [Inject] private Player playerContainer;
     
     private void Start()
     {
-        SetFollow(_playerContainer.transform);
+        SetFollow(playerContainer.transform);
 
     }
 
     private void SetFollow(Transform target)
     {
-        _cinemachineVirtual.Follow = target;
+        cinemachineVirtual.Follow = target;
     }
  
 }

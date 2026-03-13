@@ -7,31 +7,38 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class CollectableWallet : MonoBehaviour
 {
-    [SerializeField, ReadOnly] private TextMeshProUGUI _amountDisplay;
-    [SerializeField, ReadOnly] private RectTransform _amountRect;
-    [SerializeField, ReadOnly] private RectTransform _targetTransform;
-    [SerializeField, ReadOnly] private CollectableSender _collectableSender;
-    [SerializeField, ReadOnly] private GameObject _visual;
-    [Inject] private StorageManager _storageManager;
-    [SerializeField] private Image _image;
-    private WalletObj _walletObj;
+    [FormerlySerializedAs("_amountDisplay")]
+    [SerializeField, ReadOnly] private TextMeshProUGUI amountDisplay;
+    [FormerlySerializedAs("_amountRect")]
+    [SerializeField, ReadOnly] private RectTransform amountRect;
+    [FormerlySerializedAs("_targetTransform")]
+    [SerializeField, ReadOnly] private RectTransform targetTransform;
+    [FormerlySerializedAs("_collectableSender")]
+    [SerializeField, ReadOnly] private CollectableSender collectableSender;
+    [FormerlySerializedAs("_visual")]
+    [SerializeField, ReadOnly] private GameObject visual;
+    [Inject] private StorageManager storageManager;
+    [FormerlySerializedAs("_image")]
+    [SerializeField] private Image image;
+    private WalletObj walletObj;
     public event Action<int> onValueChanged;
     
     
     
-    private Tween _punchingAmount;
-    private Tween _punchingIcon;
-    private Sequence _shakeAmount;
-    private Vector3 _startAmountPosition;
+    private Tween punchingAmount;
+    private Tween punchingIcon;
+    private Sequence shakeAmount;
+    private Vector3 startAmountPosition;
 
-   [Inject] private CollectableAnimationData _walletData;
+   [Inject] private CollectableAnimationData walletData;
 
-    private int _amount;
+    private int amount;
 
-    public eCollectable WalletType => _walletObj.TypeWallet;
+    public eCollectable WalletType => walletObj.TypeWallet;
     
     #region Amount
     //[ShowInInspector, PropertyOrder(-1)]
@@ -39,14 +46,14 @@ public class CollectableWallet : MonoBehaviour
     {
         get
         {
-            return _storageManager.GetCollectable(_walletObj.TypeWallet);
+            return storageManager.GetCollectable(walletObj.TypeWallet);
         }
 
         private set
         {
            
             onValueChanged?.Invoke(value);
-            _storageManager.SetCollectable(_walletObj.TypeWallet, value);
+            storageManager.SetCollectable(walletObj.TypeWallet, value);
         }
     }
     #endregion
@@ -61,11 +68,11 @@ public class CollectableWallet : MonoBehaviour
     [Button]
     private void SetRefs()
     {
-        _amountDisplay = GetComponentInChildren<TextMeshProUGUI>(true);
-        _amountRect = _amountDisplay.GetComponent<RectTransform>();
-        _targetTransform = transform.FindDeepChild<RectTransform>("Icon");
-        _collectableSender = GetComponentInChildren<CollectableSender>();
-        _visual = transform.FindDeepChild<GameObject>("Visual");
+        amountDisplay = GetComponentInChildren<TextMeshProUGUI>(true);
+        amountRect = amountDisplay.GetComponent<RectTransform>();
+        targetTransform = transform.FindDeepChild<RectTransform>("Icon");
+        collectableSender = GetComponentInChildren<CollectableSender>();
+        visual = transform.FindDeepChild<GameObject>("Visual");
     }
     #endregion
 
@@ -73,13 +80,13 @@ public class CollectableWallet : MonoBehaviour
     public void Init(WalletObj walletObj)
     {
         //get fromSave
-        _walletObj = walletObj;
-        _image.sprite = walletObj.ItemIcon;
-        Debug.Log(_storageManager.ToString());
+        this.walletObj = walletObj;
+        image.sprite = walletObj.ItemIcon;
+        Debug.Log(storageManager.ToString());
         UpdateAmount(Amount);
-        _collectableSender.Initialize(this);
+        collectableSender.Initialize(this);
 
-        _startAmountPosition = _amountRect.anchoredPosition;
+        startAmountPosition = amountRect.anchoredPosition;
     }
 
     private void OnEnable()
@@ -96,20 +103,20 @@ public class CollectableWallet : MonoBehaviour
     #region Callbacks
     private void UpdateAmount(int amount)
     {
-        _amountDisplay.text = NumberFormatter.GetFormatedNumber(amount);
+        amountDisplay.text = NumberFormatter.GetFormatedNumber(amount);
     }
 
     private void Hide()
     {
-        _visual.SetActive(false);
+        visual.SetActive(false);
     }
 
     private void Show()
     {
-        if (_visual.activeInHierarchy)
+        if (visual.activeInHierarchy)
             return;
 
-        _visual.SetActive(true);
+        visual.SetActive(true);
     }
     #endregion
 
@@ -121,11 +128,11 @@ public class CollectableWallet : MonoBehaviour
 
         if (isNeededAnimation)
         {
-            _punchingIcon?.Kill();
-            _targetTransform.localScale = Vector3.one;
-            _punchingIcon = _targetTransform.DOPunchScale(_walletData.WalletAnimationData.IconAnimation.Scale,
-                _walletData.WalletAnimationData.IconAnimation.Time,
-                _walletData.WalletAnimationData.IconAnimation.Vibration);
+            punchingIcon?.Kill();
+            targetTransform.localScale = Vector3.one;
+            punchingIcon = targetTransform.DOPunchScale(walletData.WalletAnimationData.IconAnimation.Scale,
+                walletData.WalletAnimationData.IconAnimation.Time,
+                walletData.WalletAnimationData.IconAnimation.Vibration);
         }
 
         Amount += amount;
@@ -140,17 +147,17 @@ public class CollectableWallet : MonoBehaviour
 
     public void SendOne(Transform startPos)
     {
-        _collectableSender.SendOne(startPos, _targetTransform);
+        collectableSender.SendOne(startPos, targetTransform);
     }
     public void SendOne(Transform startPos, int countAdD)
     {
-        _collectableSender.SendOne(startPos, _targetTransform, countAdD);
+        collectableSender.SendOne(startPos, targetTransform, countAdD);
     }
     
     public void AddWithAnimation(int amount, RectTransform start, Action onEnd = null)
     {
-        if(_collectableSender != null)
-            _collectableSender.Send(start, amount, _targetTransform, onEnd);
+        if(collectableSender != null)
+            collectableSender.Send(start, amount, targetTransform, onEnd);
         else
             Debug.LogError("Collectable sender wasn't setup!");
     }
@@ -165,15 +172,15 @@ public class CollectableWallet : MonoBehaviour
         }
         else
         {
-            if (_shakeAmount.IsActive() == false || _shakeAmount.IsPlaying() == false)
+            if (shakeAmount.IsActive() == false || shakeAmount.IsPlaying() == false)
             {
-                _startAmountPosition = _amountRect.anchoredPosition;
+                startAmountPosition = amountRect.anchoredPosition;
                 
-                _shakeAmount?.Kill();
-                _shakeAmount = DOTween.Sequence();
-                _shakeAmount.Append(_amountRect.DOShakePosition(1f, 5f, 5, 50, false, true))
+                shakeAmount?.Kill();
+                shakeAmount = DOTween.Sequence();
+                shakeAmount.Append(amountRect.DOShakePosition(1f, 5f, 5, 50, false, true))
                     .SetRelative(false)
-                    .OnComplete(() => _amountRect.anchoredPosition = _startAmountPosition);
+                    .OnComplete(() => amountRect.anchoredPosition = startAmountPosition);
             }
         }
 
@@ -190,16 +197,17 @@ public class CollectableWallet : MonoBehaviour
     
     
     private void ResetHorizontalLayout() 
-        => LayoutRebuilder.ForceRebuildLayoutImmediate(_amountRect);
+        => LayoutRebuilder.ForceRebuildLayoutImmediate(amountRect);
 
     #region Specific
     private void PlayAmountAnimation()
     {
-        _punchingAmount?.Kill();
-        _amountRect.localScale = Vector3.one;
-        _punchingAmount = _amountRect.DOPunchScale(_walletData.WalletAnimationData.AmountAnimation.Scale,
-            _walletData.WalletAnimationData.AmountAnimation.Time,
-            _walletData.WalletAnimationData.AmountAnimation.Vibration);
+        punchingAmount?.Kill();
+        amountRect.localScale = Vector3.one;
+        punchingAmount = amountRect.DOPunchScale(walletData.WalletAnimationData.AmountAnimation.Scale,
+            walletData.WalletAnimationData.AmountAnimation.Time,
+            walletData.WalletAnimationData.AmountAnimation.Vibration);
     }
     #endregion
 }
+

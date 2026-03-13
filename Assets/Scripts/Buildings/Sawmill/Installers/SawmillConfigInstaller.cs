@@ -1,15 +1,17 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 [CreateAssetMenu(fileName = "SawmillConfigInstaller", menuName = "Installers/SawmillConfigInstaller")]
 public class SawmillConfigInstaller : ScriptableObjectInstaller<SawmillConfigInstaller>
 {
-    [SerializeField] private SawmillConfig _config;
+    [FormerlySerializedAs("_config")]
+    [SerializeField] private SawmillConfig config;
 
     public override void InstallBindings()
     {
-        SawmillConfig config = new SawmillConfig(_config);
+        SawmillConfig runtimeConfig = new SawmillConfig(config);
         
-        Container.BindInstance(config);
+        Container.BindInstance(runtimeConfig);
     }
 }

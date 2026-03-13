@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Serialization;
 
 public class TextIconView : MonoBehaviour
 {
-    [SerializeField] private Image _icon;
-    [SerializeField] private TMP_Text _text;
+    [FormerlySerializedAs("_icon")]
+    [SerializeField] private Image icon;
+    [FormerlySerializedAs("_text")]
+    [SerializeField] private TMP_Text text;
 
-    public void SetIconView(Sprite sprite, string text)
+    public void SetIconView(Sprite sprite, string label)
     {
-        _icon.sprite = sprite;
-        _text.SetText(text);
+        icon.sprite = sprite;
+        text.SetText(label);
     }
 
-    public void UpdateText(string text) => _text.text = text;
+    public void UpdateText(string label) => text.text = label;
 }

@@ -9,5 +9,6 @@ public sealed class WoodcutterDepositAnimationInstaller : Installer<WoodcutterDe
         Container.BindInterfacesAndSelfTo<WoodcutterDepositProjectileLauncher>().AsSingle();
         Container.BindInterfacesAndSelfTo<WoodcutterDepositThrowSequence>().AsSingle();
         Container.BindInterfacesAndSelfTo<WoodcutterDepositRoutine>().AsSingle();
+        Container.BindInterfacesAndSelfTo<WoodcutterDepositSession>().AsSingle();
     }
 }

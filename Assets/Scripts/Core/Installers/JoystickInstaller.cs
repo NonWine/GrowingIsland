@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class JoystickInstaller : MonoInstaller
 {
-    [SerializeField] private Joystick _joystick;
+    [FormerlySerializedAs("_joystick")]
+    [SerializeField] private Joystick joystick;
     
     public override void InstallBindings()
     {
-        Container.BindInstance(_joystick).AsSingle().NonLazy();
+        Container.BindInstance(joystick).AsSingle().NonLazy();
     }
 }

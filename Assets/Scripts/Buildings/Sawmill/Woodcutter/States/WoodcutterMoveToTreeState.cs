@@ -2,7 +2,7 @@ using Zenject;
 
 public class WoodcutterMoveToTreeState : WoodcutterState
 {
-    [Inject] private NPCAnimator _animator;
+    [Inject] private NPCAnimator animator;
 
     public override void Enter()
     {
@@ -20,7 +20,7 @@ public class WoodcutterMoveToTreeState : WoodcutterState
     private void SetDestination()
     {
         view.Agent.isStopped = false;
-        _animator.SetMove();
+        animator.SetMove();
         view.Agent.SetDestination(woodCutterFacade.CurrentTree.transform.position);
     }
 

@@ -3,17 +3,17 @@ using Zenject;
 
 public class SawmillPresenter : IInitializable, IDisposable
 {
-    private readonly ISawmillView _view;
-    private readonly IStorage _storage;
-    private readonly SawmillUpgrader _upgrader;
-    private readonly IWoodcutterWorkplace _workplace;
-    private readonly ISawmillStorageFeedback _storageFeedback;
-    private readonly ISawmillImpactFeedback _impactFeedback;
-    private readonly ISawmillPileVisualizer _pileVisualizer;
+    private readonly ISawmillView view;
+    private readonly IStorage storage;
+    private readonly SawmillUpgrader upgrader;
+    private readonly IWoodcutterWorkplace workplace;
+    private readonly ISawmillStorageFeedback storageFeedback;
+    private readonly ISawmillImpactFeedback impactFeedback;
+    private readonly ISawmillPileVisualizer pileVisualizer;
 
-    private bool _hasRenderedStorage;
-    private int _lastCurrent = -1;
-    private int _lastCapacity = -1;
+    private bool hasRenderedStorage;
+    private int lastCurrent = -1;
+    private int lastCapacity = -1;
 
     public SawmillPresenter(
         ISawmillView view,
@@ -24,62 +24,62 @@ public class SawmillPresenter : IInitializable, IDisposable
         ISawmillImpactFeedback impactFeedback,
         ISawmillPileVisualizer pileVisualizer)
     {
-        _view = view;
-        _storage = storage;
-        _upgrader = upgrader;
-        _workplace = workplace;
-        _storageFeedback = storageFeedback;
-        _impactFeedback = impactFeedback;
-        _pileVisualizer = pileVisualizer;
+        this.view = view;
+        this.storage = storage;
+        this.upgrader = upgrader;
+        this.workplace = workplace;
+        this.storageFeedback = storageFeedback;
+        this.impactFeedback = impactFeedback;
+        this.pileVisualizer = pileVisualizer;
     }
 
     public void Initialize()
     {
-        _storage.OnStorageChanged += RenderStorage;
-        _upgrader.LevelChanged += OnLevelChanged;
-        _workplace.WoodDeposited += OnWoodDeposited;
+        storage.OnStorageChanged += RenderStorage;
+        upgrader.LevelChanged += OnLevelChanged;
+        workplace.WoodDeposited += OnWoodDeposited;
 
-        RenderStorage(_storage.Current, _storage.Capacity);
-        _upgrader.NotifyInitial();
+        RenderStorage(storage.Current, storage.Capacity);
+        upgrader.NotifyInitial();
     }
 
     public void Dispose()
     {
-        _storage.OnStorageChanged -= RenderStorage;
-        _upgrader.LevelChanged -= OnLevelChanged;
-        _workplace.WoodDeposited -= OnWoodDeposited;
+        storage.OnStorageChanged -= RenderStorage;
+        upgrader.LevelChanged -= OnLevelChanged;
+        workplace.WoodDeposited -= OnWoodDeposited;
     }
 
 
     private void OnLevelChanged(SawmillLevelSettings settings)
-        => _view.NotifyLevelChanged(settings);
+        => view.NotifyLevelChanged(settings);
 
     private void OnWoodDeposited(float impactStrength)
     {
-        _impactFeedback.Play(impactStrength);
-        _pileVisualizer.PlayImpact(impactStrength);
-        _view.NotifyDepositImpact();
+        impactFeedback.Play(impactStrength);
+        pileVisualizer.PlayImpact(impactStrength);
+        view.NotifyDepositImpact();
     }
 
     private void RenderStorage(int current, int capacity)
     {
-        bool stateChanged = !_hasRenderedStorage || current != _lastCurrent || capacity != _lastCapacity;
-        if (_hasRenderedStorage && !stateChanged)
+        bool stateChanged = !hasRenderedStorage || current != lastCurrent || capacity != lastCapacity;
+        if (hasRenderedStorage && !stateChanged)
             return;
 
-        bool animateFeedback = _hasRenderedStorage && stateChanged;
+        bool animateFeedback = hasRenderedStorage && stateChanged;
         bool isFull = capacity > 0 && current >= capacity;
 
-        _lastCurrent = current;
-        _lastCapacity = capacity;
-        _hasRenderedStorage = true;
+        lastCurrent = current;
+        lastCapacity = capacity;
+        hasRenderedStorage = true;
 
-        _view.RenderStorage(current, capacity, isFull);
-        _pileVisualizer.RenderStorage(current, capacity, animateFeedback);
+        view.RenderStorage(current, capacity, isFull);
+        pileVisualizer.RenderStorage(current, capacity, animateFeedback);
 
         if (animateFeedback)
-            _storageFeedback.PlayStorageChanged();
+            storageFeedback.PlayStorageChanged();
 
-        _view.NotifyStorageChanged(current, capacity);
+        view.NotifyStorageChanged(current, capacity);
     }
 }

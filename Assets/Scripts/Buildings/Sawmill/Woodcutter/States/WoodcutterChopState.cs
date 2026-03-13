@@ -3,23 +3,23 @@ using UnityEngine;
 [System.Serializable]
 public class WoodcutterChopState : WoodcutterState
 {
-    private readonly NPCAnimator _npcAnimator;
+    private readonly NPCAnimator npcAnimator;
     private WoodcutterWorkSettings woodcutterWorkSettings;
-    private float _timer;
+    private float timer;
 
     public WoodcutterChopState(NPCAnimator npcAnimator, WoodcutterWorkSettings woodcutterWorkSettings)
     {
-        _npcAnimator = npcAnimator;
+        this.npcAnimator = npcAnimator;
         this.woodcutterWorkSettings = woodcutterWorkSettings;
     }
 
     public override void Enter()
     {
-        _npcAnimator.Animator.SetFloat("AttackSpeed", 1f / woodcutterWorkSettings.ChopInterval);
+        npcAnimator.Animator.SetFloat("AttackSpeed", 1f / woodcutterWorkSettings.ChopInterval);
         view.AnimationEventsView.OnDamageTriger.AddListener(SetDamage);
-        _timer = 0f;
+        timer = 0f;
         view.Agent.isStopped = true;
-        _npcAnimator.SetAttack();
+        npcAnimator.SetAttack();
     }
 
     public override void Tick()
@@ -42,6 +42,6 @@ public class WoodcutterChopState : WoodcutterState
     public override void Exit()
     {
         view.AnimationEventsView.OnDamageTriger.RemoveListener(SetDamage);
-        _npcAnimator.SetIdle();
+        npcAnimator.SetIdle();
     }
 }

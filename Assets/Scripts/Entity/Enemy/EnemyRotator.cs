@@ -1,27 +1,27 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class EnemyRotator
 {
-    private readonly Transform _enemyTransform;
-    private readonly Transform _playerTransform;
+    private readonly Transform enemyTransform;
+    private readonly Transform playerTransform;
     private readonly Vector3 spawnPoint;
     private readonly EnemyStats enemyStats;
 
     public EnemyRotator(Transform enemyTransform, Transform playerTransform,Vector3 spawnPoint ,EnemyStats enemyStats)
     {
-        _enemyTransform = enemyTransform;
-        _playerTransform = playerTransform;
+        this.enemyTransform = enemyTransform;
+        this.playerTransform = playerTransform;
         this.enemyStats = enemyStats;
         this.spawnPoint = spawnPoint;
     }
 
     public void RotateToPlayer()
     {
-        if (_playerTransform == null) return;
+        if (playerTransform == null) return;
 
-        Vector3 direction = (_playerTransform.position - _enemyTransform.position).normalized;
+        Vector3 direction = (playerTransform.position - enemyTransform.position).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-        _enemyTransform.rotation = Quaternion.Slerp(_enemyTransform.rotation, targetRotation, Time.deltaTime * enemyStats.RotateSpeed);
+        enemyTransform.rotation = Quaternion.Slerp(enemyTransform.rotation, targetRotation, Time.deltaTime * enemyStats.RotateSpeed);
     }
 
     public void RotateToSpawnPoint()
@@ -31,7 +31,7 @@ public class EnemyRotator
 
     public void RotateToPoint(Vector3 point)
     {
-        Vector3 enemyPos = _enemyTransform.position;
+        Vector3 enemyPos = enemyTransform.position;
         Vector3 targetPos = point;
 
         targetPos.y = enemyPos.y;
@@ -40,10 +40,11 @@ public class EnemyRotator
         if (direction.sqrMagnitude < 0.001f) return;
 
         Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-        _enemyTransform.rotation = Quaternion.Slerp(
-            _enemyTransform.rotation,
+        enemyTransform.rotation = Quaternion.Slerp(
+            enemyTransform.rotation,
             targetRotation,
             Time.deltaTime * enemyStats.RotateSpeed
         );
     }
 }
+

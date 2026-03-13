@@ -1,17 +1,23 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class PlayerContainer : MonoBehaviour
 {
     [field: SerializeField] public Transform FarmDetectionPoint {get; private set;}
-    [SerializeField] private NavMeshAgent _navMeshAgent;
-    [SerializeField] private Transform _body;
-    [SerializeField] private Animator _player;
-    [SerializeField] private PlayerStats _playerStats;
-    [SerializeField] private PlayerAnimatorEvent _playerAnimatorEvent;
-    [Inject] private Joystick _joystick;
+    [FormerlySerializedAs("_navMeshAgent")]
+    [SerializeField] private NavMeshAgent navMeshAgent;
+    [FormerlySerializedAs("_body")]
+    [SerializeField] private Transform body;
+    [FormerlySerializedAs("_player")]
+    [SerializeField] private Animator player;
+    [FormerlySerializedAs("_playerStats")]
+    [SerializeField] private PlayerStats playerStats;
+    [FormerlySerializedAs("_playerAnimatorEvent")]
+    [SerializeField] private PlayerAnimatorEvent playerAnimatorEvent;
+    [Inject] private Joystick joystick;
     
     [field: SerializeField] public PlayerTrigger PlayerTrigger { get; private set; }
     [field: SerializeField] public LayerMask enemyMask;
@@ -22,7 +28,7 @@ public class PlayerContainer : MonoBehaviour
         private set;
     }
     
-    private Vector3 _direction;
+    private Vector3 direction;
 
     public Vector3 Direction
     {
@@ -37,15 +43,15 @@ public class PlayerContainer : MonoBehaviour
     }
 
     
-    public NavMeshAgent Agent => _navMeshAgent;
+    public NavMeshAgent Agent => navMeshAgent;
  
-    public Transform Body => _body;
+    public Transform Body => body;
 
-    public Joystick Joystick => _joystick;
+    public Joystick Joystick => joystick;
 
-    public Animator Animator => _player;
+    public Animator Animator => player;
 
-    public PlayerStats PlayerStats => _playerStats;
+    public PlayerStats PlayerStats => playerStats;
 
-    public PlayerAnimatorEvent PlayerAnimatorEvent => _playerAnimatorEvent;
+    public PlayerAnimatorEvent PlayerAnimatorEvent => playerAnimatorEvent;
 }

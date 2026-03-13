@@ -4,11 +4,11 @@ using UnityEngine;
 
 public sealed class WoodcutterDepositRoutine : IWoodcutterDepositRoutine
 {
-    private readonly WoodCutterFacade _woodCutterFacade;
-    private readonly WoodcutterWorkSettings _workSettings;
-    private readonly IWoodcutterDepositPlanBuilder _planBuilder;
-    private readonly IWoodcutterDepositVisualController _visualController;
-    private readonly IWoodcutterDepositThrowSequence _throwSequence;
+    private readonly WoodCutterFacade woodCutterFacade;
+    private readonly WoodcutterWorkSettings workSettings;
+    private readonly IWoodcutterDepositPlanBuilder planBuilder;
+    private readonly IWoodcutterDepositVisualController visualController;
+    private readonly IWoodcutterDepositThrowSequence throwSequence;
 
     public WoodcutterDepositRoutine(
         WoodCutterFacade woodCutterFacade,
@@ -17,34 +17,34 @@ public sealed class WoodcutterDepositRoutine : IWoodcutterDepositRoutine
         IWoodcutterDepositVisualController visualController,
         IWoodcutterDepositThrowSequence throwSequence)
     {
-        _woodCutterFacade = woodCutterFacade;
-        _workSettings = workSettings;
-        _planBuilder = planBuilder;
-        _visualController = visualController;
-        _throwSequence = throwSequence;
+        this.woodCutterFacade = woodCutterFacade;
+        this.workSettings = workSettings;
+        this.planBuilder = planBuilder;
+        this.visualController = visualController;
+        this.throwSequence = throwSequence;
     }
 
     public IEnumerator Execute(bool startWithVariantB, Func<bool> isActive, Action<WoodcutterDepositRoutineResult> onCompleted)
     {
         int throwIndex = 0;
 
-        yield return _visualController.RotateTowards(GetTargetPosition());
+        yield return visualController.RotateTowards(GetTargetPosition());
 
-        while (isActive() && _woodCutterFacade.HasWood && !_woodCutterFacade.WorkPlaceStorageFull)
+        while (isActive() && woodCutterFacade.HasWood && !woodCutterFacade.WorkPlaceStorageFull)
         {
-            WoodcutterDepositThrowPlan plan = _planBuilder.Build(throwIndex++, startWithVariantB, _workSettings.DepositAnimation);
+            WoodcutterDepositThrowPlan plan = planBuilder.Build(throwIndex++, startWithVariantB, workSettings.DepositAnimation);
             Vector3 targetPosition = GetTargetPosition();
 
-            _visualController.RefreshHeldLog(_woodCutterFacade.HasWood);
-            if (!_visualController.HasHeldLog)
+            visualController.RefreshHeldLog(woodCutterFacade.HasWood);
+            if (!visualController.HasHeldLog)
                 break;
 
-            yield return _visualController.RotateTowards(targetPosition);
-            yield return _throwSequence.Execute(
+            yield return visualController.RotateTowards(targetPosition);
+            yield return throwSequence.Execute(
                 plan,
                 targetPosition,
                 isActive,
-                impactStrength => _woodCutterFacade.DepositOneWood(impactStrength));
+                impactStrength => woodCutterFacade.DepositOneWood(impactStrength));
 
             if (!isActive())
             {
@@ -62,13 +62,13 @@ public sealed class WoodcutterDepositRoutine : IWoodcutterDepositRoutine
             yield break;
         }
 
-        onCompleted?.Invoke(_woodCutterFacade.WorkPlaceStorageFull ? WoodcutterDepositRoutineResult.WaitForStorage : WoodcutterDepositRoutineResult.ContinueSearching);
+        onCompleted?.Invoke(woodCutterFacade.WorkPlaceStorageFull ? WoodcutterDepositRoutineResult.WaitForStorage : WoodcutterDepositRoutineResult.ContinueSearching);
     }
 
     private Vector3 GetTargetPosition()
     {
-        return _woodCutterFacade.DepositPoint != null
-            ? _woodCutterFacade.DepositPoint.position
-            : _woodCutterFacade.WorkPlacePosition;
+        return woodCutterFacade.DepositPoint != null
+            ? woodCutterFacade.DepositPoint.position
+            : woodCutterFacade.WorkPlacePosition;
     }
 }

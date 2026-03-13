@@ -1,14 +1,16 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class PlayerTrigger : MonoBehaviour
 {
-    [SerializeField] private LayerMask _layerMask;
+    [FormerlySerializedAs("_layerMask")]
+    [SerializeField] private LayerMask layerMask;
 
 
     protected virtual void OnTriggerEnter(Collider other)
     {   
-        if ((_layerMask.value & (1 << other.gameObject.layer)) == 0)
+        if ((layerMask.value & (1 << other.gameObject.layer)) == 0)
             return;
         
         if (other.TryGetComponent(out IPlayerEnterTriggable playerEnterTriggable))

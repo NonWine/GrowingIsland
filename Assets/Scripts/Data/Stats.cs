@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
@@ -16,7 +16,7 @@ public class Stats
     [field: ProgressBar(0, 3), SerializeField] [LabelWidth(LabelWidht)] public float TimeBeetwenHit { get; private set; }
     [field: ProgressBar(0, 100), SerializeField] [LabelWidth(LabelWidht)] public float DamageHit { get; private set; }
 
-    private float _currentHealth;
+    private float currentHealth;
     
     public event Action<float> OnHealthChange;
     
@@ -24,11 +24,11 @@ public class Stats
     
     public float CurrentHealth
     {
-        get => _currentHealth;
+        get => currentHealth;
         set
         {
-            _currentHealth = value;
-            OnHealthChange?.Invoke(_currentHealth);
+            currentHealth = value;
+            OnHealthChange?.Invoke(currentHealth);
         }
     }
     

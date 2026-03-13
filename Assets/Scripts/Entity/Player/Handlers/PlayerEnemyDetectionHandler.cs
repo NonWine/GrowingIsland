@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 public class PlayerEnemyDetectionHandler : IDetectionHandler<BaseEnemy>
 {
-    private readonly PlayerStateMachine _playerStateMachine;
+    private readonly PlayerStateMachine playerStateMachine;
 
     public PlayerEnemyDetectionHandler(PlayerStateMachine playerStateMachine)
     {
-        _playerStateMachine = playerStateMachine;
+        this.playerStateMachine = playerStateMachine;
     }
 
     public void Handle(List<BaseEnemy> enemies)
@@ -16,7 +16,7 @@ public class PlayerEnemyDetectionHandler : IDetectionHandler<BaseEnemy>
             return;
         }
 
-        _playerStateMachine.ChangeState(PlayerStateKey.Attack);
+        playerStateMachine.ChangeState(PlayerStateKey.Attack);
     }
 
     public void NoDetection()
@@ -24,3 +24,4 @@ public class PlayerEnemyDetectionHandler : IDetectionHandler<BaseEnemy>
         
     }
 }
+

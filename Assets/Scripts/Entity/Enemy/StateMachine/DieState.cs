@@ -1,21 +1,21 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class DieState : EnemyState
 {
 
-    private NavMeshAgent _agent;
+    private NavMeshAgent agent;
     
     public DieState(EnemyAnimator enemyAnimator, EnemyStateMachine enemyStateMachine, NavMeshAgent agent) : base(enemyStateMachine, enemyAnimator)
     {
-        _agent = agent;
+        this.agent = agent;
     }
     
     public override void EnterState( BaseEnemy baseEnemy)
     {
-        _agent.isStopped = true;
-        _agent.velocity = Vector3.zero;
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
         EnemyAnimator.Die();
         Die();
     }
@@ -26,7 +26,7 @@ public class DieState : EnemyState
 
     public override void ExitState()
     {
-        _agent.isStopped = false;
+        agent.isStopped = false;
 
     }
 
@@ -39,3 +39,4 @@ public class DieState : EnemyState
     }
 
 } 
+

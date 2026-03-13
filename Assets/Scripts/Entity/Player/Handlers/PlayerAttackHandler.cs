@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 
 public class PlayerAttackHandler
 {
-    private readonly float _damage;
+    private readonly float damage;
 
     public PlayerAttackHandler(float damage)
     {
-        _damage = damage;
+        this.damage = damage;
     }
 
     public void TryAttack(IDamageable target, Action onMiss)
@@ -17,6 +17,7 @@ public class PlayerAttackHandler
             return;
         }
 
-        target.GetDamage(_damage);
+        target.GetDamage(damage);
     }
 }
+

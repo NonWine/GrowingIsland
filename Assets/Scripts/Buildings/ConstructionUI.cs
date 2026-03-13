@@ -1,22 +1,26 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using Utils;
+using UnityEngine.Serialization;
 
 public class ConstructionUI : MonoBehaviour
 {
-    [SerializeField] private GameObject _uiLabelObj;
-    [SerializeField] private GameObject _uiTriggerZone;
-    [SerializeField] private AutoSizeUILabel _uiLabel;
+    [FormerlySerializedAs("_uiLabelObj")]
+    [SerializeField] private GameObject uiLabelObj;
+    [FormerlySerializedAs("_uiTriggerZone")]
+    [SerializeField] private GameObject uiTriggerZone;
+    [FormerlySerializedAs("_uiLabel")]
+    [SerializeField] private AutoSizeUILabel uiLabel;
     
     [ShowInInspector, ReadOnly]
     private Dictionary<eCollectable, TextIconView> resourceTexts = new Dictionary<eCollectable, TextIconView>();
 
     public void InitializeUI(List<ResourceRequirement> requirements)
     {
-        if (_uiLabel == null)
-            _uiLabel = GetComponentInChildren<AutoSizeUILabel>();
+        if (uiLabel == null)
+            uiLabel = GetComponentInChildren<AutoSizeUILabel>();
         
         if(resourceTexts.Count == requirements.Count)
             return;
@@ -24,15 +28,15 @@ public class ConstructionUI : MonoBehaviour
         int i = 0;
         foreach (var requirement in requirements)
         {
-             _uiLabel.Labels[i].gameObject.SetActive(true);
-             var display = _uiLabel.Labels[i];
+             uiLabel.Labels[i].gameObject.SetActive(true);
+             var display = uiLabel.Labels[i];
              string text ="0/" +requirement.amount.ToString();
             display.SetIconView(requirement.WalletObj.ItemIcon, text);
             resourceTexts[requirement.WalletObj.TypeWallet] = display;
             i++;
         }
-        _uiLabel.UpdateRectToPadding();
-     //   _uiLabel
+        uiLabel.UpdateRectToPadding();
+     //   uiLabel
     }
 
     public void UpdateUI(eCollectable type, int current, int total)
@@ -45,7 +49,7 @@ public class ConstructionUI : MonoBehaviour
 
     public void Hide()
     {
-        _uiLabelObj.SetActive(false);
-        _uiTriggerZone.SetActive(false);
+        uiLabelObj.SetActive(false);
+        uiTriggerZone.SetActive(false);
     }
 }

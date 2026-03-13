@@ -2,12 +2,12 @@ using Zenject;
 
 public class WoodcutterReturnState : WoodcutterState
 {
-    [Inject] private NPCAnimator _npcAnimator;
+    [Inject] private NPCAnimator npcAnimator;
 
     public override void Enter()
     {
         view.Agent.isStopped = false;
-        _npcAnimator.SetMove();
+        npcAnimator.SetMove();
         view.Agent.SetDestination(woodCutterFacade.DepositPoint.position);
     }
 
@@ -21,6 +21,6 @@ public class WoodcutterReturnState : WoodcutterState
 
     public override void Exit()
     {
-        _npcAnimator.SetIdle();
+        npcAnimator.SetIdle();
     }
 }

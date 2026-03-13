@@ -4,62 +4,62 @@ using UnityEngine;
 
 public sealed class SawmillImpactTransformAnimator : ISawmillImpactAnimator, IDisposable
 {
-    private readonly ISawmillImpactFeedbackView _view;
-    private readonly SawmillImpactFeedbackSettings _settings;
+    private readonly ISawmillImpactFeedbackView view;
+    private readonly SawmillImpactFeedbackSettings settings;
 
-    private Sequence _impactSequence;
-    private Vector3 _baseLocalPosition;
-    private Quaternion _baseLocalRotation;
-    private Vector3 _baseLocalScale;
-    private bool _basePoseCaptured;
+    private Sequence impactSequence;
+    private Vector3 baseLocalPosition;
+    private Quaternion baseLocalRotation;
+    private Vector3 baseLocalScale;
+    private bool basePoseCaptured;
 
     public SawmillImpactTransformAnimator(ISawmillImpactFeedbackView view, SawmillImpactFeedbackSettings settings)
     {
-        _view = view;
-        _settings = settings;
+        this.view = view;
+        this.settings = settings;
     }
 
     public void Dispose()
     {
-        _impactSequence?.Kill();
+        impactSequence?.Kill();
         ResetPose();
     }
 
     public void Play(float impactStrength)
     {
         CacheBasePose();
-        _impactSequence?.Kill();
+        impactSequence?.Kill();
         ResetPose();
 
-        Transform impactRoot = _view.ImpactRoot;
+        Transform impactRoot = view.ImpactRoot;
         float strength = Mathf.Max(0.2f, impactStrength);
 
-        _impactSequence = DOTween.Sequence();
-        _impactSequence.Join(
+        impactSequence = DOTween.Sequence();
+        impactSequence.Join(
             impactRoot.DOPunchScale(
-                Vector3.one * (_settings.ScalePunch * strength),
-                _settings.Duration,
+                Vector3.one * (settings.ScalePunch * strength),
+                settings.Duration,
                 vibrato: 1,
                 elasticity: 0f));
 
-        if (_settings.PositionShake > 0f)
+        if (settings.PositionShake > 0f)
         {
-            _impactSequence.Join(
+            impactSequence.Join(
                 impactRoot.DOShakePosition(
-                    _settings.Duration,
-                    _settings.PositionShake * strength,
-                    _settings.ShakeVibrato,
+                    settings.Duration,
+                    settings.PositionShake * strength,
+                    settings.ShakeVibrato,
                     randomness: 90f,
                     snapping: false,
                     fadeOut: true));
         }
 
-        if (_settings.RotationPunch > 0f)
+        if (settings.RotationPunch > 0f)
         {
-            _impactSequence.Join(
+            impactSequence.Join(
                 impactRoot.DOPunchRotation(
-                    new Vector3(0f, 0f, -_settings.RotationPunch * strength),
-                    _settings.Duration,
+                    new Vector3(0f, 0f, -settings.RotationPunch * strength),
+                    settings.Duration,
                     vibrato: 1,
                     elasticity: 0f));
         }
@@ -67,24 +67,24 @@ public sealed class SawmillImpactTransformAnimator : ISawmillImpactAnimator, IDi
 
     private void CacheBasePose()
     {
-        if (_basePoseCaptured)
+        if (basePoseCaptured)
             return;
 
-        Transform impactRoot = _view.ImpactRoot;
-        _baseLocalPosition = impactRoot.localPosition;
-        _baseLocalRotation = impactRoot.localRotation;
-        _baseLocalScale = impactRoot.localScale;
-        _basePoseCaptured = true;
+        Transform impactRoot = view.ImpactRoot;
+        baseLocalPosition = impactRoot.localPosition;
+        baseLocalRotation = impactRoot.localRotation;
+        baseLocalScale = impactRoot.localScale;
+        basePoseCaptured = true;
     }
 
     private void ResetPose()
     {
-        if (!_basePoseCaptured)
+        if (!basePoseCaptured)
             return;
 
-        Transform impactRoot = _view.ImpactRoot;
-        impactRoot.localPosition = _baseLocalPosition;
-        impactRoot.localRotation = _baseLocalRotation;
-        impactRoot.localScale = _baseLocalScale;
+        Transform impactRoot = view.ImpactRoot;
+        impactRoot.localPosition = baseLocalPosition;
+        impactRoot.localRotation = baseLocalRotation;
+        impactRoot.localScale = baseLocalScale;
     }
 }

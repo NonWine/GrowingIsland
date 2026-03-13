@@ -3,7 +3,7 @@ using System;
 public class PlayerEnemyDetector : PlayerDetectorBase<BaseEnemy>
 {
     private static readonly Func<BaseEnemy, bool> AliveEnemyFilter = resource => resource.isAlive;
-    private readonly PlayerStateMachine _playerStateMachine;
+    private readonly PlayerStateMachine playerStateMachine;
 
     public PlayerEnemyDetector(PlayerContainer playerContainer,
         OverlapSphereHandler overlapSphereHandler,
@@ -11,12 +11,12 @@ public class PlayerEnemyDetector : PlayerDetectorBase<BaseEnemy>
         IDetectionHandler<BaseEnemy> detectionHandler)
         : base(playerContainer, overlapSphereHandler, detectionHandler)
     {
-        _playerStateMachine = playerStateMachine;
+        this.playerStateMachine = playerStateMachine;
     }
 
     public void Find() => Detect();
 
-    protected override bool CanDetect() => _playerStateMachine.CurrentStateKey != PlayerStateKey.Attack;
+    protected override bool CanDetect() => playerStateMachine.CurrentStateKey != PlayerStateKey.Attack;
 
     protected override float GetRadius() => PlayerContainer.PlayerStats.AggroRadius;
 
@@ -24,3 +24,4 @@ public class PlayerEnemyDetector : PlayerDetectorBase<BaseEnemy>
 
     protected override bool ShouldForceUpdate() => true;
 }
+

@@ -1,43 +1,48 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Button))]
 public class SceneLoadButton : MonoBehaviour
 {
-    [SerializeField] private string _sceneName;
-    [SerializeField] private bool _useIndex;
-    [SerializeField] private int _sceneIndex;
+    [FormerlySerializedAs("_sceneName")]
+    [SerializeField] private string sceneName;
+    [FormerlySerializedAs("_useIndex")]
+    [SerializeField] private bool useIndex;
+    [FormerlySerializedAs("_sceneIndex")]
+    [SerializeField] private int sceneIndex;
 
-    private ISceneLoader _sceneLoader;
-    private Button _button;
+    private ISceneLoader sceneLoader;
+    private Button button;
 
     [Inject]
     public void Construct(ISceneLoader sceneLoader)
     {
-        _sceneLoader = sceneLoader;
+        this.sceneLoader = sceneLoader;
     }
 
     private void Awake()
     {
-        _button = GetComponent<Button>();
-        _button.onClick.AddListener(OnButtonClick);
+        button = GetComponent<Button>();
+        button.onClick.AddListener(OnButtonClick);
     }
 
     private void OnButtonClick()
     {
-        if (_useIndex)
+        if (useIndex)
         {
-            _sceneLoader.LoadScene(_sceneIndex);
+            sceneLoader.LoadScene(sceneIndex);
         }
         else
         {
-            _sceneLoader.LoadScene(_sceneName);
+            sceneLoader.LoadScene(sceneName);
         }
     }
 
     private void OnDestroy()
     {
-        _button.onClick.RemoveListener(OnButtonClick);
+        button.onClick.RemoveListener(OnButtonClick);
     }
 }
+

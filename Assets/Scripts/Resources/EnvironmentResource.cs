@@ -3,21 +3,24 @@ using DG.Tweening;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
+using UnityEngine.Serialization;
 
 public abstract class EnvironmentResource : MonoBehaviour , IDamageable
 {
-    [SerializeField] private ResourceWorld _resourceWorld;
-    [SerializeField] private float _respawnTime = 10f;
-    [Inject] private ResourcePartObjFactory _resourcesFactory;
-    private float _health;
+    [FormerlySerializedAs("_resourceWorld")]
+    [SerializeField] private ResourceWorld resourceWorld;
+    [FormerlySerializedAs("_respawnTime")]
+    [SerializeField] private float respawnTime = 10f;
+    [Inject] private ResourcePartObjFactory resourcesFactory;
+    private float health;
 
-    public eCollectable ResourceType => _resourceWorld.TypeWallet;
+    public eCollectable ResourceType => resourceWorld.TypeWallet;
     
     
     private void Awake()
     {
         isAlive = true;
-        _health = _resourceWorld.Health;
+        health = resourceWorld.Health;
      }
     
     
@@ -40,9 +43,9 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
         if(!isAlive)
             return;
         
-        _health -= damage;
+        health -= damage;
         AnimTrigDamage();
-        if (_health <= 0)
+        if (health <= 0)
         {
             StartCoroutine(RespawmProp());
         }
@@ -50,9 +53,9 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
 
     private void SpawnResources()
     {
-        for (int i = 0; i < _resourceWorld.VisualDrop; i++)
+        for (int i = 0; i < resourceWorld.VisualDrop; i++)
         {
-            var resource = _resourcesFactory.Create(_resourceWorld.TypeWallet);
+            var resource = resourcesFactory.Create(resourceWorld.TypeWallet);
             resource.transform.position = transform.position;
             var offset = transform.position + Random.insideUnitSphere * 2f;
             offset.y = resource.transform.position.y;
@@ -68,9 +71,9 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
         SpawnResources();
         isAlive = false;
         ShowMeshObjects(false);
-        yield return new WaitForSeconds(_respawnTime);
+        yield return new WaitForSeconds(respawnTime);
         isAlive = true;
-        _health = _resourceWorld.Health;
+        health = resourceWorld.Health;
         ShowMeshObjects(true);
 
     }

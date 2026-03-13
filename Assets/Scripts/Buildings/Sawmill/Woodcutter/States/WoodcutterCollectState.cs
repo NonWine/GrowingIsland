@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class WoodcutterCollectState : WoodcutterState
 {
-    private readonly IWoodcutterSensor _sensor;
+    private readonly IWoodcutterSensor sensor;
     private readonly WoodcutterWorkSettings woodcutterWorkSettings;
-    private float _timer;
+    private float timer;
     private const float TimeAwait = 0.5f;
 
     public WoodcutterCollectState(IWoodcutterSensor sensor, WoodcutterWorkSettings workSettings)
     {
-        _sensor = sensor;
+        this.sensor = sensor;
         woodcutterWorkSettings = workSettings;
     }
 
@@ -19,8 +19,8 @@ public class WoodcutterCollectState : WoodcutterState
 
     public override void Tick()
     {
-        _timer += Time.deltaTime;
-        if (_timer < TimeAwait)
+        timer += Time.deltaTime;
+        if (timer < TimeAwait)
             return;
 
         PickUpWood();
@@ -33,7 +33,7 @@ public class WoodcutterCollectState : WoodcutterState
 
     private void PickUpWood()
     {
-        foreach (var drop in _sensor.GetDropsInRadius(15))
+        foreach (var drop in sensor.GetDropsInRadius(15))
         {
             drop.PickUp(view.transform, CollectStrategyType.NPC, 0);
             woodCutterFacade.AddWood(1);
@@ -42,6 +42,6 @@ public class WoodcutterCollectState : WoodcutterState
 
     public override void Exit()
     {
-        _timer = 0f;
+        timer = 0f;
     }
 }

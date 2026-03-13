@@ -5,7 +5,7 @@ public class PlayerFarmDetector : PlayerDetectorBase<EnvironmentResource>
 {
     private static readonly Func<EnvironmentResource, bool> AvailableFarmObjectFilter = resource => resource.isAlive;
 
-    private readonly PlayerStateMachine _playerStateMachine;
+    private readonly PlayerStateMachine playerStateMachine;
 
     public PlayerFarmDetector(PlayerContainer playerContainer,
         OverlapSphereHandler overlapSphereHandler,
@@ -13,7 +13,7 @@ public class PlayerFarmDetector : PlayerDetectorBase<EnvironmentResource>
         IDetectionHandler<EnvironmentResource> detectionHandler)
         : base(playerContainer, overlapSphereHandler, detectionHandler)
     {
-        _playerStateMachine = playerStateMachine;
+        this.playerStateMachine = playerStateMachine;
     }
 
     public void FindFarmingResources() => Detect();
@@ -31,3 +31,4 @@ public class PlayerFarmDetector : PlayerDetectorBase<EnvironmentResource>
         return PlayerContainer.FarmDetectionPoint.position;
     }
 }
+

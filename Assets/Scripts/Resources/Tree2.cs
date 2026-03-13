@@ -1,26 +1,28 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Tree2 : EnvironmentResource
 {
-    [SerializeField] private TreeHitAnimationSettings _animSettings = new();
+    [FormerlySerializedAs("_animSettings")]
+    [SerializeField] private TreeHitAnimationSettings animSettings = new();
 
-    private Vector3 _baseScale;
-    private Quaternion _baseRotation;
-    private bool _hasDefaults;
+    private Vector3 baseScale;
+    private Quaternion baseRotation;
+    private bool hasDefaults;
 
     protected override void AnimTrigDamage()
     {
-        if (!_hasDefaults)
+        if (!hasDefaults)
         {
-            _baseScale = transform.localScale;
-            _baseRotation = transform.localRotation;
-            _hasDefaults = true;
+            baseScale = transform.localScale;
+            baseRotation = transform.localRotation;
+            hasDefaults = true;
         }
 
         transform.DOKill();
-        transform.localRotation = _baseRotation;
-        transform.localScale = _baseScale;
+        transform.localRotation = baseRotation;
+        transform.localScale = baseScale;
 
         var swayDir2D = Random.insideUnitCircle;
         if (swayDir2D == Vector2.zero)
@@ -29,14 +31,14 @@ public class Tree2 : EnvironmentResource
         }
 
         var swayDir = new Vector3(swayDir2D.x, 0f, swayDir2D.y).normalized;
-        var leanedRotation = _baseRotation * Quaternion.Euler(swayDir * _animSettings.LeanAngle);
+        var leanedRotation = baseRotation * Quaternion.Euler(swayDir * animSettings.LeanAngle);
 
         var seq = DOTween.Sequence();
-        seq.Append(transform.DOLocalRotateQuaternion(leanedRotation, _animSettings.HitPushDuration).SetEase(Ease.OutQuad));
-        seq.Join(transform.DOScale(_baseScale * _animSettings.ScaleBump, _animSettings.HitPushDuration).SetEase(Ease.OutSine));
-        seq.Append(transform.DOLocalRotateQuaternion(_baseRotation, _animSettings.ReturnDuration).SetEase(Ease.OutElastic, _animSettings.ReboundElasticity, _animSettings.ReboundPeriod));
-        seq.Join(transform.DOScale(_baseScale, _animSettings.ReturnDuration).SetEase(Ease.OutElastic, _animSettings.ReboundElasticity, _animSettings.ReboundPeriod));
-        seq.Append(transform.DOShakeRotation(_animSettings.ShakeDuration, _animSettings.ShakeStrength, _animSettings.ShakeVibrato, _animSettings.ShakeRandomness, true));
+        seq.Append(transform.DOLocalRotateQuaternion(leanedRotation, animSettings.HitPushDuration).SetEase(Ease.OutQuad));
+        seq.Join(transform.DOScale(baseScale * animSettings.ScaleBump, animSettings.HitPushDuration).SetEase(Ease.OutSine));
+        seq.Append(transform.DOLocalRotateQuaternion(baseRotation, animSettings.ReturnDuration).SetEase(Ease.OutElastic, animSettings.ReboundElasticity, animSettings.ReboundPeriod));
+        seq.Join(transform.DOScale(baseScale, animSettings.ReturnDuration).SetEase(Ease.OutElastic, animSettings.ReboundElasticity, animSettings.ReboundPeriod));
+        seq.Append(transform.DOShakeRotation(animSettings.ShakeDuration, animSettings.ShakeStrength, animSettings.ShakeVibrato, animSettings.ShakeRandomness, true));
     }
 
     public override void GetDamage(float damage)

@@ -3,19 +3,19 @@ using UnityEngine;
 
 public class EnemyHealth
 {
-    private readonly EnemyStats _stats;
-    private readonly HealthUI _healthUI;
-    private readonly BaseEnemy _enemy;
-    private readonly EnemyStateMachine _enemyStateMachine;
-    private readonly IGameController _gameController;
+    private readonly EnemyStats stats;
+    private readonly HealthUI healthUI;
+    private readonly BaseEnemy enemy;
+    private readonly EnemyStateMachine enemyStateMachine;
+    private readonly IGameController gameController;
 
     public event Action OnGetDamage;
     public event Action<BaseEnemy> OnDie;
 
     public bool IsAlive { get; set; }
 
-    private float _timeFromGetDamage;
-    public bool HasDamaged => _timeFromGetDamage < 3f;
+    private float timeFromGetDamage;
+    public bool HasDamaged => timeFromGetDamage < 3f;
 
     public EnemyHealth(EnemyStats stats,
         HealthUI healthUI,
@@ -23,33 +23,34 @@ public class EnemyHealth
         IGameController gameController,
         EnemyStateMachine enemyStateMachine)
     {
-        _stats = stats;
-        _healthUI = healthUI;
-        _enemy = enemy;
-        _gameController = gameController;
-        _enemyStateMachine = enemyStateMachine;
+        this.stats = stats;
+        this.healthUI = healthUI;
+        this.enemy = enemy;
+        this.gameController = gameController;
+        this.enemyStateMachine = enemyStateMachine;
 
-        _stats.CurrentHealth = _stats.MaxHealth;
+        stats.CurrentHealth = stats.MaxHealth;
         IsAlive = true;
     }
 
     public void TakeDamage(float damage)
     {
-        _stats.CurrentHealth -= damage;
+        stats.CurrentHealth -= damage;
         OnGetDamage?.Invoke();
-        _healthUI.GetDamageUI(damage);
+        healthUI.GetDamageUI(damage);
 
-        if (_stats.CurrentHealth <= 0)
+        if (stats.CurrentHealth <= 0)
         {
             IsAlive = false;
-            _enemyStateMachine.ChangeState<DieState>();
-            _gameController.UnregisterFromTick(_enemy);
-            OnDie?.Invoke(_enemy);
+            enemyStateMachine.ChangeState<DieState>();
+            gameController.UnregisterFromTick(enemy);
+            OnDie?.Invoke(enemy);
         }
     }
 
     public void Tick()
     {
-        _timeFromGetDamage += Time.deltaTime;
+        timeFromGetDamage += Time.deltaTime;
     }
 }
+

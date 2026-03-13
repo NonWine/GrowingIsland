@@ -2,11 +2,11 @@ using Zenject;
 
 public class PlayerInstaller : Installer<Player, PlayerInstaller>
 {
-    private readonly Player _player;
+    private readonly Player player;
 
     public PlayerInstaller(Player player)
     {
-        _player = player;
+        this.player = player;
     }
 
     public override void InstallBindings()
@@ -19,8 +19,8 @@ public class PlayerInstaller : Installer<Player, PlayerInstaller>
 
     private void BindCoreDependencies()
     {
-        Container.BindInstance(_player.PlayerContainer).AsSingle();
-        Container.BindInstance(_player).AsSingle();
+        Container.BindInstance(player.PlayerContainer).AsSingle();
+        Container.BindInstance(player).AsSingle();
         Container.Bind<PlayerStateMachine>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<PlayerAnimator>().AsSingle();
@@ -33,14 +33,14 @@ public class PlayerInstaller : Installer<Player, PlayerInstaller>
         Container.BindInterfacesAndSelfTo<PlayerDefaultRadiusDamageHandler>().AsSingle();
         Container.Bind<PlayerAttackHandler>()
             .AsSingle()
-            .WithArguments(_player.PlayerContainer.PlayerStats.Damage);
+            .WithArguments(player.PlayerContainer.PlayerStats.Damage);
 
         Container.Bind<TargetDetector>()
             .AsSingle()
             .WithArguments(
-                _player.PlayerContainer.transform,
-                _player.PlayerContainer.PlayerStats.AggroRadius,
-                _player.PlayerContainer.enemyMask);
+                player.PlayerContainer.transform,
+                player.PlayerContainer.PlayerStats.AggroRadius,
+                player.PlayerContainer.enemyMask);
 
         Container.Bind<IDetectionHandler<ResourcePartObj>>()
             .To<PlayerResourceDetectionHandler>()
@@ -62,3 +62,4 @@ public class PlayerInstaller : Installer<Player, PlayerInstaller>
         Container.Bind<IPlayerDetector>().To<PlayerEnemyDetector>().AsSingle();
     }
 }
+

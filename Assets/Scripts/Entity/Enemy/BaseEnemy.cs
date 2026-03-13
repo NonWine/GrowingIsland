@@ -19,13 +19,13 @@ public abstract class BaseEnemy : PoolAble , IDamageable , IGameTickable
     public  EnemyRotator EnemyRotator { get; private set; }
     public  EnemyHealth EnemyHealth { get; private set; }
     
-    private bool _isDeath;
+    private bool isDeath;
     private Vector3 spawnPoint;
 
     public bool IsDeath
     {
-        get => _isDeath;
-        set => _isDeath = value;
+        get => isDeath;
+        set => isDeath = value;
     }
     
     private void Awake()

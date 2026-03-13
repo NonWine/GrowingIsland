@@ -2,13 +2,13 @@ using System;
 
 public sealed class SawmillPileVisualizer : ISawmillPileVisualizer, IDisposable
 {
-    private readonly ISawmillPileVisualTarget _view;
-    private readonly SawmillPileRuntime _runtime;
-    private readonly ISawmillPileLayoutCalculator _layoutCalculator;
-    private readonly ISawmillPileStageFactory _stageFactory;
-    private readonly ISawmillPileAnimator _animator;
-    private readonly SawmillPileVisualSettings _pileSettings;
-    private readonly SawmillImpactFeedbackSettings _impactSettings;
+    private readonly ISawmillPileVisualTarget view;
+    private readonly SawmillPileRuntime runtime;
+    private readonly ISawmillPileLayoutCalculator layoutCalculator;
+    private readonly ISawmillPileStageFactory stageFactory;
+    private readonly ISawmillPileAnimator animator;
+    private readonly SawmillPileVisualSettings pileSettings;
+    private readonly SawmillImpactFeedbackSettings impactSettings;
 
     public SawmillPileVisualizer(
         ISawmillPileVisualTarget view,
@@ -19,54 +19,54 @@ public sealed class SawmillPileVisualizer : ISawmillPileVisualizer, IDisposable
         SawmillPileVisualSettings pileSettings,
         SawmillImpactFeedbackSettings impactSettings)
     {
-        _view = view;
-        _runtime = runtime;
-        _layoutCalculator = layoutCalculator;
-        _stageFactory = stageFactory;
-        _animator = animator;
-        _pileSettings = pileSettings;
-        _impactSettings = impactSettings;
+        this.view = view;
+        this.runtime = runtime;
+        this.layoutCalculator = layoutCalculator;
+        this.stageFactory = stageFactory;
+        this.animator = animator;
+        this.pileSettings = pileSettings;
+        this.impactSettings = impactSettings;
     }
 
     public void Dispose()
     {
-        _runtime.Clear();
+        runtime.Clear();
     }
 
     public void RenderStorage(int current, int capacity, bool animateStageChange)
     {
         EnsureStagesBuilt(capacity);
 
-        int visibleStages = _layoutCalculator.GetVisibleStageCount(
-            _pileSettings,
+        int visibleStages = layoutCalculator.GetVisibleStageCount(
+            pileSettings,
             current,
             capacity,
-            _runtime.StageRoots.Count);
+            runtime.StageRoots.Count);
 
-        _animator.ApplyVisibility(
-            _runtime.StageRoots,
-            _pileSettings,
+        animator.ApplyVisibility(
+            runtime.StageRoots,
+            pileSettings,
             visibleStages,
             animateStageChange);
     }
 
     public void PlayImpact(float impactStrength)
     {
-        _animator.PlayImpact(_runtime.StageRoots, _impactSettings, impactStrength);
+        animator.PlayImpact(runtime.StageRoots, impactSettings, impactStrength);
     }
 
     private void EnsureStagesBuilt(int capacity)
     {
-        if (!_pileSettings.Enabled)
+        if (!pileSettings.Enabled)
         {
-            _runtime.Clear();
+            runtime.Clear();
             return;
         }
 
-        int stageCount = _layoutCalculator.GetStageCount(_pileSettings, capacity);
-        if (_runtime.Matches(capacity, stageCount))
+        int stageCount = layoutCalculator.GetStageCount(pileSettings, capacity);
+        if (runtime.Matches(capacity, stageCount))
             return;
 
-        _runtime.ReplaceStages(_stageFactory.CreateStages(_view, stageCount), capacity);
+        runtime.ReplaceStages(stageFactory.CreateStages(view, stageCount), capacity);
     }
 }

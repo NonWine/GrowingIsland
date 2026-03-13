@@ -3,14 +3,14 @@ using UnityEngine;
 
 public sealed class SawmillPileRuntime
 {
-    private readonly List<Transform> _stageRoots = new();
+    private readonly List<Transform> stageRoots = new();
 
-    public IReadOnlyList<Transform> StageRoots => _stageRoots;
+    public IReadOnlyList<Transform> StageRoots => stageRoots;
     public int BuiltCapacity { get; private set; } = -1;
 
     public bool Matches(int capacity, int stageCount)
     {
-        return BuiltCapacity == capacity && _stageRoots.Count == stageCount;
+        return BuiltCapacity == capacity && stageRoots.Count == stageCount;
     }
 
     public void ReplaceStages(List<Transform> stageRoots, int capacity)
@@ -18,22 +18,22 @@ public sealed class SawmillPileRuntime
         Clear();
 
         if (stageRoots != null)
-            _stageRoots.AddRange(stageRoots);
+            stageRoots.AddRange(stageRoots);
 
         BuiltCapacity = capacity;
     }
 
     public void Clear()
     {
-        for (int i = 0; i < _stageRoots.Count; i++)
+        for (int i = 0; i < stageRoots.Count; i++)
         {
-            if (_stageRoots[i] == null)
+            if (stageRoots[i] == null)
                 continue;
 
-            Object.Destroy(_stageRoots[i].gameObject);
+            Object.Destroy(stageRoots[i].gameObject);
         }
 
-        _stageRoots.Clear();
+        stageRoots.Clear();
         BuiltCapacity = -1;
     }
 }

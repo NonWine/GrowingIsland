@@ -5,18 +5,22 @@ using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExitTriggable
 {
     [SerializeField] private ConstructionUI constructionUI; // UI прогресу
     [SerializeField] private List<ResourceRequirement> requiredResources; // Потрібні ресурси
-    [SerializeField] private Transform _throwPointTarget;
-    [SerializeField] private Transform _canvasZone;
-    [SerializeField] private ResourceThrowSettings _throwSettings = new();
-    [Inject] private CollectableManager _collectableManager;
-    [Inject] private ResourcePartObjFactory _resourceFactory;
-    [Inject] private Player _playerContainer;
-    [Inject] private ResourceData _resourceData;
+    [FormerlySerializedAs("_throwPointTarget")]
+    [SerializeField] private Transform throwPointTarget;
+    [FormerlySerializedAs("_canvasZone")]
+    [SerializeField] private Transform canvasZone;
+    [FormerlySerializedAs("_throwSettings")]
+    [SerializeField] private ResourceThrowSettings throwSettings = new();
+    [Inject] private CollectableManager collectableManager;
+    [Inject] private ResourcePartObjFactory resourceFactory;
+    [Inject] private Player playerContainer;
+    [Inject] private ResourceData resourceData;
     private Dictionary<eCollectable, int> currentResources = new Dictionary<eCollectable, int>();
     private Coroutine resourceDeliveryCoroutine;
     private bool isPlayerInZone = false;
@@ -50,13 +54,13 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
 
     private IEnumerator TransferResources()
     {
-        float delay = _resourceData.DelayPerResource;
+        float delay = resourceData.DelayPerResource;
 
         foreach (var requirement in requiredResources)
         {
             yield return TransferRequirement(requirement, delay);
         }
-        yield return new WaitForSeconds(_resourceData.DelayPerResource);
+        yield return new WaitForSeconds(resourceData.DelayPerResource);
         CheckCompletion();
     }
 
@@ -79,7 +83,7 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
     {
         if (resourceDeliveryCoroutine == null)
         {
-            _canvasZone.transform.DOScale(1.2f, 0.25f).SetEase(Ease.OutBack);
+            canvasZone.transform.DOScale(1.2f, 0.25f).SetEase(Ease.OutBack);
             resourceDeliveryCoroutine = StartCoroutine(TransferResources());
         }
     }
@@ -88,7 +92,7 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
     {
         if (resourceDeliveryCoroutine != null)
         {
-            _canvasZone.transform.DOScale(1f, 0.15f).SetEase(Ease.Linear);
+            canvasZone.transform.DOScale(1f, 0.15f).SetEase(Ease.Linear);
 
             StopCoroutine(resourceDeliveryCoroutine);
             resourceDeliveryCoroutine = null;
@@ -110,7 +114,7 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
 
     private IEnumerator TransferRequirement(ResourceRequirement requirement, float delay)
     {
-        var wallet = _collectableManager.GetWallet(requirement.WalletObj.TypeWallet);
+        var wallet = collectableManager.GetWallet(requirement.WalletObj.TypeWallet);
         if (wallet == null)
             yield break;
 
@@ -121,10 +125,10 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
             yield break;
 
         float resourcesPerDrop = totalNeeded > totalAvailable
-            ? (float)totalAvailable / _resourceData.CountResourceInAnimation
-            : (float)totalNeeded / _resourceData.CountResourceInAnimation;
+            ? (float)totalAvailable / resourceData.CountResourceInAnimation
+            : (float)totalNeeded / resourceData.CountResourceInAnimation;
 
-        for (int i = 0; i < _resourceData.CountResourceInAnimation; i++)
+        for (int i = 0; i < resourceData.CountResourceInAnimation; i++)
         {
             if (totalNeeded <= 0 || totalAvailable <= 0)
                 break;
@@ -153,21 +157,21 @@ public class ConstructionZone : MonoBehaviour, IPlayerEnterTriggable, IPlayerExi
 
     private void AnimateResourceDrop(ResourceRequirement requirement, int count)
     {
-        var res = _resourceFactory.Create(type: requirement.WalletObj.TypeWallet);
-        res.transform.SetParent(_throwPointTarget, true);
-        res.transform.position = _playerContainer.ResourceStartPoint.transform.position;
-        res.transform.rotation = _resourceData.StartRotation;
+        var res = resourceFactory.Create(type: requirement.WalletObj.TypeWallet);
+        res.transform.SetParent(throwPointTarget, true);
+        res.transform.position = playerContainer.ResourceStartPoint.transform.position;
+        res.transform.rotation = resourceData.StartRotation;
 
-        var targetOffset2D = UnityEngine.Random.insideUnitCircle * _throwSettings.LandingSpread;
+        var targetOffset2D = UnityEngine.Random.insideUnitCircle * throwSettings.LandingSpread;
         var targetLocal = new Vector3(targetOffset2D.x, 0f, targetOffset2D.y);
 
         var seq = DOTween.Sequence();
-        seq.Append(res.transform.DOLocalJump(targetLocal, _resourceData.JumpPower, _resourceData.NumJumps, _resourceData.Duration)
+        seq.Append(res.transform.DOLocalJump(targetLocal, resourceData.JumpPower, resourceData.NumJumps, resourceData.Duration)
             .SetEase(Ease.OutQuad));
-        seq.Join(res.transform.DOLocalRotate(new Vector3(0f, 360f * _throwSettings.SpinRevolutions, 0f),
-            _resourceData.Duration, RotateMode.FastBeyond360).SetEase(Ease.OutCubic));
-        seq.Append(res.transform.DOScale(_throwSettings.ArrivalPopScale, _throwSettings.ArrivalPopDuration).SetEase(Ease.OutBack));
-        seq.Append(res.transform.DOScale(1f, _throwSettings.ArrivalPopReturnDuration).SetEase(Ease.InOutSine));
+        seq.Join(res.transform.DOLocalRotate(new Vector3(0f, 360f * throwSettings.SpinRevolutions, 0f),
+            resourceData.Duration, RotateMode.FastBeyond360).SetEase(Ease.OutCubic));
+        seq.Append(res.transform.DOScale(throwSettings.ArrivalPopScale, throwSettings.ArrivalPopDuration).SetEase(Ease.OutBack));
+        seq.Append(res.transform.DOScale(1f, throwSettings.ArrivalPopReturnDuration).SetEase(Ease.InOutSine));
         seq.OnComplete(() =>
         {
             res.PickUp(transform, CollectStrategyType.Player,0);

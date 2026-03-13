@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class PlayerResourceDetectionHandler : IDetectionHandler<ResourcePartObj>
 {
-    private readonly PlayerContainer _playerContainer;
+    private readonly PlayerContainer playerContainer;
 
     public PlayerResourceDetectionHandler(PlayerContainer playerContainer)
     {
-        _playerContainer = playerContainer;
+        this.playerContainer = playerContainer;
     }
 
     public void Handle(List<ResourcePartObj> resources)
     {
         foreach (var resource in resources)
         {
-            resource.PickUp(_playerContainer.Body, CollectStrategyType.Player);
-            resource.transform.DOMove(_playerContainer.transform.position, 0.25f).SetEase(Ease.InBack);
+            resource.PickUp(playerContainer.Body, CollectStrategyType.Player);
+            resource.transform.DOMove(playerContainer.transform.position, 0.25f).SetEase(Ease.InBack);
             Debug.Log("Picked up a resource!");
         }
     }
@@ -25,3 +25,4 @@ public class PlayerResourceDetectionHandler : IDetectionHandler<ResourcePartObj>
     {
     }
 }
+

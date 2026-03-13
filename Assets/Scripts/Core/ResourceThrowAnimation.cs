@@ -7,10 +7,10 @@ using Zenject;
 
 public class ResourceThrowAnimation : MonoBehaviour
 {
-    [Inject] private ResourcePartObjFactory _resourceFactory; 
-    [Inject] private Player _playerContainer;
+    [Inject] private ResourcePartObjFactory resourceFactory;
+    [Inject] private Player playerContainer;
     public Transform point;
-    private Coroutine _coroutine;
+    private Coroutine coroutine;
     
     void Awake()
     {
@@ -24,9 +24,9 @@ public class ResourceThrowAnimation : MonoBehaviour
             
             for (int i = 0; i < 10; i++)
             {
-                var res = _resourceFactory.Create(eCollectable.Wood);
+                var res = resourceFactory.Create(eCollectable.Wood);
                 res.transform.parent = point;
-                res.transform.position = _playerContainer.transform.position;
+                res.transform.position = playerContainer.transform.position;
                 res.transform.rotation = Quaternion.Euler(new Vector3(-30f,0f,0f));
                 res.transform.DOLocalJump(Vector3.zero,2f,1,0.25f).SetEase(Ease.OutQuad).OnComplete((() =>
                     {
@@ -38,11 +38,11 @@ public class ResourceThrowAnimation : MonoBehaviour
 
     public void StartAnim()
     {
-        _coroutine =   StartCoroutine(SpawnResources());
+        coroutine =   StartCoroutine(SpawnResources());
     }
 
     public void Stop()
     {
-        StopCoroutine(_coroutine);
+        StopCoroutine(coroutine);
     }
 }

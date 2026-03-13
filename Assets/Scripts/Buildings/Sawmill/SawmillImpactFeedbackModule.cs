@@ -1,23 +1,23 @@
 public sealed class SawmillImpactFeedbackModule : ISawmillImpactFeedback
 {
-    private readonly ISawmillImpactAnimator _animator;
-    private readonly ISawmillImpactAudioPlayer _audioPlayer;
-    private readonly ISawmillImpactVfxPlayer _vfxPlayer;
+    private readonly ISawmillImpactAnimator animator;
+    private readonly ISawmillImpactAudioPlayer audioPlayer;
+    private readonly ISawmillImpactVfxPlayer vfxPlayer;
 
     public SawmillImpactFeedbackModule(
         ISawmillImpactAnimator animator,
         ISawmillImpactAudioPlayer audioPlayer,
         ISawmillImpactVfxPlayer vfxPlayer)
     {
-        _animator = animator;
-        _audioPlayer = audioPlayer;
-        _vfxPlayer = vfxPlayer;
+        this.animator = animator;
+        this.audioPlayer = audioPlayer;
+        this.vfxPlayer = vfxPlayer;
     }
 
     public void Play(float impactStrength)
     {
-        _animator.Play(impactStrength);
-        _vfxPlayer.Play();
-        _audioPlayer.Play();
+        animator.Play(impactStrength);
+        vfxPlayer.Play();
+        audioPlayer.Play();
     }
 }

@@ -1,68 +1,69 @@
-Ôªøusing System.Collections.Generic;
+using System.Collections.Generic;
 using Extensions;
 using UnityEngine;
 
 public class TargetDetector
 {
-    private readonly Transform _playerTransform;
-    private readonly OverlapSphereHandler _overlapHandler;
-    private readonly float _radius;
-    private readonly LayerMask _enemyMask;
+    private readonly Transform playerTransform;
+    private readonly OverlapSphereHandler overlapHandler;
+    private readonly float radius;
+    private readonly LayerMask enemyMask;
 
-    private readonly List<IDamageable> _detected = new(10);
-    private IDamageable _lastDetectedTarget;
+    private readonly List<IDamageable> detected = new(10);
+    private IDamageable lastDetectedTarget;
 
     public TargetDetector(Transform playerTransform, float radius, LayerMask enemyMask)
     {
-        _playerTransform = playerTransform;
-        _radius = radius;
-        _enemyMask = enemyMask;
-        _overlapHandler = new OverlapSphereHandler(20);
+        this.playerTransform = playerTransform;
+        this.radius = radius;
+        this.enemyMask = enemyMask;
+        overlapHandler = new OverlapSphereHandler(20);
     }
 
     public IDamageable GetNearestTarget()
     {
-        _detected.Clear();
-        var enemies = _overlapHandler.GetFilteredObjects<IDamageable>(
-            _playerTransform.position,
-            _radius,
-            _enemyMask,
+        detected.Clear();
+        var enemies = overlapHandler.GetFilteredObjects<IDamageable>(
+            playerTransform.position,
+            radius,
+            enemyMask,
             e => e.isAlive,
             true);
 
         if (enemies.Count == 0)
         {
-            _lastDetectedTarget = null;
+            lastDetectedTarget = null;
             return null;
         }
 
-        Transform nearest = _playerTransform.GetNearestTarget(enemies.ConvertAll(e => e.transform));
-        _lastDetectedTarget = nearest.GetComponent<IDamageable>();
-        return _lastDetectedTarget;
+        Transform nearest = playerTransform.GetNearestTarget(enemies.ConvertAll(e => e.transform));
+        lastDetectedTarget = nearest.GetComponent<IDamageable>();
+        return lastDetectedTarget;
     }
 
     public bool IsTargetWithinRange(Vector3 targetPos)
     {
-        Vector3 playerPos = _playerTransform.position;
-        playerPos.y = targetPos.y; // –≤–∏—Ä—ñ–≤–Ω—è–ª–∏ –ø–æ –≤–∏—Å–æ—Ç—ñ
-        return (targetPos - playerPos).sqrMagnitude <= _radius * _radius;
+        Vector3 playerPos = playerTransform.position;
+        playerPos.y = targetPos.y; // ‚Ë≥‚ÌˇÎË ÔÓ ‚ËÒÓÚ≥
+        return (targetPos - playerPos).sqrMagnitude <= radius * radius;
     }
 
 
     public void DrawGizmos()
     {
 
-        // –†–∞–¥—ñ—É—Å –¥–µ—Ç–µ–∫—Ü—ñ—ó
+        // –‡‰≥ÛÒ ‰ÂÚÂÍˆ≥ø
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(_playerTransform.position, _radius);
+        Gizmos.DrawWireSphere(playerTransform.position, radius);
         
-        if (_playerTransform == null || _lastDetectedTarget == null) return;
-        // –ê–∫—Ç–∏–≤–Ω–∞ —Ü—ñ–ª—å
-        if (IsTargetWithinRange(_lastDetectedTarget.transform.position) && _lastDetectedTarget is Component c)
+        if (playerTransform == null || lastDetectedTarget == null) return;
+        // ¿ÍÚË‚Ì‡ ˆ≥Î¸
+        if (IsTargetWithinRange(lastDetectedTarget.transform.position) && lastDetectedTarget is Component c)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(c.transform.position, 0.3f);
-            Gizmos.DrawLine(_playerTransform.position, c.transform.position);
+            Gizmos.DrawLine(playerTransform.position, c.transform.position);
         }
     }
 }
+

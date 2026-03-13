@@ -4,20 +4,20 @@ using UnityEngine;
 
 public sealed class WoodcutterDepositVisualController : IWoodcutterDepositVisualController
 {
-    private readonly WoodcutterView _view;
-    private readonly WoodcutterWorkSettings _workSettings;
+    private readonly WoodcutterView view;
+    private readonly WoodcutterWorkSettings workSettings;
 
-    private GameObject _heldLogInstance;
-    private Tween _rotateTween;
-    private Sequence _poseSequence;
+    private GameObject heldLogInstance;
+    private Tween rotateTween;
+    private Sequence poseSequence;
 
     public WoodcutterDepositVisualController(WoodcutterView view, WoodcutterWorkSettings workSettings)
     {
-        _view = view;
-        _workSettings = workSettings;
+        this.view = view;
+        this.workSettings = workSettings;
     }
 
-    public bool HasHeldLog => _heldLogInstance != null;
+    public bool HasHeldLog => heldLogInstance != null;
 
     public void BeginSession(bool hasWood)
     {
@@ -26,90 +26,90 @@ public sealed class WoodcutterDepositVisualController : IWoodcutterDepositVisual
 
     public void EndSession()
     {
-        _rotateTween?.Kill();
-        _poseSequence?.Kill();
+        rotateTween?.Kill();
+        poseSequence?.Kill();
         DestroyHeldLogVisual();
     }
 
     public void RefreshHeldLog(bool hasWood)
     {
-        if (!hasWood || _workSettings.DepositAnimation.LogPrefab == null)
+        if (!hasWood || workSettings.DepositAnimation.LogPrefab == null)
         {
             DestroyHeldLogVisual();
             return;
         }
 
-        if (_heldLogInstance != null)
+        if (heldLogInstance != null)
             return;
 
-        DepositAnimationSettings settings = _workSettings.DepositAnimation;
-        _heldLogInstance = Object.Instantiate(settings.LogPrefab, _view.HeldLogAnchor);
-        DisablePhysics(_heldLogInstance);
-        _heldLogInstance.transform.localPosition = settings.HeldLogLocalPosition;
-        _heldLogInstance.transform.localEulerAngles = settings.HeldLogLocalEuler;
-        _heldLogInstance.transform.localScale *= settings.ProjectileScale;
+        DepositAnimationSettings settings = workSettings.DepositAnimation;
+        heldLogInstance = Object.Instantiate(settings.LogPrefab, view.HeldLogAnchor);
+        DisablePhysics(heldLogInstance);
+        heldLogInstance.transform.localPosition = settings.HeldLogLocalPosition;
+        heldLogInstance.transform.localEulerAngles = settings.HeldLogLocalEuler;
+        heldLogInstance.transform.localScale *= settings.ProjectileScale;
     }
 
     public WoodcutterReleasedLogData ReleaseHeldLog(Vector3 targetPosition)
     {
-        Vector3 startPosition = _view.ThrowOrigin.position;
-        Vector3 startEuler = _view.ThrowOrigin.rotation.eulerAngles;
+        Vector3 startPosition = view.ThrowOrigin.position;
+        Vector3 startEuler = view.ThrowOrigin.rotation.eulerAngles;
 
-        if (_heldLogInstance == null)
+        if (heldLogInstance == null)
             return new WoodcutterReleasedLogData(startPosition, startEuler, targetPosition);
 
-        startPosition = _heldLogInstance.transform.position;
-        startEuler = _heldLogInstance.transform.rotation.eulerAngles;
-        Object.Destroy(_heldLogInstance);
-        _heldLogInstance = null;
+        startPosition = heldLogInstance.transform.position;
+        startEuler = heldLogInstance.transform.rotation.eulerAngles;
+        Object.Destroy(heldLogInstance);
+        heldLogInstance = null;
 
         return new WoodcutterReleasedLogData(startPosition, startEuler, targetPosition);
     }
 
     public IEnumerator RotateTowards(Vector3 targetPosition)
     {
-        Vector3 direction = targetPosition - _view.transform.position;
+        Vector3 direction = targetPosition - view.transform.position;
         direction.y = 0f;
 
         if (direction.sqrMagnitude <= 0.0001f)
             yield break;
 
-        _rotateTween?.Kill();
-        _rotateTween = _view.transform
-            .DORotateQuaternion(Quaternion.LookRotation(direction.normalized), _workSettings.DepositAnimation.RotationDuration)
+        rotateTween?.Kill();
+        rotateTween = view.transform
+            .DORotateQuaternion(Quaternion.LookRotation(direction.normalized), workSettings.DepositAnimation.RotationDuration)
             .SetEase(Ease.OutSine);
 
-        yield return _rotateTween.WaitForCompletion();
+        yield return rotateTween.WaitForCompletion();
     }
 
     public IEnumerator AnimatePose(WoodcutterDepositPose pose, float duration, Ease ease, TweenCallback onComplete = null)
     {
-        _poseSequence?.Kill();
-        _poseSequence = DOTween.Sequence();
+        poseSequence?.Kill();
+        poseSequence = DOTween.Sequence();
 
-        if (_heldLogInstance != null)
+        if (heldLogInstance != null)
         {
-            _poseSequence.Join(_heldLogInstance.transform.DOLocalMove(pose.HeldLocalPosition, duration).SetEase(ease));
-            _poseSequence.Join(_heldLogInstance.transform.DOLocalRotate(pose.HeldLocalEuler, duration).SetEase(ease));
+            poseSequence.Join(heldLogInstance.transform.DOLocalMove(pose.HeldLocalPosition, duration).SetEase(ease));
+            poseSequence.Join(heldLogInstance.transform.DOLocalRotate(pose.HeldLocalEuler, duration).SetEase(ease));
         }
         else
         {
-            _poseSequence.AppendInterval(duration);
+            poseSequence.AppendInterval(duration);
         }
 
         if (onComplete != null)
-            _poseSequence.OnComplete(onComplete);
+            poseSequence.OnComplete(onComplete);
 
-        yield return _poseSequence.WaitForCompletion();
+        yield return poseSequence.WaitForCompletion();
     }
 
     private void DestroyHeldLogVisual()
     {
-        if (_heldLogInstance == null)
+        if (heldLogInstance == null)
             return;
 
-        Object.Destroy(_heldLogInstance);
-        _heldLogInstance = null;
+        Object.Destroy(heldLogInstance);
+        heldLogInstance = null;
     }
 
     private static void DisablePhysics(GameObject visual)

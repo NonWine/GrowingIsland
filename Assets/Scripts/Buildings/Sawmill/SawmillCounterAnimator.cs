@@ -5,68 +5,68 @@ using UnityEngine;
 
 public sealed class SawmillCounterAnimator : ISawmillStorageFeedback, IDisposable
 {
-    private readonly ISawmillCounterFeedbackView _view;
-    private readonly SawmillCounterFeedbackSettings _settings;
+    private readonly ISawmillCounterFeedbackView view;
+    private readonly SawmillCounterFeedbackSettings settings;
 
-    private Sequence _uiSequence;
-    private Color _baseColor = Color.white;
-    private bool _baseColorCached;
+    private Sequence uiSequence;
+    private Color baseColor = Color.white;
+    private bool baseColorCached;
 
     public SawmillCounterAnimator(ISawmillCounterFeedbackView view, SawmillCounterFeedbackSettings settings)
     {
-        _view = view;
-        _settings = settings;
+        this.view = view;
+        this.settings = settings;
     }
 
     public void Dispose()
     {
-        _uiSequence?.Kill();
+        uiSequence?.Kill();
 
-        TMP_Text counterText = _view.CurrentWoodText;
+        TMP_Text counterText = view.CurrentWoodText;
         if (counterText == null)
             return;
 
         counterText.rectTransform.localScale = Vector3.one;
-        if (_baseColorCached)
-            counterText.color = _baseColor;
+        if (baseColorCached)
+            counterText.color = baseColor;
     }
 
     public void PlayStorageChanged()
     {
-        TMP_Text counterText = _view.CurrentWoodText;
+        TMP_Text counterText = view.CurrentWoodText;
         if (counterText == null)
             return;
 
-        _uiSequence?.Kill();
+        uiSequence?.Kill();
         CacheBaseColor(counterText);
         counterText.rectTransform.localScale = Vector3.one;
-        counterText.color = _baseColor;
+        counterText.color = baseColor;
 
-        _uiSequence = DOTween.Sequence();
-        _uiSequence.Join(
+        uiSequence = DOTween.Sequence();
+        uiSequence.Join(
             counterText.rectTransform.DOPunchScale(
-                Vector3.one * _settings.ScalePunch,
-                _settings.ScalePunchDuration,
+                Vector3.one * settings.ScalePunch,
+                settings.ScalePunchDuration,
                 vibrato: 1,
                 elasticity: 0f));
 
-        if (_settings.FlashDuration <= 0f)
+        if (settings.FlashDuration <= 0f)
             return;
 
-        _uiSequence.Join(DOTween.To(
+        uiSequence.Join(DOTween.To(
                 () => counterText.color,
                 color => counterText.color = color,
-                _settings.FlashColor,
-                _settings.FlashDuration * 0.5f)
+                settings.FlashColor,
+                settings.FlashDuration * 0.5f)
             .SetLoops(2, LoopType.Yoyo));
     }
 
     private void CacheBaseColor(TMP_Text counterText)
     {
-        if (_baseColorCached)
+        if (baseColorCached)
             return;
 
-        _baseColor = counterText.color;
-        _baseColorCached = true;
+        baseColor = counterText.color;
+        baseColorCached = true;
     }
 }

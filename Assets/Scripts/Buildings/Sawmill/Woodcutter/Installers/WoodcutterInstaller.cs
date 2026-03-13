@@ -1,25 +1,27 @@
-﻿using Unity.VisualScripting;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class WoodcutterInstaller : MonoInstaller
 {
+    [FormerlySerializedAs("_woodcutterView")]
     [SerializeField] private WoodcutterView woodcutterView;
 
-    private IWoodcutterWorkplace _workplace;
+    private IWoodcutterWorkplace workplace;
 
     [Inject]
     public void Construct(IWoodcutterWorkplace workplace)
     {
-        _workplace = workplace;
+        this.workplace = workplace;
     }
 
     public override void InstallBindings()
     {
         Components();
 
-        Container.Bind<IWoodcutterWorkplace>().FromInstance(_workplace).AsSingle();
+        Container.Bind<IWoodcutterWorkplace>().FromInstance(workplace).AsSingle();
         Container.Bind<NPCAnimator>().AsSingle().WithArguments(1);
         Container.Bind<IWoodcutterSensor>().To<WoodcutterSensor>().AsSingle();
         WoodcutterDepositAnimationInstaller.Install(Container);

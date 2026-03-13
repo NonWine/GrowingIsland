@@ -1,15 +1,15 @@
-﻿using Sirenix.OdinInspector;
+using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using Time = UnityEngine.Time;
 
 public class PlayerAttackState : PlayerState
 {
-    private readonly PlayerAnimator _animator;
-    private readonly PlayerRotating _rotator;
-    private readonly PlayerAttackHandler _attackHandler;
-    private readonly TargetDetector _detector;
+    private readonly PlayerAnimator animator;
+    private readonly PlayerRotating rotator;
+    private readonly PlayerAttackHandler attackHandler;
+    private readonly TargetDetector detector;
     private float timer;
-    [ShowInInspector] private IDamageable _currentTarget;
+    [ShowInInspector] private IDamageable currentTarget;
 
     public PlayerAttackState(
         PlayerStateMachine stateMachine,
@@ -20,23 +20,23 @@ public class PlayerAttackState : PlayerState
         TargetDetector detector)
         : base(stateMachine, playerContainer)
     {
-        _animator = animator;
-        _rotator = rotator;
-        _attackHandler = attackHandler;
-        _detector = detector;
+        this.animator = animator;
+        this.rotator = rotator;
+        this.attackHandler = attackHandler;
+        this.detector = detector;
     }
 
     public override void Enter()
     {
-        _animator.SetFarmingAnim(eCollectable.Wood); //will be change later
+        animator.SetFarmingAnim(eCollectable.Wood); //will be change later
         player.PlayerAnimatorEvent.OnFarming += TryAttack;
     }
 
     public override void LogicUpdate()
     {
-        _currentTarget ??= _detector.GetNearestTarget();
+        currentTarget ??= detector.GetNearestTarget();
 
-        if (_currentTarget == null)
+        if (currentTarget == null)
         {
             ResetTarget();
             return;
@@ -46,13 +46,13 @@ public class PlayerAttackState : PlayerState
         timer += Time.deltaTime;
         if (timer >= 0.3f)
         {
-            _animator.SetAnimataionLayerWeightBehaviour(1);
-            _animator.Lumbering();
-            _rotator.SetTargetRotate(_currentTarget.transform);
+            animator.SetAnimataionLayerWeightBehaviour(1);
+            animator.Lumbering();
+            rotator.SetTargetRotate(currentTarget.transform);
         }
 
-        if (!_currentTarget.isAlive ||
-            !_detector.IsTargetWithinRange(_currentTarget.transform.position))
+        if (!currentTarget.isAlive ||
+            !detector.IsTargetWithinRange(currentTarget.transform.position))
         { 
             ResetTarget();
         }
@@ -60,14 +60,14 @@ public class PlayerAttackState : PlayerState
 
     private void TryAttack()
     {
-        _attackHandler.TryAttack(_currentTarget, ResetTarget);
+        attackHandler.TryAttack(currentTarget, ResetTarget);
     }
 
     private void ResetTarget()
     {
-        _animator.SetAnimataionLayerWeightBehaviour(0);
-        _currentTarget = null;
-        _rotator.UnLockTarget();
+        animator.SetAnimataionLayerWeightBehaviour(0);
+        currentTarget = null;
+        rotator.UnLockTarget();
         timer = 0f;
     }
 
@@ -80,6 +80,7 @@ public class PlayerAttackState : PlayerState
     public override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
-        _detector.DrawGizmos();
+        detector.DrawGizmos();
     }
 }
+

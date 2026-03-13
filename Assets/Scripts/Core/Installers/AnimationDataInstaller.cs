@@ -1,15 +1,18 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class AnimationDataInstaller : MonoInstaller
 {
-    [SerializeField] private CollectableAnimationData _collectableAnimationData;
-    [SerializeField] private ResourceData _resourceData;
+    [FormerlySerializedAs("_collectableAnimationData")]
+    [SerializeField] private CollectableAnimationData collectableAnimationData;
+    [FormerlySerializedAs("_resourceData")]
+    [SerializeField] private ResourceData resourceData;
 
     public override void InstallBindings()
     {
-        Container.BindInstance(_collectableAnimationData).AsSingle();
-        Container.BindInstance(_resourceData).AsSingle();
+        Container.BindInstance(collectableAnimationData).AsSingle();
+        Container.BindInstance(resourceData).AsSingle();
 
     }
 }

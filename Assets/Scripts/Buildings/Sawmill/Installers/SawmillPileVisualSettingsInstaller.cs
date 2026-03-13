@@ -1,13 +1,15 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 [CreateAssetMenu(fileName = "SawmillPileVisualSettingsInstaller", menuName = "Installers/SawmillPileVisualSettingsInstaller")]
 public class SawmillPileVisualSettingsInstaller : ScriptableObjectInstaller<SawmillPileVisualSettingsInstaller>
 {
-    [SerializeField] private SawmillPileVisualSettings _settings = new();
+    [FormerlySerializedAs("_settings")]
+    [SerializeField] private SawmillPileVisualSettings settings = new();
 
     public override void InstallBindings()
     {
-        Container.BindInstance(new SawmillPileVisualSettings(_settings));
+        Container.BindInstance(new SawmillPileVisualSettings(settings));
     }
 }

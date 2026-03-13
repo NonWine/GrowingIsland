@@ -4,38 +4,38 @@ using UnityEngine;
 
 public sealed class WoodcutterDepositProjectileLauncher : IWoodcutterDepositProjectileLauncher
 {
-    private readonly WoodcutterView _view;
-    private readonly WoodcutterWorkSettings _workSettings;
+    private readonly WoodcutterView view;
+    private readonly WoodcutterWorkSettings workSettings;
 
-    private readonly List<GameObject> _activeProjectiles = new();
-    private readonly List<Sequence> _activeSequences = new();
+    private readonly List<GameObject> activeProjectiles = new();
+    private readonly List<Sequence> activeSequences = new();
 
     public WoodcutterDepositProjectileLauncher(WoodcutterView view, WoodcutterWorkSettings workSettings)
     {
-        _view = view;
-        _workSettings = workSettings;
+        this.view = view;
+        this.workSettings = workSettings;
     }
 
     public void ResetSession()
     {
-        for (int i = 0; i < _activeSequences.Count; i++)
-            _activeSequences[i]?.Kill();
+        for (int i = 0; i < activeSequences.Count; i++)
+            activeSequences[i]?.Kill();
 
-        for (int i = 0; i < _activeProjectiles.Count; i++)
+        for (int i = 0; i < activeProjectiles.Count; i++)
         {
-            if (_activeProjectiles[i] != null)
-                Object.Destroy(_activeProjectiles[i]);
+            if (activeProjectiles[i] != null)
+                Object.Destroy(activeProjectiles[i]);
         }
 
-        _activeSequences.Clear();
-        _activeProjectiles.Clear();
+        activeSequences.Clear();
+        activeProjectiles.Clear();
     }
 
     public void Launch(WoodcutterReleasedLogData releaseData, WoodcutterDepositThrowPlan plan, TweenCallback onImpactResolved)
     {
         PlayReleaseSound();
 
-        DepositAnimationSettings settings = _workSettings.DepositAnimation;
+        DepositAnimationSettings settings = workSettings.DepositAnimation;
         if (settings.LogPrefab == null)
         {
             onImpactResolved?.Invoke();
@@ -46,7 +46,7 @@ public sealed class WoodcutterDepositProjectileLauncher : IWoodcutterDepositProj
 
         GameObject projectile = Object.Instantiate(settings.LogPrefab, releaseData.StartPosition, Quaternion.Euler(releaseData.StartEuler));
         DisablePhysics(projectile);
-        _activeProjectiles.Add(projectile);
+        activeProjectiles.Add(projectile);
 
         Transform projectileTransform = projectile.transform;
         Vector3 finalScale = projectileTransform.localScale * settings.ProjectileScale;
@@ -55,7 +55,7 @@ public sealed class WoodcutterDepositProjectileLauncher : IWoodcutterDepositProj
         Vector3 direction = endPosition - releaseData.StartPosition;
         Vector3 sideAxis = Vector3.Cross(Vector3.up, direction.normalized);
         if (sideAxis.sqrMagnitude <= 0.0001f)
-            sideAxis = _view.transform.right;
+            sideAxis = view.transform.right;
 
         Vector3 apexPosition = Vector3.Lerp(releaseData.StartPosition, endPosition, 0.5f)
                                + Vector3.up * plan.ArcHeight
@@ -65,7 +65,7 @@ public sealed class WoodcutterDepositProjectileLauncher : IWoodcutterDepositProj
         float descendDuration = Mathf.Max(0.04f, plan.FlightDuration - apexDuration);
 
         Sequence flightSequence = DOTween.Sequence();
-        _activeSequences.Add(flightSequence);
+        activeSequences.Add(flightSequence);
 
         flightSequence.Append(projectileTransform.DOMove(apexPosition, apexDuration).SetEase(Ease.OutCubic));
         flightSequence.Append(projectileTransform.DOMove(endPosition, descendDuration).SetEase(Ease.InQuad));
@@ -84,8 +84,8 @@ public sealed class WoodcutterDepositProjectileLauncher : IWoodcutterDepositProj
 
         flightSequence.OnComplete(() =>
         {
-            _activeSequences.Remove(flightSequence);
-            _activeProjectiles.Remove(projectile);
+            activeSequences.Remove(flightSequence);
+            activeProjectiles.Remove(projectile);
             Object.Destroy(projectile);
             onImpactResolved?.Invoke();
         });
@@ -93,21 +93,21 @@ public sealed class WoodcutterDepositProjectileLauncher : IWoodcutterDepositProj
 
     private void PlayReleaseSound()
     {
-        DepositAudioSettings settings = _workSettings.DepositAudio;
+        DepositAudioSettings settings = workSettings.DepositAudio;
         AudioClip clip = PickRandom(settings.ReleaseClips);
         if (clip == null)
             return;
 
-        if (_view.AudioSource != null)
+        if (view.AudioSource != null)
         {
-            float originalPitch = _view.AudioSource.pitch;
-            _view.AudioSource.pitch = ReadRange(settings.ReleaseSoundPitchRange);
-            _view.AudioSource.PlayOneShot(clip, settings.ReleaseVolume);
-            _view.AudioSource.pitch = originalPitch;
+            float originalPitch = view.AudioSource.pitch;
+            view.AudioSource.pitch = ReadRange(settings.ReleaseSoundPitchRange);
+            view.AudioSource.PlayOneShot(clip, settings.ReleaseVolume);
+            view.AudioSource.pitch = originalPitch;
             return;
         }
 
-        AudioSource.PlayClipAtPoint(clip, _view.transform.position, settings.ReleaseVolume);
+        AudioSource.PlayClipAtPoint(clip, view.transform.position, settings.ReleaseVolume);
     }
 
     private static AudioClip PickRandom(AudioClip[] clips)

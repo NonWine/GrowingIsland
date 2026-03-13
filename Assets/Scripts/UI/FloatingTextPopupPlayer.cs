@@ -2,48 +2,51 @@ using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class FloatingTextPopupPlayer : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _popupPrefab;
-    [SerializeField] private FloatingTextPopupSettings _settings = new();
+    [FormerlySerializedAs("_popupPrefab")]
+    [SerializeField] private TMP_Text popupPrefab;
+    [FormerlySerializedAs("_settings")]
+    [SerializeField] private FloatingTextPopupSettings settings = new();
 
     public void Play(Transform parent)
     {
         if (parent == null)
             return;
 
-        Play(parent, _settings.DefaultText);
+        Play(parent, settings.DefaultText);
     }
 
     public void Play(Transform parent, string text)
     {
-        if (_popupPrefab == null || parent == null)
+        if (popupPrefab == null || parent == null)
             return;
 
-        TMP_Text popup = Instantiate(_popupPrefab, parent);
+        TMP_Text popup = Instantiate(popupPrefab, parent);
         RectTransform popupRect = popup.rectTransform;
-        Vector2 startPosition = _settings.Offset;
+        Vector2 startPosition = settings.Offset;
 
-        popup.text = string.IsNullOrWhiteSpace(text) ? _settings.DefaultText : text;
-        popup.color = _settings.Color;
+        popup.text = string.IsNullOrWhiteSpace(text) ? settings.DefaultText : text;
+        popup.color = settings.Color;
         popupRect.anchoredPosition = startPosition;
-        popupRect.localScale = Vector3.one * _settings.StartScale;
+        popupRect.localScale = Vector3.one * settings.StartScale;
 
         Sequence popupSequence = DOTween.Sequence();
         popupSequence.Join(DOTween.To(
                 () => popupRect.anchoredPosition,
                 value => popupRect.anchoredPosition = value,
-                startPosition + Vector2.up * _settings.Rise,
-                _settings.Duration)
+                startPosition + Vector2.up * settings.Rise,
+                settings.Duration)
             .SetEase(Ease.OutQuad));
         popupSequence.Join(
-            popupRect.DOScale(_settings.EndScale, _settings.Duration).SetEase(Ease.OutBack));
+            popupRect.DOScale(settings.EndScale, settings.Duration).SetEase(Ease.OutBack));
         popupSequence.Join(DOTween.To(
                 () => popup.color,
                 value => popup.color = value,
-                new Color(_settings.Color.r, _settings.Color.g, _settings.Color.b, 0f),
-                _settings.Duration)
+                new Color(settings.Color.r, settings.Color.g, settings.Color.b, 0f),
+                settings.Duration)
             .SetEase(Ease.InQuad));
         popupSequence.OnComplete(() => Destroy(popup.gameObject));
     }

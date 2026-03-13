@@ -1,13 +1,16 @@
-Ôªøusing System;
+using System;
 using DG.Tweening;
 using Extensions;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BuildingController : MonoBehaviour
 {
-    [SerializeField] private GameObject bridgePrefab; // –ü—Ä–µ—Ñ–∞–± –º–æ—Å—Ç—É
-    [SerializeField] private GameObject _obstakle;
-    [SerializeField] private ConstructionZone _bridgeBuildZone;
+    [SerializeField] private GameObject bridgePrefab; // œÂÙ‡· ÏÓÒÚÛ
+    [FormerlySerializedAs("_obstakle")]
+    [SerializeField] private GameObject obstakle;
+    [FormerlySerializedAs("_bridgeBuildZone")]
+    [SerializeField] private ConstructionZone bridgeBuildZone;
 
     private bool hasBuilt;
 
@@ -15,13 +18,13 @@ public class BuildingController : MonoBehaviour
     {
         hasBuilt = PlayerPrefsBool.GetBool(nameof(hasBuilt) + gameObject.name, false);
         bridgePrefab.SetActive(false);
-        _bridgeBuildZone.OnComplete += BuildBridge;
+        bridgeBuildZone.OnComplete += BuildBridge;
         if(hasBuilt) BuildBridge();
     }
 
     private void OnDestroy()
     {
-        _bridgeBuildZone.OnComplete -= BuildBridge;
+        bridgeBuildZone.OnComplete -= BuildBridge;
 
     }
 
@@ -31,10 +34,10 @@ public class BuildingController : MonoBehaviour
        hasBuilt = true;
        PlayerPrefsBool.SetBool(nameof(hasBuilt) + gameObject.name, hasBuilt);
        bridgePrefab.SetActive(true);
-       _obstakle.SetActive(false);
+       obstakle.SetActive(false);
        bridgePrefab.transform.localScale = Vector3.zero;
        bridgePrefab.transform.DOScale(1f, 0.25f).SetEase(Ease.OutBack);
-       _bridgeBuildZone.gameObject.SetActive(false);
+       bridgeBuildZone.gameObject.SetActive(false);
        Debug.Log("Bridge built!");
     }
 }

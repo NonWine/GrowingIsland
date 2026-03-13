@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class  EnemyPatroolIdleState : EnemyIdleState
 {
-    private float _timer;
+    private float timer;
     
     public EnemyPatroolIdleState(EnemyAnimator enemyAnimator, EnemyStateMachine enemyStateMachine) : base(enemyAnimator, enemyStateMachine)
     {
@@ -11,14 +11,14 @@ public class  EnemyPatroolIdleState : EnemyIdleState
     public override void EnterState(BaseEnemy baseEnemy)
     {
         base.EnterState(baseEnemy);
-        _timer = 0f;
+        timer = 0f;
     }
     
     public override void UpdateState()
     {
         base.UpdateState();
-        _timer += Time.deltaTime;
-        if (_timer >= 3f)
+        timer += Time.deltaTime;
+        if (timer >= 3f)
         {
             EnemyStateMachine.ChangeState<EnemyPatroolState>();
         }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 public class WoodcutterView : MonoBehaviour
 {
@@ -8,26 +9,29 @@ public class WoodcutterView : MonoBehaviour
     [field: SerializeField] public AnimationEventsView AnimationEventsView { get; private set; }
     [field: SerializeField] public AudioSource AudioSource { get; private set; }
 
-    [SerializeField] private Transform _visualRoot;
-    [SerializeField] private Transform _heldLogAnchor;
-    [SerializeField] private Transform _throwOrigin;
+    [FormerlySerializedAs("_visualRoot")]
+    [SerializeField] private Transform visualRoot;
+    [FormerlySerializedAs("_heldLogAnchor")]
+    [SerializeField] private Transform heldLogAnchor;
+    [FormerlySerializedAs("_throwOrigin")]
+    [SerializeField] private Transform throwOrigin;
 
-    private Transform _cachedHeldLogAnchor;
+    private Transform cachedHeldLogAnchor;
 
-    public Transform VisualRoot => _visualRoot != null
-        ? _visualRoot
+    public Transform VisualRoot => visualRoot != null
+        ? visualRoot
         : Animator != null
             ? Animator.transform
             : transform;
 
-    public Transform HeldLogAnchor => _heldLogAnchor != null
-        ? _heldLogAnchor
-        : _cachedHeldLogAnchor != null
-            ? _cachedHeldLogAnchor
+    public Transform HeldLogAnchor => heldLogAnchor != null
+        ? heldLogAnchor
+        : cachedHeldLogAnchor != null
+            ? cachedHeldLogAnchor
             : transform;
 
-    public Transform ThrowOrigin => _throwOrigin != null
-        ? _throwOrigin
+    public Transform ThrowOrigin => throwOrigin != null
+        ? throwOrigin
         : HeldLogAnchor != null
             ? HeldLogAnchor
             : VisualRoot;
@@ -44,8 +48,8 @@ public class WoodcutterView : MonoBehaviour
 
     private void CacheReferences()
     {
-        if (_cachedHeldLogAnchor == null)
-            _cachedHeldLogAnchor = FindDeepChild(transform, "CATRHand") ?? FindDeepChild(transform, "CATLHand");
+        if (cachedHeldLogAnchor == null)
+            cachedHeldLogAnchor = FindDeepChild(transform, "CATRHand") ?? FindDeepChild(transform, "CATLHand");
     }
 
     private static Transform FindDeepChild(Transform root, string childName)

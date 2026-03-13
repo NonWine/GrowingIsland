@@ -1,21 +1,22 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 public class PlayerMoving : IMoveable
 {
-    private PlayerContainer _playerContainer;
+    private PlayerContainer playerContainer;
 
     public PlayerMoving(PlayerContainer playerContainer)
     {
-        _playerContainer = playerContainer;
+        this.playerContainer = playerContainer;
     }
     
     public void Move()
     {
         
         
-        _playerContainer.Direction = new Vector3(_playerContainer.Joystick.Horizontal, 0, _playerContainer.Joystick.Vertical).normalized;
+        playerContainer.Direction = new Vector3(playerContainer.Joystick.Horizontal, 0, playerContainer.Joystick.Vertical).normalized;
         
-        _playerContainer.Agent.Move(   _playerContainer.Direction * (_playerContainer.PlayerStats.MoveSpeed * Time.deltaTime));
+        playerContainer.Agent.Move(   playerContainer.Direction * (playerContainer.PlayerStats.MoveSpeed * Time.deltaTime));
     }
 }
+

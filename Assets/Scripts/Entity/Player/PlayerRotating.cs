@@ -1,24 +1,24 @@
-п»їusing UnityEngine;
+using UnityEngine;
 
 public class PlayerRotating : IRotateable
 {
-    private PlayerContainer _playerContainer;
-    private bool _isTargeting;
+    private PlayerContainer playerContainer;
+    private bool isTargeting;
     
     public PlayerRotating(PlayerContainer playerContainer)
     {
-        _playerContainer = playerContainer;
+        this.playerContainer = playerContainer;
     }
 
     public void  Rotate()
     {
-        if(Input.GetKey(KeyCode.Space)) Debug.Log(_isTargeting);
+        if(Input.GetKey(KeyCode.Space)) Debug.Log(isTargeting);
        
-        if(_isTargeting || _playerContainer.Direction == Vector3.zero)
+        if(isTargeting || playerContainer.Direction == Vector3.zero)
            return;
         
-        _playerContainer.Body.rotation = Quaternion.Slerp(_playerContainer.Body.rotation, Quaternion.LookRotation(_playerContainer.Direction, Vector3.up),
-                    _playerContainer.PlayerStats.RotateSpeed * Time.deltaTime);
+        playerContainer.Body.rotation = Quaternion.Slerp(playerContainer.Body.rotation, Quaternion.LookRotation(playerContainer.Direction, Vector3.up),
+                    playerContainer.PlayerStats.RotateSpeed * Time.deltaTime);
 
        
 
@@ -26,20 +26,21 @@ public class PlayerRotating : IRotateable
 
     public void SetTargetRotate(Transform target)
     {
-        _isTargeting = true;
-        Vector3 direction = (target.position - _playerContainer.Body.position).normalized; // РћС‚СЂРёРјСѓС”РјРѕ РЅР°РїСЂСЏРјРѕРє
-        Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up); // РћР±С‡РёСЃР»СЋС”РјРѕ РїСЂР°РІРёР»СЊРЅРёР№ РїРѕРІРѕСЂРѕС‚
+        isTargeting = true;
+        Vector3 direction = (target.position - playerContainer.Body.position).normalized; // Отримуємо напрямок
+        Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up); // Обчислюємо правильний поворот
 
-        _playerContainer.Body.rotation = Quaternion.Slerp(
-            _playerContainer.Body.rotation,
+        playerContainer.Body.rotation = Quaternion.Slerp(
+            playerContainer.Body.rotation,
             targetRotation,
-            _playerContainer.PlayerStats.RotateSpeed * Time.deltaTime
+            playerContainer.PlayerStats.RotateSpeed * Time.deltaTime
         );
     }
 
 
     public void UnLockTarget()
     {
-        _isTargeting = false;
+        isTargeting = false;
     }
 }
+

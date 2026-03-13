@@ -1,23 +1,23 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyBackHomeState : EnemyState
 {
-    private Vector3 _spawnPoint;
+    private Vector3 spawnPoint;
     private NavMeshAgent _navMeshAgent_;
-    private Player _player;
+    private Player player;
     
     public EnemyBackHomeState(EnemyAnimator enemyAnimator,  EnemyStateMachine enemyStateMachine, Player player, NavMeshAgent navMeshAgent, Vector3 spawnPoint) : base(enemyStateMachine, enemyAnimator)
     {
-        _spawnPoint = spawnPoint;
-        _player = player;
+        this.spawnPoint = spawnPoint;
+        this.player = player;
         _navMeshAgent_ = navMeshAgent;
     }
 
     public override void EnterState(BaseEnemy baseEnemy)
     {
         _navMeshAgent_.velocity = Vector3.zero;
-        _navMeshAgent_.SetDestination(_spawnPoint);
+        _navMeshAgent_.SetDestination(spawnPoint);
         Enemy.EnemyHealth.OnGetDamage += AttackState;
         EnemyAnimator.Move();
 
@@ -47,3 +47,4 @@ public class EnemyBackHomeState : EnemyState
 
     private void AttackState() => EnemyStateMachine.ChangeState<AttackState>();
 }
+

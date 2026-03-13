@@ -3,19 +3,19 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
-    private Camera _cameraToLookAt;
+    private Camera cameraToLookAt;
    
     private void Start()
     {
  
-        _cameraToLookAt = Camera.main;
+        cameraToLookAt = Camera.main;
     }
 
     private void LateUpdate()
     {
 
-        transform.LookAt(transform.position + _cameraToLookAt.transform.rotation * Vector3.forward,
-            _cameraToLookAt.transform.rotation * Vector3.up);
+        transform.LookAt(transform.position + cameraToLookAt.transform.rotation * Vector3.forward,
+            cameraToLookAt.transform.rotation * Vector3.up);
         
     }
 }

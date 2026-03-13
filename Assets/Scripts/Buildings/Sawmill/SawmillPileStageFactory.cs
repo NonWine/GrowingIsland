@@ -3,13 +3,13 @@ using UnityEngine;
 
 public sealed class SawmillPileStageFactory : ISawmillPileStageFactory
 {
-    private readonly ISawmillPileLayoutCalculator _layoutCalculator;
-    private readonly SawmillPileVisualSettings _settings;
+    private readonly ISawmillPileLayoutCalculator layoutCalculator;
+    private readonly SawmillPileVisualSettings settings;
 
     public SawmillPileStageFactory(ISawmillPileLayoutCalculator layoutCalculator, SawmillPileVisualSettings settings)
     {
-        _layoutCalculator = layoutCalculator;
-        _settings = settings;
+        this.layoutCalculator = layoutCalculator;
+        this.settings = settings;
     }
 
     public List<Transform> CreateStages(ISawmillPileVisualTarget view, int stageCount)
@@ -30,12 +30,12 @@ public sealed class SawmillPileStageFactory : ISawmillPileStageFactory
         {
             Transform stageRoot = new GameObject($"PileStage_{stageIndex + 1}").transform;
             stageRoot.SetParent(pileRoot, false);
-            stageRoot.localPosition = _layoutCalculator.GetStageLocalPosition(_settings, stageIndex);
+            stageRoot.localPosition = layoutCalculator.GetStageLocalPosition(settings, stageIndex);
             stageRoot.localRotation = Quaternion.identity;
             stageRoot.localScale = Vector3.one;
             stageRoot.gameObject.SetActive(false);
 
-            BuildStageLogs(stageRoot, pileTemplate, _settings, stageIndex);
+            BuildStageLogs(stageRoot, pileTemplate, settings, stageIndex);
             stages.Add(stageRoot);
         }
 
@@ -51,15 +51,15 @@ public sealed class SawmillPileStageFactory : ISawmillPileStageFactory
             PrepareLog(log);
 
             Transform logTransform = log.transform;
-            logTransform.localPosition = _layoutCalculator.GetLogLocalPosition(settings, stageIndex, logIndex);
-            logTransform.localRotation = _layoutCalculator.GetLogLocalRotation(settings, stageIndex);
+            logTransform.localPosition = layoutCalculator.GetLogLocalPosition(settings, stageIndex, logIndex);
+            logTransform.localRotation = layoutCalculator.GetLogLocalRotation(settings, stageIndex);
         }
     }
 
     private GameObject ResolvePileTemplate(ISawmillPileVisualTarget view)
     {
-        if (_settings.LogPrefab != null)
-            return _settings.LogPrefab;
+        if (settings.LogPrefab != null)
+            return settings.LogPrefab;
 
         Transform depositPoint = view.DepositPoint;
         if (depositPoint.childCount > 0)

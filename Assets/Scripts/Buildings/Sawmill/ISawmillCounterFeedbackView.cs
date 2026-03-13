@@ -1,4 +1,4 @@
-﻿using TMPro;
+using TMPro;
 
 public interface ISawmillCounterFeedbackView
 {

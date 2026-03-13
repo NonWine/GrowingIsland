@@ -1,24 +1,13 @@
 using System.Collections;
-using UnityEngine;
 using Zenject;
 
 public class WoodcutterDepositState : WoodcutterState
 {
-    [Inject] private IWoodcutterDepositVisualController _visualController;
-    [Inject] private IWoodcutterDepositProjectileLauncher _projectileLauncher;
-    [Inject] private IWoodcutterDepositRoutine _depositRoutineUseCase;
-
-    private Coroutine _depositRoutine;
-    private bool _isActive;
-    private bool _startWithVariantB;
+    [Inject] private IWoodcutterDepositSession depositSession;
 
     public override void Enter()
     {
-        _isActive = true;
-        _startWithVariantB = Random.value > 0.5f;
-        view.Agent.isStopped = true;
-        _visualController.BeginSession(woodCutterFacade.HasWood);
-        _depositRoutine = view.StartCoroutine(_depositRoutineUseCase.Execute(_startWithVariantB, () => _isActive, OnDepositRoutineCompleted));
+        depositSession.Start(OnDepositRoutineCompleted);
     }
 
     public override void Tick()
@@ -27,20 +16,11 @@ public class WoodcutterDepositState : WoodcutterState
 
     public override void Exit()
     {
-        _isActive = false;
-
-        if (_depositRoutine != null)
-            view.StopCoroutine(_depositRoutine);
-
-        _projectileLauncher.ResetSession();
-        _visualController.EndSession();
+        depositSession.Stop();
     }
 
     private void OnDepositRoutineCompleted(WoodcutterDepositRoutineResult result)
     {
-        if (!_isActive)
-            return;
-
         switch (result)
         {
             case WoodcutterDepositRoutineResult.WaitForStorage:

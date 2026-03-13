@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 
 public class PlayerStateMachine
 {
-    [ShowInInspector] private Dictionary<PlayerStateKey, PlayerState> _playerStates;
+    [ShowInInspector] private Dictionary<PlayerStateKey, PlayerState> playerStates;
     
     [ShowInInspector] public PlayerState CurrentState { get; private set; }
     
     public PlayerStateKey CurrentStateKey { get; private set; }
 
-    public void RegisterStates(Dictionary<PlayerStateKey, PlayerState> states) => _playerStates = states;
+    public void RegisterStates(Dictionary<PlayerStateKey, PlayerState> states) => playerStates = states;
     
     public void Initialize(PlayerStateKey startingState)
     {
@@ -27,7 +27,7 @@ public class PlayerStateMachine
 
     private PlayerState GetState(PlayerStateKey playerStateKey)
     {
-        _playerStates.TryGetValue(playerStateKey, out PlayerState playerState);
+        playerStates.TryGetValue(playerStateKey, out PlayerState playerState);
         return playerState;
     }
     

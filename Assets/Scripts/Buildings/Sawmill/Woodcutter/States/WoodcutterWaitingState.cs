@@ -1,16 +1,16 @@
 public class WoodcutterWaitingState : WoodcutterState
 {
-    private readonly NPCAnimator _npcAnimator;
+    private readonly NPCAnimator npcAnimator;
 
     public WoodcutterWaitingState(NPCAnimator npcAnimator)
     {
-        _npcAnimator = npcAnimator;
+        this.npcAnimator = npcAnimator;
     }
 
     public override void Enter()
     {
         view.Agent.isStopped = true;
-        _npcAnimator.SetIdle();
+        npcAnimator.SetIdle();
         woodCutterFacade.StorageChanged += OnStorageChanged;
     }
 

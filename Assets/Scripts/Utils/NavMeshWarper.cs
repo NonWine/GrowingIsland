@@ -5,11 +5,14 @@ using Sirenix.OdinInspector;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 public class NavMeshWarper : MonoBehaviour
 {
-   [SerializeField, ReadOnly] private bool _inWarpZone;
-   [SerializeField] private NavMeshLink _warpZone;
+   [FormerlySerializedAs("_inWarpZone")]
+   [SerializeField, ReadOnly] private bool inWarpZone;
+   [FormerlySerializedAs("_warpZone")]
+   [SerializeField] private NavMeshLink warpZone;
    
    private void OnTriggerEnter(Collider other)
    {
@@ -22,16 +25,16 @@ public class NavMeshWarper : MonoBehaviour
          {
             float nearDist = 0f;
             float distanceFromStartPoint, distanceFromEndPoint;
-            distanceFromEndPoint = (agent.transform.position - _warpZone.endPoint).magnitude;
-            distanceFromStartPoint = (agent.transform.position - _warpZone.startPoint).magnitude;
+            distanceFromEndPoint = (agent.transform.position - warpZone.endPoint).magnitude;
+            distanceFromStartPoint = (agent.transform.position - warpZone.startPoint).magnitude;
 
             if (distanceFromEndPoint < distanceFromStartPoint)
             {
-               agent.Warp(_warpZone.startPoint);
+               agent.Warp(warpZone.startPoint);
             }
             else if (distanceFromStartPoint < distanceFromEndPoint)
             {
-               agent.Warp(_warpZone.endPoint);
+               agent.Warp(warpZone.endPoint);
 
             }
             
