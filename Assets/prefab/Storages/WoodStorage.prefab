@@ -318,9 +318,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6200455242091987569}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7594303, z: -0, w: 0.65058875}
-  m_LocalPosition: {x: -0.31467766, y: -0.2530133, z: -0.4359822}
-  m_LocalScale: {x: 1.7944212, y: 1.7944212, z: 1.7944212}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.287, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3955067279217704409}
@@ -563,19 +563,11 @@ MonoBehaviour:
     ImpactClips: []
     AudioVolume: 1
     AudioPitchRange: {x: 0.95, y: 1.05}
-  _uiFeedback:
+  _counterFeedback:
     ScalePunch: 0.16
     ScalePunchDuration: 0.16
     FlashColor: {r: 1, g: 0.94, b: 0.74, a: 1}
     FlashDuration: 0.12
-    PopupPrefab: {fileID: 7754412977772111376}
-    PopupText: +1
-    PopupOffset: {x: 0, y: 1}
-    PopupRise: 24
-    PopupDuration: 0.45
-    PopupStartScale: 0.85
-    PopupEndScale: 1.05
-    PopupColor: {r: 1, g: 0.94, b: 0.74, a: 1}
   _pileVisuals:
     Enabled: 1
     PileRoot: {fileID: 342095602047050794}

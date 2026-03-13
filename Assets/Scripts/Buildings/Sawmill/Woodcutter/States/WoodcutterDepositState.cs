@@ -72,7 +72,7 @@ public class WoodcutterDepositState : WoodcutterState
             plan.BodyAnticipationOffset,
             plan.BodyAnticipationEuler,
             plan.HeldAnticipationPosition,
-            plan.HeldRotationEuler,
+            plan.HeldAnticipationEuler,
             plan.AnticipationDuration,
             Ease.OutSine);
 
@@ -81,7 +81,7 @@ public class WoodcutterDepositState : WoodcutterState
             plan.BodyReleaseOffset,
             plan.BodyReleaseEuler,
             plan.HeldReleasePosition,
-            plan.HeldRotationEuler,
+            plan.HeldReleaseEuler,
             plan.ReleaseDuration,
             Ease.OutCubic,
             onComplete: () => ReleaseHeldLog(plan, () => impactResolved = true));
@@ -185,23 +185,23 @@ public class WoodcutterDepositState : WoodcutterState
         if (sideAxis.sqrMagnitude <= 0.0001f)
             sideAxis = view.transform.right;
 
-        Sequence sequence = DOTween.Sequence();
-        sequence.Join(
-            DOTween.To(
-                    () => 0f,
-                    progress =>
-                    {
-                        float easedProgress = DOVirtual.EasedValue(0f, 1f, progress, settings.LogFlightEase);
-                        Vector3 linearPosition = Vector3.LerpUnclamped(startPosition, endPosition, easedProgress);
-                        float arcHeight = Mathf.Sin(progress * Mathf.PI) * plan.ArcHeight;
-                        float sideOffset = Mathf.Sin(progress * Mathf.PI) * plan.SideOffset;
-                        projectileTransform.position = linearPosition + Vector3.up * arcHeight + sideAxis * sideOffset;
-                    },
-                    1f,
-                    plan.FlightDuration)
-                .SetEase(Ease.Linear));
+        Vector3 apexPosition = Vector3.Lerp(startPosition, endPosition, 0.5f)
+                               + Vector3.up * plan.ArcHeight
+                               + sideAxis * plan.SideOffset;
 
-        sequence.Join(projectileTransform.DOScale(finalScale, Mathf.Min(0.08f, plan.FlightDuration * 0.5f)).SetEase(Ease.OutSine));
+        float apexDuration = plan.FlightDuration * plan.ApexDurationRatio;
+        float descendDuration = Mathf.Max(0.04f, plan.FlightDuration - apexDuration);
+
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(projectileTransform.DOMove(apexPosition, apexDuration).SetEase(Ease.OutCubic));
+        sequence.Append(projectileTransform.DOMove(endPosition, descendDuration).SetEase(Ease.InQuad));
+
+        Sequence scaleSequence = DOTween.Sequence();
+        scaleSequence.Append(projectileTransform.DOScale(finalScale * settings.ReleaseScaleMultiplier, Mathf.Min(0.06f, apexDuration * 0.45f)).SetEase(Ease.OutBack));
+        scaleSequence.Append(projectileTransform.DOScale(finalScale * settings.ApexScaleMultiplier, Mathf.Max(0.04f, apexDuration * 0.55f)).SetEase(Ease.OutSine));
+        scaleSequence.Append(projectileTransform.DOScale(finalScale, descendDuration).SetEase(Ease.InSine));
+        sequence.Join(scaleSequence);
+
         sequence.Join(
             projectileTransform.DORotate(
                 startEuler + new Vector3(plan.PitchSpin, plan.SpinDegrees, plan.RollSpin),
@@ -278,18 +278,20 @@ public class WoodcutterDepositState : WoodcutterState
             RecoveryDuration = ReadRange(settings.RecoveryDurationRange) * timingMultiplier,
             PostThrowDelay = Mathf.Max(0f, settings.DelayBetweenLogs),
             ArcHeight = ReadRange(settings.ArcHeightRange) * variant.ArcHeightMultiplier * (isAccented ? 1.05f : 1f),
-            SideOffset = ReadRange(settings.SideOffsetRange),
+            SideOffset = ReadRange(settings.SideOffsetRange) * variant.SideOffsetMultiplier,
             SpinDegrees = ReadRange(settings.SpinDegreesRange) * variant.SpinMultiplier,
             PitchSpin = ReadRange(settings.PitchJitterRange),
             RollSpin = ReadRange(settings.RollJitterRange),
             ImpactStrength = ReadRange(settings.ImpactStrengthRange) * accentMultiplier,
             BodyAnticipationOffset = Vector3.Scale(settings.BodyAnticipationOffset, variant.BodyOffsetScale),
-            BodyAnticipationEuler = settings.BodyAnticipationEuler,
+            BodyAnticipationEuler = settings.BodyAnticipationEuler + variant.BodyAnticipationEulerOffset,
             BodyReleaseOffset = Vector3.Scale(settings.BodyReleaseOffset, variant.BodyOffsetScale) * accentMultiplier,
             BodyReleaseEuler = settings.BodyReleaseEuler + variant.BodyReleaseEulerOffset,
             HeldAnticipationPosition = settings.HeldLogLocalPosition + variant.HeldAnticipationOffset,
             HeldReleasePosition = settings.HeldLogLocalPosition + variant.HeldReleaseOffset,
-            HeldRotationEuler = settings.HeldLogLocalEuler,
+            HeldAnticipationEuler = settings.HeldLogLocalEuler,
+            HeldReleaseEuler = settings.HeldLogLocalEuler + variant.HeldEulerOffset,
+            ApexDurationRatio = ReadRange(settings.ApexDurationRatioRange),
             LandingOffset = new Vector3(
                 ReadRange(settings.LandingSpreadRange),
                 0f,
@@ -383,7 +385,9 @@ public class WoodcutterDepositState : WoodcutterState
         public Vector3 BodyReleaseEuler;
         public Vector3 HeldAnticipationPosition;
         public Vector3 HeldReleasePosition;
-        public Vector3 HeldRotationEuler;
+        public Vector3 HeldAnticipationEuler;
+        public Vector3 HeldReleaseEuler;
+        public float ApexDurationRatio;
         public Vector3 LandingOffset;
     }
 }
