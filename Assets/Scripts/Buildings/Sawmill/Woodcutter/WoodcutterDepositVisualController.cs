@@ -8,8 +8,6 @@ public sealed class WoodcutterDepositVisualController : IWoodcutterDepositVisual
     private readonly WoodcutterWorkSettings _workSettings;
 
     private GameObject _heldLogInstance;
-    private Vector3 _visualRootBasePosition;
-    private Vector3 _visualRootBaseEuler;
     private Tween _rotateTween;
     private Sequence _poseSequence;
 
@@ -23,7 +21,6 @@ public sealed class WoodcutterDepositVisualController : IWoodcutterDepositVisual
 
     public void BeginSession(bool hasWood)
     {
-        CacheVisualRootPose();
         RefreshHeldLog(hasWood);
     }
 
@@ -32,7 +29,6 @@ public sealed class WoodcutterDepositVisualController : IWoodcutterDepositVisual
         _rotateTween?.Kill();
         _poseSequence?.Kill();
         DestroyHeldLogVisual();
-        ResetVisualPose();
     }
 
     public void RefreshHeldLog(bool hasWood)
@@ -54,20 +50,20 @@ public sealed class WoodcutterDepositVisualController : IWoodcutterDepositVisual
         _heldLogInstance.transform.localScale *= settings.ProjectileScale;
     }
 
-    public WoodcutterReleasedLogData ReleaseHeldLog()
+    public WoodcutterReleasedLogData ReleaseHeldLog(Vector3 targetPosition)
     {
         Vector3 startPosition = _view.ThrowOrigin.position;
         Vector3 startEuler = _view.ThrowOrigin.rotation.eulerAngles;
 
         if (_heldLogInstance == null)
-            return new WoodcutterReleasedLogData(startPosition, startEuler);
+            return new WoodcutterReleasedLogData(startPosition, startEuler, targetPosition);
 
         startPosition = _heldLogInstance.transform.position;
         startEuler = _heldLogInstance.transform.rotation.eulerAngles;
         Object.Destroy(_heldLogInstance);
         _heldLogInstance = null;
 
-        return new WoodcutterReleasedLogData(startPosition, startEuler);
+        return new WoodcutterReleasedLogData(startPosition, startEuler, targetPosition);
     }
 
     public IEnumerator RotateTowards(Vector3 targetPosition)
@@ -90,33 +86,21 @@ public sealed class WoodcutterDepositVisualController : IWoodcutterDepositVisual
     {
         _poseSequence?.Kill();
         _poseSequence = DOTween.Sequence();
-        _poseSequence.Join(
-            _view.VisualRoot.DOLocalMove(_visualRootBasePosition + pose.BodyOffset, duration).SetEase(ease));
-        _poseSequence.Join(
-            _view.VisualRoot.DOLocalRotate(_visualRootBaseEuler + pose.BodyEuler, duration).SetEase(ease));
 
         if (_heldLogInstance != null)
         {
             _poseSequence.Join(_heldLogInstance.transform.DOLocalMove(pose.HeldLocalPosition, duration).SetEase(ease));
             _poseSequence.Join(_heldLogInstance.transform.DOLocalRotate(pose.HeldLocalEuler, duration).SetEase(ease));
         }
+        else
+        {
+            _poseSequence.AppendInterval(duration);
+        }
 
         if (onComplete != null)
             _poseSequence.OnComplete(onComplete);
 
         yield return _poseSequence.WaitForCompletion();
-    }
-
-    private void CacheVisualRootPose()
-    {
-        _visualRootBasePosition = _view.VisualRoot.localPosition;
-        _visualRootBaseEuler = _view.VisualRoot.localEulerAngles;
-    }
-
-    private void ResetVisualPose()
-    {
-        _view.VisualRoot.localPosition = _visualRootBasePosition;
-        _view.VisualRoot.localEulerAngles = _visualRootBaseEuler;
     }
 
     private void DestroyHeldLogVisual()

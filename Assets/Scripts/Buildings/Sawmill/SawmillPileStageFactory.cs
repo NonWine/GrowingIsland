@@ -4,10 +4,12 @@ using UnityEngine;
 public sealed class SawmillPileStageFactory : ISawmillPileStageFactory
 {
     private readonly ISawmillPileLayoutCalculator _layoutCalculator;
+    private readonly SawmillPileVisualSettings _settings;
 
-    public SawmillPileStageFactory(ISawmillPileLayoutCalculator layoutCalculator)
+    public SawmillPileStageFactory(ISawmillPileLayoutCalculator layoutCalculator, SawmillPileVisualSettings settings)
     {
         _layoutCalculator = layoutCalculator;
+        _settings = settings;
     }
 
     public List<Transform> CreateStages(ISawmillPileVisualTarget view, int stageCount)
@@ -16,12 +18,11 @@ public sealed class SawmillPileStageFactory : ISawmillPileStageFactory
         if (stageCount <= 0)
             return stages;
 
-        SawmillPileVisualSettings settings = view.PileVisualSettings;
         GameObject pileTemplate = ResolvePileTemplate(view);
         if (pileTemplate == null)
             return stages;
 
-        Transform pileRoot = settings.PileRoot != null ? settings.PileRoot : view.DepositPoint;
+        Transform pileRoot = view.PileRoot != null ? view.PileRoot : view.DepositPoint;
         if (pileRoot == null)
             return stages;
 
@@ -29,12 +30,12 @@ public sealed class SawmillPileStageFactory : ISawmillPileStageFactory
         {
             Transform stageRoot = new GameObject($"PileStage_{stageIndex + 1}").transform;
             stageRoot.SetParent(pileRoot, false);
-            stageRoot.localPosition = _layoutCalculator.GetStageLocalPosition(settings, stageIndex);
+            stageRoot.localPosition = _layoutCalculator.GetStageLocalPosition(_settings, stageIndex);
             stageRoot.localRotation = Quaternion.identity;
             stageRoot.localScale = Vector3.one;
             stageRoot.gameObject.SetActive(false);
 
-            BuildStageLogs(stageRoot, pileTemplate, settings, stageIndex);
+            BuildStageLogs(stageRoot, pileTemplate, _settings, stageIndex);
             stages.Add(stageRoot);
         }
 
@@ -55,11 +56,10 @@ public sealed class SawmillPileStageFactory : ISawmillPileStageFactory
         }
     }
 
-    private static GameObject ResolvePileTemplate(ISawmillPileVisualTarget view)
+    private GameObject ResolvePileTemplate(ISawmillPileVisualTarget view)
     {
-        GameObject logPrefab = view.PileVisualSettings.LogPrefab;
-        if (logPrefab != null)
-            return logPrefab;
+        if (_settings.LogPrefab != null)
+            return _settings.LogPrefab;
 
         Transform depositPoint = view.DepositPoint;
         if (depositPoint.childCount > 0)

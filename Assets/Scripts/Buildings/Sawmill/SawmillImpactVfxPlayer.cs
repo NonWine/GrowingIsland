@@ -3,15 +3,17 @@ using UnityEngine;
 public sealed class SawmillImpactVfxPlayer : ISawmillImpactVfxPlayer
 {
     private readonly ISawmillImpactFeedbackView _view;
+    private readonly SawmillImpactFeedbackSettings _settings;
 
-    public SawmillImpactVfxPlayer(ISawmillImpactFeedbackView view)
+    public SawmillImpactVfxPlayer(ISawmillImpactFeedbackView view, SawmillImpactFeedbackSettings settings)
     {
         _view = view;
+        _settings = settings;
     }
 
     public void Play()
     {
-        ParticleSystem prefab = _view.ImpactFeedbackSettings.ImpactVfxPrefab;
+        ParticleSystem prefab = _settings.ImpactVfxPrefab;
         if (prefab == null)
             return;
 

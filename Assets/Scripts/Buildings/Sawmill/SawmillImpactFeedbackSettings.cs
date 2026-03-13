@@ -16,4 +16,22 @@ public class SawmillImpactFeedbackSettings
     public AudioClip[] ImpactClips;
     public float AudioVolume = 1f;
     public Vector2 AudioPitchRange = new(0.95f, 1.05f);
+
+    public SawmillImpactFeedbackSettings() { }
+
+    public SawmillImpactFeedbackSettings(SawmillImpactFeedbackSettings template)
+    {
+        ScalePunch = template.ScalePunch;
+        Duration = template.Duration;
+        PositionShake = template.PositionShake;
+        ShakeVibrato = template.ShakeVibrato;
+        RotationPunch = template.RotationPunch;
+        PileSettlePunch = template.PileSettlePunch;
+        PileRotationPunch = template.PileRotationPunch;
+        MaxPileShakeStages = template.MaxPileShakeStages;
+        ImpactVfxPrefab = template.ImpactVfxPrefab;
+        ImpactClips = template.ImpactClips;
+        AudioVolume = template.AudioVolume;
+        AudioPitchRange = template.AudioPitchRange;
+    }
 }

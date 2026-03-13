@@ -5,7 +5,6 @@ using UnityEngine;
 public class SawmillPileVisualSettings
 {
     public bool Enabled = true;
-    public Transform PileRoot;
     public GameObject LogPrefab;
     public int StageSize = 5;
     public int LogsPerStage = 3;
@@ -21,4 +20,26 @@ public class SawmillPileVisualSettings
     public float StagePopScale = 0.1f;
     public float StagePopDuration = 0.16f;
     public float StageSettleDuration = 0.1f;
+
+    public SawmillPileVisualSettings() { }
+
+    public SawmillPileVisualSettings(SawmillPileVisualSettings template)
+    {
+        Enabled = template.Enabled;
+        LogPrefab = template.LogPrefab;
+        StageSize = template.StageSize;
+        LogsPerStage = template.LogsPerStage;
+        LogsPerRow = template.LogsPerRow;
+        BaseOffset = template.BaseOffset;
+        LogSpacing = template.LogSpacing;
+        StageRise = template.StageRise;
+        StageDepth = template.StageDepth;
+        HorizontalJitter = template.HorizontalJitter;
+        DepthJitter = template.DepthJitter;
+        YawJitter = template.YawJitter;
+        LogBaseEuler = template.LogBaseEuler;
+        StagePopScale = template.StagePopScale;
+        StagePopDuration = template.StagePopDuration;
+        StageSettleDuration = template.StageSettleDuration;
+    }
 }

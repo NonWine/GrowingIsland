@@ -17,6 +17,7 @@ public class WoodcutterWorkSettings
     public int CarryCapacity = 5;
 
     public DepositAnimationSettings DepositAnimation = new();
+    public DepositAudioSettings DepositAudio = new();
 
     public WoodcutterWorkSettings() { }
 
@@ -33,5 +34,6 @@ public class WoodcutterWorkSettings
         ChopInterval = template.ChopInterval;
         CarryCapacity = template.CarryCapacity;
         DepositAnimation = new DepositAnimationSettings(template.DepositAnimation);
+        DepositAudio = new DepositAudioSettings(template.DepositAudio);
     }
 }

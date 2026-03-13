@@ -4,9 +4,6 @@ using UnityEngine;
 [Serializable]
 public class ThrowVariantSettings
 {
-    public Vector3 BodyOffsetScale = Vector3.one;
-    public Vector3 BodyAnticipationEulerOffset = Vector3.zero;
-    public Vector3 BodyReleaseEulerOffset = Vector3.zero;
     public Vector3 HeldAnticipationOffset = Vector3.zero;
     public Vector3 HeldReleaseOffset = Vector3.zero;
     public Vector3 HeldEulerOffset = Vector3.zero;
@@ -19,9 +16,6 @@ public class ThrowVariantSettings
 
     public ThrowVariantSettings(ThrowVariantSettings template)
     {
-        BodyOffsetScale = template.BodyOffsetScale;
-        BodyAnticipationEulerOffset = template.BodyAnticipationEulerOffset;
-        BodyReleaseEulerOffset = template.BodyReleaseEulerOffset;
         HeldAnticipationOffset = template.HeldAnticipationOffset;
         HeldReleaseOffset = template.HeldReleaseOffset;
         HeldEulerOffset = template.HeldEulerOffset;
@@ -32,9 +26,6 @@ public class ThrowVariantSettings
     }
 
     public static ThrowVariantSettings Create(
-        Vector3 bodyOffsetScale,
-        Vector3 bodyAnticipationEulerOffset,
-        Vector3 bodyReleaseEulerOffset,
         Vector3 heldAnticipationOffset,
         Vector3 heldReleaseOffset,
         Vector3 heldEulerOffset,
@@ -45,9 +36,6 @@ public class ThrowVariantSettings
     {
         return new ThrowVariantSettings
         {
-            BodyOffsetScale = bodyOffsetScale,
-            BodyAnticipationEulerOffset = bodyAnticipationEulerOffset,
-            BodyReleaseEulerOffset = bodyReleaseEulerOffset,
             HeldAnticipationOffset = heldAnticipationOffset,
             HeldReleaseOffset = heldReleaseOffset,
             HeldEulerOffset = heldEulerOffset,

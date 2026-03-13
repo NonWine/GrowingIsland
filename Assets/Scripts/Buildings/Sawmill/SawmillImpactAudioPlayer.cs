@@ -3,16 +3,17 @@ using UnityEngine;
 public sealed class SawmillImpactAudioPlayer : ISawmillImpactAudioPlayer
 {
     private readonly ISawmillImpactFeedbackView _view;
+    private readonly SawmillImpactFeedbackSettings _settings;
 
-    public SawmillImpactAudioPlayer(ISawmillImpactFeedbackView view)
+    public SawmillImpactAudioPlayer(ISawmillImpactFeedbackView view, SawmillImpactFeedbackSettings settings)
     {
         _view = view;
+        _settings = settings;
     }
 
     public void Play()
     {
-        SawmillImpactFeedbackSettings feedback = _view.ImpactFeedbackSettings;
-        AudioClip clip = PickRandom(feedback.ImpactClips);
+        AudioClip clip = PickRandom(_settings.ImpactClips);
         if (clip == null)
             return;
 
@@ -20,13 +21,13 @@ public sealed class SawmillImpactAudioPlayer : ISawmillImpactAudioPlayer
         if (audioSource != null)
         {
             float originalPitch = audioSource.pitch;
-            audioSource.pitch = UnityEngine.Random.Range(feedback.AudioPitchRange.x, feedback.AudioPitchRange.y);
-            audioSource.PlayOneShot(clip, feedback.AudioVolume);
+            audioSource.pitch = UnityEngine.Random.Range(_settings.AudioPitchRange.x, _settings.AudioPitchRange.y);
+            audioSource.PlayOneShot(clip, _settings.AudioVolume);
             audioSource.pitch = originalPitch;
             return;
         }
 
-        AudioSource.PlayClipAtPoint(clip, _view.DepositPoint.position, feedback.AudioVolume);
+        AudioSource.PlayClipAtPoint(clip, _view.DepositPoint.position, _settings.AudioVolume);
     }
 
     private static AudioClip PickRandom(AudioClip[] clips)

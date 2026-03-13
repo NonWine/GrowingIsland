@@ -32,13 +32,9 @@ public sealed class WoodcutterDepositPlanBuilder : IWoodcutterDepositPlanBuilder
                 0f,
                 ReadRange(settings.LandingSpreadRange)),
             anticipationPose: new WoodcutterDepositPose(
-                Vector3.Scale(settings.BodyAnticipationOffset, variant.BodyOffsetScale),
-                settings.BodyAnticipationEuler + variant.BodyAnticipationEulerOffset,
                 settings.HeldLogLocalPosition + variant.HeldAnticipationOffset,
                 settings.HeldLogLocalEuler),
             releasePose: new WoodcutterDepositPose(
-                Vector3.Scale(settings.BodyReleaseOffset, variant.BodyOffsetScale) * accentMultiplier,
-                settings.BodyReleaseEuler + variant.BodyReleaseEulerOffset,
                 settings.HeldLogLocalPosition + variant.HeldReleaseOffset,
                 settings.HeldLogLocalEuler + variant.HeldEulerOffset));
     }

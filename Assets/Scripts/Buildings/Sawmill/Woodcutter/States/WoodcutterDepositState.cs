@@ -16,14 +16,9 @@ public class WoodcutterDepositState : WoodcutterState
     {
         _isActive = true;
         _startWithVariantB = Random.value > 0.5f;
-
         view.Agent.isStopped = true;
         _visualController.BeginSession(woodCutterFacade.HasWood);
-        _depositRoutine = view.StartCoroutine(
-            _depositRoutineUseCase.Execute(
-                _startWithVariantB,
-                () => _isActive,
-                OnDepositRoutineCompleted));
+        _depositRoutine = view.StartCoroutine(_depositRoutineUseCase.Execute(_startWithVariantB, () => _isActive, OnDepositRoutineCompleted));
     }
 
     public override void Tick()

@@ -7,19 +7,25 @@ public sealed class SawmillPileVisualizer : ISawmillPileVisualizer, IDisposable
     private readonly ISawmillPileLayoutCalculator _layoutCalculator;
     private readonly ISawmillPileStageFactory _stageFactory;
     private readonly ISawmillPileAnimator _animator;
+    private readonly SawmillPileVisualSettings _pileSettings;
+    private readonly SawmillImpactFeedbackSettings _impactSettings;
 
     public SawmillPileVisualizer(
         ISawmillPileVisualTarget view,
         SawmillPileRuntime runtime,
         ISawmillPileLayoutCalculator layoutCalculator,
         ISawmillPileStageFactory stageFactory,
-        ISawmillPileAnimator animator)
+        ISawmillPileAnimator animator,
+        SawmillPileVisualSettings pileSettings,
+        SawmillImpactFeedbackSettings impactSettings)
     {
         _view = view;
         _runtime = runtime;
         _layoutCalculator = layoutCalculator;
         _stageFactory = stageFactory;
         _animator = animator;
+        _pileSettings = pileSettings;
+        _impactSettings = impactSettings;
     }
 
     public void Dispose()
@@ -32,33 +38,32 @@ public sealed class SawmillPileVisualizer : ISawmillPileVisualizer, IDisposable
         EnsureStagesBuilt(capacity);
 
         int visibleStages = _layoutCalculator.GetVisibleStageCount(
-            _view.PileVisualSettings,
+            _pileSettings,
             current,
             capacity,
             _runtime.StageRoots.Count);
 
         _animator.ApplyVisibility(
             _runtime.StageRoots,
-            _view.PileVisualSettings,
+            _pileSettings,
             visibleStages,
             animateStageChange);
     }
 
     public void PlayImpact(float impactStrength)
     {
-        _animator.PlayImpact(_runtime.StageRoots, _view.ImpactFeedbackSettings, impactStrength);
+        _animator.PlayImpact(_runtime.StageRoots, _impactSettings, impactStrength);
     }
 
     private void EnsureStagesBuilt(int capacity)
     {
-        SawmillPileVisualSettings settings = _view.PileVisualSettings;
-        if (!settings.Enabled)
+        if (!_pileSettings.Enabled)
         {
             _runtime.Clear();
             return;
         }
 
-        int stageCount = _layoutCalculator.GetStageCount(settings, capacity);
+        int stageCount = _layoutCalculator.GetStageCount(_pileSettings, capacity);
         if (_runtime.Matches(capacity, stageCount))
             return;
 

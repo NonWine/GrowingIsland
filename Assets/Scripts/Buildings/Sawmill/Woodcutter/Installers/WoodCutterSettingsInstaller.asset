@@ -22,11 +22,9 @@ MonoBehaviour:
     TreeSearchRadius: 20
     ChopDistance: 1.6
     DepositDistance: 2.5
-    LootCollectionRadius: 3
     DropDetectionRadius: 25
     RetargetCooldown: 0.5
     TreeDamage: 1
-    WoodPerHit: 1
     ChopInterval: 1
     CarryCapacity: 5
     DepositAnimation:
@@ -34,22 +32,19 @@ MonoBehaviour:
         type: 3}
       RotationDuration: 0.12
       DelayBetweenLogs: 0.04
-      LogFlightDuration: 0.2
-      LogFlightEase: 6
-      AnticipationDurationRange: {x: 0.08, y: 0.12}
-      ReleaseDurationRange: {x: 0.06, y: 0.1}
-      FlightDurationRange: {x: 0.2, y: 0.22}
-      RecoveryDurationRange: {x: 0.11, y: 0.15}
-      ArcHeightRange: {x: 0.34, y: 0.45}
-      SideOffsetRange: {x: -0.12, y: 0.12}
-      LandingSpreadRange: {x: -0.08, y: 0.08}
+      AnticipationDurationRange: {x: 0.1, y: 0.3}
+      ReleaseDurationRange: {x: 0.1, y: 0.3}
+      FlightDurationRange: {x: 0.2, y: 0.3}
+      RecoveryDurationRange: {x: 0.3, y: 0.6}
+      ArcHeightRange: {x: 1.33, y: 1.73}
+      SideOffsetRange: {x: -0.61, y: 0.61}
+      LandingSpreadRange: {x: 0.39, y: -0.39}
       SpinDegreesRange: {x: 150, y: 240}
-      PitchJitterRange: {x: -20, y: 20}
+      PitchJitterRange: {x: 6.15, y: -6.15}
       RollJitterRange: {x: -24, y: 24}
-      ImpactStrengthRange: {x: 0.92, y: 1.08}
-      ReleaseSoundPitchRange: {x: 0.95, y: 1.05}
+      ImpactStrengthRange: {x: 0.83, y: 0.97}
       ApexDurationRatioRange: {x: 0.54, y: 0.62}
-      ProjectileScale: 1
+      ProjectileScale: 0.8
       ReleaseScaleMultiplier: 1.08
       ApexScaleMultiplier: 1.13
       FirstThrowTimingMultiplier: 0.52
@@ -57,16 +52,8 @@ MonoBehaviour:
       AccentEvery: 5
       AccentImpactMultiplier: 1.15
       HeldLogLocalPosition: {x: 0.02, y: 0.02, z: 0.14}
-      HeldLogLocalEuler: {x: 12, y: 90, z: 8}
-      BodyAnticipationOffset: {x: 0, y: -0.06, z: -0.14}
-      BodyAnticipationEuler: {x: -18, y: -30, z: 14}
-      BodyReleaseOffset: {x: 0, y: 0.09, z: 0.22}
-      BodyReleaseEuler: {x: 28, y: 40, z: -14}
+      HeldLogLocalEuler: {x: 8.1, y: 85, z: 8}
       ThrowA:
-        Name: Throw_A
-        BodyOffsetScale: {x: 1, y: 1, z: 1}
-        BodyAnticipationEulerOffset: {x: 0, y: -8, z: 4}
-        BodyReleaseEulerOffset: {x: 0, y: 12, z: -2}
         HeldAnticipationOffset: {x: -0.03, y: 0.01, z: -0.04}
         HeldReleaseOffset: {x: 0.05, y: 0.04, z: 0.05}
         HeldEulerOffset: {x: -8, y: 4, z: -10}
@@ -75,10 +62,6 @@ MonoBehaviour:
         SpinMultiplier: 1
         TimingMultiplier: 1
       ThrowB:
-        Name: Throw_B
-        BodyOffsetScale: {x: 1.16, y: 1, z: 0.9}
-        BodyAnticipationEulerOffset: {x: 2, y: 16, z: -12}
-        BodyReleaseEulerOffset: {x: 4, y: -22, z: 10}
         HeldAnticipationOffset: {x: 0.05, y: 0.02, z: -0.05}
         HeldReleaseOffset: {x: -0.04, y: 0.05, z: 0.08}
         HeldEulerOffset: {x: 10, y: -14, z: 16}
@@ -86,5 +69,7 @@ MonoBehaviour:
         SideOffsetMultiplier: 1.35
         SpinMultiplier: 1.18
         TimingMultiplier: 0.96
+    DepositAudio:
       ReleaseClips: []
       ReleaseVolume: 1
+      ReleaseSoundPitchRange: {x: 0.95, y: 1.05}

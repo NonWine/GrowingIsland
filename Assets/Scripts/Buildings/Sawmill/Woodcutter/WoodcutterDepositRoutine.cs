@@ -32,17 +32,19 @@ public sealed class WoodcutterDepositRoutine : IWoodcutterDepositRoutine
 
         while (isActive() && _woodCutterFacade.HasWood && !_woodCutterFacade.WorkPlaceStorageFull)
         {
-            WoodcutterDepositThrowPlan plan = _planBuilder.Build(
-                throwIndex++,
-                startWithVariantB,
-                _workSettings.DepositAnimation);
+            WoodcutterDepositThrowPlan plan = _planBuilder.Build(throwIndex++, startWithVariantB, _workSettings.DepositAnimation);
+            Vector3 targetPosition = GetTargetPosition();
 
             _visualController.RefreshHeldLog(_woodCutterFacade.HasWood);
             if (!_visualController.HasHeldLog)
                 break;
 
-            yield return _visualController.RotateTowards(GetTargetPosition());
-            yield return _throwSequence.Execute(plan, isActive);
+            yield return _visualController.RotateTowards(targetPosition);
+            yield return _throwSequence.Execute(
+                plan,
+                targetPosition,
+                isActive,
+                impactStrength => _woodCutterFacade.DepositOneWood(impactStrength));
 
             if (!isActive())
             {
@@ -60,10 +62,7 @@ public sealed class WoodcutterDepositRoutine : IWoodcutterDepositRoutine
             yield break;
         }
 
-        onCompleted?.Invoke(
-            _woodCutterFacade.WorkPlaceStorageFull
-                ? WoodcutterDepositRoutineResult.WaitForStorage
-                : WoodcutterDepositRoutineResult.ContinueSearching);
+        onCompleted?.Invoke(_woodCutterFacade.WorkPlaceStorageFull ? WoodcutterDepositRoutineResult.WaitForStorage : WoodcutterDepositRoutineResult.ContinueSearching);
     }
 
     private Vector3 GetTargetPosition()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using DG.Tweening;
+using UnityEngine;
 
 public sealed class WoodcutterDepositThrowSequence : IWoodcutterDepositThrowSequence
 {
@@ -18,7 +19,7 @@ public sealed class WoodcutterDepositThrowSequence : IWoodcutterDepositThrowSequ
         _workSettings = workSettings;
     }
 
-    public IEnumerator Execute(WoodcutterDepositThrowPlan plan, Func<bool> isActive)
+    public IEnumerator Execute(WoodcutterDepositThrowPlan plan, Vector3 targetPosition, Func<bool> isActive, Action<float> onImpact)
     {
         yield return _visualController.AnimatePose(
             plan.AnticipationPose,
@@ -31,9 +32,13 @@ public sealed class WoodcutterDepositThrowSequence : IWoodcutterDepositThrowSequ
             plan.ReleaseDuration,
             Ease.OutCubic,
             () => _projectileLauncher.Launch(
-                _visualController.ReleaseHeldLog(),
+                _visualController.ReleaseHeldLog(targetPosition),
                 plan,
-                () => impactResolved = true));
+                () =>
+                {
+                    impactResolved = true;
+                    onImpact?.Invoke(plan.ImpactStrength);
+                }));
 
         while (isActive() && !impactResolved)
             yield return null;

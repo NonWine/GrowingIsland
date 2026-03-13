@@ -5,16 +5,14 @@ using UnityEngine;
 public sealed class WoodcutterDepositProjectileLauncher : IWoodcutterDepositProjectileLauncher
 {
     private readonly WoodcutterView _view;
-    private readonly WoodCutterFacade _woodCutterFacade;
     private readonly WoodcutterWorkSettings _workSettings;
 
     private readonly List<GameObject> _activeProjectiles = new();
     private readonly List<Sequence> _activeSequences = new();
 
-    public WoodcutterDepositProjectileLauncher(WoodcutterView view, WoodCutterFacade woodCutterFacade, WoodcutterWorkSettings workSettings)
+    public WoodcutterDepositProjectileLauncher(WoodcutterView view, WoodcutterWorkSettings workSettings)
     {
         _view = view;
-        _woodCutterFacade = woodCutterFacade;
         _workSettings = workSettings;
     }
 
@@ -33,20 +31,18 @@ public sealed class WoodcutterDepositProjectileLauncher : IWoodcutterDepositProj
         _activeProjectiles.Clear();
     }
 
-    public void Launch(WoodcutterReleasedLogData releaseData, WoodcutterDepositThrowPlan plan, TweenCallback onImpact)
+    public void Launch(WoodcutterReleasedLogData releaseData, WoodcutterDepositThrowPlan plan, TweenCallback onImpactResolved)
     {
         PlayReleaseSound();
 
         DepositAnimationSettings settings = _workSettings.DepositAnimation;
         if (settings.LogPrefab == null)
         {
-            ResolveImpact(plan, onImpact);
+            onImpactResolved?.Invoke();
             return;
         }
 
-        Vector3 endPosition = _woodCutterFacade.DepositPoint != null
-            ? _woodCutterFacade.DepositPoint.position + plan.LandingOffset
-            : _woodCutterFacade.WorkPlacePosition + plan.LandingOffset;
+        Vector3 endPosition = releaseData.TargetPosition + plan.LandingOffset;
 
         GameObject projectile = Object.Instantiate(settings.LogPrefab, releaseData.StartPosition, Quaternion.Euler(releaseData.StartEuler));
         DisablePhysics(projectile);
@@ -91,19 +87,13 @@ public sealed class WoodcutterDepositProjectileLauncher : IWoodcutterDepositProj
             _activeSequences.Remove(flightSequence);
             _activeProjectiles.Remove(projectile);
             Object.Destroy(projectile);
-            ResolveImpact(plan, onImpact);
+            onImpactResolved?.Invoke();
         });
-    }
-
-    private void ResolveImpact(WoodcutterDepositThrowPlan plan, TweenCallback onImpact)
-    {
-        _woodCutterFacade.DepositOneWood(plan.ImpactStrength);
-        onImpact?.Invoke();
     }
 
     private void PlayReleaseSound()
     {
-        DepositAnimationSettings settings = _workSettings.DepositAnimation;
+        DepositAudioSettings settings = _workSettings.DepositAudio;
         AudioClip clip = PickRandom(settings.ReleaseClips);
         if (clip == null)
             return;

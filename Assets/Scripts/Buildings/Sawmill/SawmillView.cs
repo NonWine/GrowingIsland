@@ -18,10 +18,8 @@ public class SawmillView : MonoBehaviour,
     [SerializeField] private GameObject statusStorageView;
     [SerializeField] private bool _spawnWoodcutterOnStart = true;
     [SerializeField] private Transform _impactRoot;
+    [SerializeField] private Transform _pileRoot;
     [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private SawmillImpactFeedbackSettings _impactFeedback = new();
-    [SerializeField] private SawmillCounterFeedbackSettings _counterFeedback = new();
-    [SerializeField] private SawmillPileVisualSettings _pileVisuals = new();
 
     [SerializeField] private UnityEvent<int, int> _storageChangedEvent;
     [SerializeField] private UnityEvent<SawmillLevelSettings> _levelChangedEvent;
@@ -36,10 +34,8 @@ public class SawmillView : MonoBehaviour,
     public bool SpawnWoodcutterOnStart => _spawnWoodcutterOnStart;
     public TMP_Text CurrentWoodText => currentWoodText;
     public Transform ImpactRoot => _impactRoot != null ? _impactRoot : transform;
+    public Transform PileRoot => _pileRoot != null ? _pileRoot : DepositPoint;
     public AudioSource AudioSource => _audioSource;
-    public SawmillImpactFeedbackSettings ImpactFeedbackSettings => _impactFeedback;
-    public SawmillCounterFeedbackSettings CounterFeedbackSettings => _counterFeedback;
-    public SawmillPileVisualSettings PileVisualSettings => _pileVisuals;
 
     public void PlayerEnter() => OnPlayerEntered?.Invoke();
     public void PlayerExit() => OnPlayerExited?.Invoke();

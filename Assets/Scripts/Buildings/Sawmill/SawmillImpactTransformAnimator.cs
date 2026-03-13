@@ -5,6 +5,7 @@ using UnityEngine;
 public sealed class SawmillImpactTransformAnimator : ISawmillImpactAnimator, IDisposable
 {
     private readonly ISawmillImpactFeedbackView _view;
+    private readonly SawmillImpactFeedbackSettings _settings;
 
     private Sequence _impactSequence;
     private Vector3 _baseLocalPosition;
@@ -12,9 +13,10 @@ public sealed class SawmillImpactTransformAnimator : ISawmillImpactAnimator, IDi
     private Vector3 _baseLocalScale;
     private bool _basePoseCaptured;
 
-    public SawmillImpactTransformAnimator(ISawmillImpactFeedbackView view)
+    public SawmillImpactTransformAnimator(ISawmillImpactFeedbackView view, SawmillImpactFeedbackSettings settings)
     {
         _view = view;
+        _settings = settings;
     }
 
     public void Dispose()
@@ -30,35 +32,34 @@ public sealed class SawmillImpactTransformAnimator : ISawmillImpactAnimator, IDi
         ResetPose();
 
         Transform impactRoot = _view.ImpactRoot;
-        SawmillImpactFeedbackSettings feedback = _view.ImpactFeedbackSettings;
         float strength = Mathf.Max(0.2f, impactStrength);
 
         _impactSequence = DOTween.Sequence();
         _impactSequence.Join(
             impactRoot.DOPunchScale(
-                Vector3.one * (feedback.ScalePunch * strength),
-                feedback.Duration,
+                Vector3.one * (_settings.ScalePunch * strength),
+                _settings.Duration,
                 vibrato: 1,
                 elasticity: 0f));
 
-        if (feedback.PositionShake > 0f)
+        if (_settings.PositionShake > 0f)
         {
             _impactSequence.Join(
                 impactRoot.DOShakePosition(
-                    feedback.Duration,
-                    feedback.PositionShake * strength,
-                    feedback.ShakeVibrato,
+                    _settings.Duration,
+                    _settings.PositionShake * strength,
+                    _settings.ShakeVibrato,
                     randomness: 90f,
                     snapping: false,
                     fadeOut: true));
         }
 
-        if (feedback.RotationPunch > 0f)
+        if (_settings.RotationPunch > 0f)
         {
             _impactSequence.Join(
                 impactRoot.DOPunchRotation(
-                    new Vector3(0f, 0f, -feedback.RotationPunch * strength),
-                    feedback.Duration,
+                    new Vector3(0f, 0f, -_settings.RotationPunch * strength),
+                    _settings.Duration,
                     vibrato: 1,
                     elasticity: 0f));
         }

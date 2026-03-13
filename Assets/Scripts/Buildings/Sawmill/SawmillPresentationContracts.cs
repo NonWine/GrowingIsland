@@ -6,14 +6,12 @@ public interface ISawmillImpactFeedbackView
     Transform DepositPoint { get; }
     Transform ImpactRoot { get; }
     AudioSource AudioSource { get; }
-    SawmillImpactFeedbackSettings ImpactFeedbackSettings { get; }
 }
 
 public interface ISawmillPileVisualTarget
 {
     Transform DepositPoint { get; }
-    SawmillImpactFeedbackSettings ImpactFeedbackSettings { get; }
-    SawmillPileVisualSettings PileVisualSettings { get; }
+    Transform PileRoot { get; }
 }
 
 public interface ISawmillStorageFeedback

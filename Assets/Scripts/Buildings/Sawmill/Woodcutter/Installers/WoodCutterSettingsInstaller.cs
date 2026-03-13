@@ -13,6 +13,6 @@ public class WoodCutterSettingsInstaller : ScriptableObjectInstaller<WoodCutterS
             ? new WoodcutterWorkSettings(woodcutterWorkSettings)
             : new WoodcutterWorkSettings();
 
-        Container.BindInstance(runtimeSettings);
+        Container.BindInstance(woodcutterWorkSettings);
     }
 }

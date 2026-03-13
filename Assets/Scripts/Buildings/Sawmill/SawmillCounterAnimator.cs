@@ -6,14 +6,16 @@ using UnityEngine;
 public sealed class SawmillCounterAnimator : ISawmillStorageFeedback, IDisposable
 {
     private readonly ISawmillCounterFeedbackView _view;
+    private readonly SawmillCounterFeedbackSettings _settings;
 
     private Sequence _uiSequence;
     private Color _baseColor = Color.white;
     private bool _baseColorCached;
 
-    public SawmillCounterAnimator(ISawmillCounterFeedbackView view)
+    public SawmillCounterAnimator(ISawmillCounterFeedbackView view, SawmillCounterFeedbackSettings settings)
     {
         _view = view;
+        _settings = settings;
     }
 
     public void Dispose()
@@ -40,24 +42,22 @@ public sealed class SawmillCounterAnimator : ISawmillStorageFeedback, IDisposabl
         counterText.rectTransform.localScale = Vector3.one;
         counterText.color = _baseColor;
 
-        SawmillCounterFeedbackSettings feedback = _view.CounterFeedbackSettings;
-
         _uiSequence = DOTween.Sequence();
         _uiSequence.Join(
             counterText.rectTransform.DOPunchScale(
-                Vector3.one * feedback.ScalePunch,
-                feedback.ScalePunchDuration,
+                Vector3.one * _settings.ScalePunch,
+                _settings.ScalePunchDuration,
                 vibrato: 1,
                 elasticity: 0f));
 
-        if (feedback.FlashDuration <= 0f)
+        if (_settings.FlashDuration <= 0f)
             return;
 
         _uiSequence.Join(DOTween.To(
                 () => counterText.color,
                 color => counterText.color = color,
-                feedback.FlashColor,
-                feedback.FlashDuration * 0.5f)
+                _settings.FlashColor,
+                _settings.FlashDuration * 0.5f)
             .SetLoops(2, LoopType.Yoyo));
     }
 

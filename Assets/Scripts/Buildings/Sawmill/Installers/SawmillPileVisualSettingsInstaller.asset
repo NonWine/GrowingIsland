@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c5f5d02c2214d31bdf8ff56d1c5f9d5, type: 3}
+  m_Name: SawmillPileVisualSettingsInstaller
+  m_EditorClassIdentifier: 
+  _settings:
+    Enabled: 1
+    LogPrefab: {fileID: 568719726346361867, guid: b5e1ce8434b81a740aaa9a7b62b3b047,
+      type: 3}
+    StageSize: 5
+    LogsPerStage: 3
+    LogsPerRow: 3
+    BaseOffset: {x: 0, y: 0, z: 0}
+    LogSpacing: {x: 0.16, y: 0.07, z: 0.1}
+    StageRise: 0.07
+    StageDepth: 0.12
+    HorizontalJitter: {x: -0.04, y: 0.04}
+    DepthJitter: {x: -0.04, y: 0.04}
+    YawJitter: {x: -12, y: 12}
+    LogBaseEuler: {x: 0, y: 90, z: 0}
+    StagePopScale: 0.1
+    StagePopDuration: 0.16
+    StageSettleDuration: 0.1

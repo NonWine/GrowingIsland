@@ -2,15 +2,11 @@ using UnityEngine;
 
 public readonly struct WoodcutterDepositPose
 {
-    public readonly Vector3 BodyOffset;
-    public readonly Vector3 BodyEuler;
     public readonly Vector3 HeldLocalPosition;
     public readonly Vector3 HeldLocalEuler;
 
-    public WoodcutterDepositPose(Vector3 bodyOffset, Vector3 bodyEuler, Vector3 heldLocalPosition, Vector3 heldLocalEuler)
+    public WoodcutterDepositPose(Vector3 heldLocalPosition, Vector3 heldLocalEuler)
     {
-        BodyOffset = bodyOffset;
-        BodyEuler = bodyEuler;
         HeldLocalPosition = heldLocalPosition;
         HeldLocalEuler = heldLocalEuler;
     }
@@ -20,11 +16,13 @@ public readonly struct WoodcutterReleasedLogData
 {
     public readonly Vector3 StartPosition;
     public readonly Vector3 StartEuler;
+    public readonly Vector3 TargetPosition;
 
-    public WoodcutterReleasedLogData(Vector3 startPosition, Vector3 startEuler)
+    public WoodcutterReleasedLogData(Vector3 startPosition, Vector3 startEuler, Vector3 targetPosition)
     {
         StartPosition = startPosition;
         StartEuler = startEuler;
+        TargetPosition = targetPosition;
     }
 }
 
@@ -83,8 +81,6 @@ public readonly struct WoodcutterDepositThrowPlan
     public WoodcutterDepositPose CreateRecoveryPose(DepositAnimationSettings settings)
     {
         return new WoodcutterDepositPose(
-            Vector3.zero,
-            Vector3.zero,
             settings.HeldLogLocalPosition,
             settings.HeldLogLocalEuler);
     }

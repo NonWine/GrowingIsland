@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b6c3f6c5f9c4d8e8de3b2333f32c6a1, type: 3}
+  m_Name: SawmillImpactFeedbackSettingsInstaller
+  m_EditorClassIdentifier: 
+  _settings:
+    ScalePunch: 0.24
+    Duration: 0.18
+    PositionShake: 0.12
+    ShakeVibrato: 12
+    RotationPunch: 6
+    PileSettlePunch: 0.08
+    PileRotationPunch: 4
+    MaxPileShakeStages: 2
+    ImpactVfxPrefab: {fileID: 19875214, guid: 146d2ff25be0f824fa285b16b2915ff3, type: 3}
+    ImpactClips: []
+    AudioVolume: 1
+    AudioPitchRange: {x: 0.95, y: 1.05}

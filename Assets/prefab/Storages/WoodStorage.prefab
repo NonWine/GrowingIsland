@@ -549,44 +549,8 @@ MonoBehaviour:
   statusStorageView: {fileID: 4260325513939807481}
   _spawnWoodcutterOnStart: 1
   _impactRoot: {fileID: 1622231750684648200}
+  _pileRoot: {fileID: 342095602047050794}
   _audioSource: {fileID: 0}
-  _impactFeedback:
-    ScalePunch: 0.18
-    Duration: 0.16
-    PositionShake: 0.08
-    ShakeVibrato: 10
-    RotationPunch: 4
-    PileSettlePunch: 0.05
-    PileRotationPunch: 2.5
-    MaxPileShakeStages: 2
-    ImpactVfxPrefab: {fileID: 19875214, guid: 146d2ff25be0f824fa285b16b2915ff3, type: 3}
-    ImpactClips: []
-    AudioVolume: 1
-    AudioPitchRange: {x: 0.95, y: 1.05}
-  _counterFeedback:
-    ScalePunch: 0.16
-    ScalePunchDuration: 0.16
-    FlashColor: {r: 1, g: 0.94, b: 0.74, a: 1}
-    FlashDuration: 0.12
-  _pileVisuals:
-    Enabled: 1
-    PileRoot: {fileID: 342095602047050794}
-    LogPrefab: {fileID: 568719726346361867, guid: b5e1ce8434b81a740aaa9a7b62b3b047,
-      type: 3}
-    StageSize: 5
-    LogsPerStage: 3
-    LogsPerRow: 3
-    BaseOffset: {x: 0, y: 0, z: 0}
-    LogSpacing: {x: 0.16, y: 0.07, z: 0.1}
-    StageRise: 0.07
-    StageDepth: 0.12
-    HorizontalJitter: {x: -0.04, y: 0.04}
-    DepthJitter: {x: -0.04, y: 0.04}
-    YawJitter: {x: -12, y: 12}
-    LogBaseEuler: {x: 0, y: 90, z: 0}
-    StagePopScale: 0.1
-    StagePopDuration: 0.16
-    StageSettleDuration: 0.1
   _storageChangedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -610,6 +574,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers:
   - {fileID: 11400000, guid: 3e094af273c811b47a94b622b5903365, type: 2}
+  - {fileID: 11400000, guid: 250deae0a5ea7c94ebcf20b975251d10, type: 2}
+  - {fileID: 11400000, guid: ffa830849638e56428ca56e374d97bd7, type: 2}
+  - {fileID: 11400000, guid: c72e6e78dcf243b4ba036c9d41aa6861, type: 2}
   _monoInstallers:
   - {fileID: 4265254454998683942}
   _installerPrefabs: []
