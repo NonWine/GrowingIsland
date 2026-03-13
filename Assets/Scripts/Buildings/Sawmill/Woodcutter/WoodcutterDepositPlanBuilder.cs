@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public sealed class WoodcutterDepositPlanBuilder : IWoodcutterDepositPlanBuilder
+public sealed class WoodcutterDepositPlanBuilder
 {
     public WoodcutterDepositThrowPlan Build(int throwNumber, bool startWithVariantB, DepositAnimationSettings settings)
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SawmillWorkplaceFacade : IWoodcutterWorkplace
 {
-    private readonly ISawmillView view;
+    private readonly SawmillView view;
     private readonly IStorage storage;
 
     public event Action<int, int> StorageChanged
@@ -19,7 +19,7 @@ public class SawmillWorkplaceFacade : IWoodcutterWorkplace
     public bool IsStorageFull => storage.IsFull;
     public int StoredWood => storage.Current;
 
-    public SawmillWorkplaceFacade(ISawmillView view, IStorage storage)
+    public SawmillWorkplaceFacade(SawmillView view, IStorage storage)
     {
         this.view = view;
         this.storage = storage;

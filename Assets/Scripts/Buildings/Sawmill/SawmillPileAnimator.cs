@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public sealed class SawmillPileAnimator : ISawmillPileAnimator
+public sealed class SawmillPileAnimator
 {
     public void ApplyVisibility(IReadOnlyList<Transform> stageRoots, SawmillPileVisualSettings settings, int visibleStages, bool animateStageChange)
     {

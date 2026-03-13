@@ -5,9 +5,9 @@ public sealed class WoodcutterDepositSession : IWoodcutterDepositSession
 {
     private readonly WoodcutterView view;
     private readonly WoodCutterFacade woodCutterFacade;
-    private readonly IWoodcutterDepositVisualController visualController;
-    private readonly IWoodcutterDepositProjectileLauncher projectileLauncher;
-    private readonly IWoodcutterDepositRoutine depositRoutine;
+    private readonly WoodcutterDepositVisualController visualController;
+    private readonly WoodcutterDepositProjectileLauncher projectileLauncher;
+    private readonly WoodcutterDepositRoutine depositRoutine;
 
     private Coroutine depositCoroutine;
     private bool isActive;
@@ -15,9 +15,9 @@ public sealed class WoodcutterDepositSession : IWoodcutterDepositSession
     public WoodcutterDepositSession(
         WoodcutterView view, 
         WoodCutterFacade woodCutterFacade,
-        IWoodcutterDepositVisualController visualController,
-        IWoodcutterDepositProjectileLauncher projectileLauncher,
-        IWoodcutterDepositRoutine depositRoutine)
+        WoodcutterDepositVisualController visualController,
+        WoodcutterDepositProjectileLauncher projectileLauncher,
+        WoodcutterDepositRoutine depositRoutine)
     {
         this.view = view;
         this.woodCutterFacade = woodCutterFacade;

@@ -4,11 +4,13 @@ public sealed class WoodcutterDepositAnimationInstaller : Installer<WoodcutterDe
 {
     public override void InstallBindings()
     {
-        Container.BindInterfacesAndSelfTo<WoodcutterDepositPlanBuilder>().AsSingle();
-        Container.BindInterfacesAndSelfTo<WoodcutterDepositVisualController>().AsSingle();
-        Container.BindInterfacesAndSelfTo<WoodcutterDepositProjectileLauncher>().AsSingle();
-        Container.BindInterfacesAndSelfTo<WoodcutterDepositThrowSequence>().AsSingle();
-        Container.BindInterfacesAndSelfTo<WoodcutterDepositRoutine>().AsSingle();
-        Container.BindInterfacesAndSelfTo<WoodcutterDepositSession>().AsSingle();
+        Container.Bind<WoodcutterDepositPlanBuilder>().AsSingle();
+        Container.Bind<WoodcutterDepositVisualController>().AsSingle();
+        Container.Bind<WoodcutterDepositProjectileLauncher>().AsSingle();
+        Container.Bind<WoodcutterDepositThrowSequence>().AsSingle();
+        Container.Bind<WoodcutterDepositRoutine>().AsSingle();
+        Container.Bind(typeof(IWoodcutterDepositSession), typeof(WoodcutterDepositSession))
+            .To<WoodcutterDepositSession>()
+            .AsSingle();
     }
 }

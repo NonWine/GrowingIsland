@@ -5,10 +5,6 @@ using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 public class SawmillView : MonoBehaviour,
-    ISawmillView,
-    ISawmillCounterFeedbackView,
-    ISawmillImpactFeedbackView,
-    ISawmillPileVisualTarget,
     IPlayerEnterTriggable,
     IPlayerExitTriggable
 {

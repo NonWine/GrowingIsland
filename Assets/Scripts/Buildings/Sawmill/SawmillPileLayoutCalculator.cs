@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public sealed class SawmillPileLayoutCalculator : ISawmillPileLayoutCalculator
+public sealed class SawmillPileLayoutCalculator
 {
     public int GetStageCount(SawmillPileVisualSettings settings, int capacity)
     {

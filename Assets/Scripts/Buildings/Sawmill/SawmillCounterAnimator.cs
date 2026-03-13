@@ -3,16 +3,16 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public sealed class SawmillCounterAnimator : ISawmillStorageFeedback, IDisposable
+public sealed class SawmillCounterAnimator : IDisposable
 {
-    private readonly ISawmillCounterFeedbackView view;
+    private readonly SawmillView view;
     private readonly SawmillCounterFeedbackSettings settings;
 
     private Sequence uiSequence;
     private Color baseColor = Color.white;
     private bool baseColorCached;
 
-    public SawmillCounterAnimator(ISawmillCounterFeedbackView view, SawmillCounterFeedbackSettings settings)
+    public SawmillCounterAnimator(SawmillView view, SawmillCounterFeedbackSettings settings)
     {
         this.view = view;
         this.settings = settings;

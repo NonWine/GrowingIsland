@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public sealed class SawmillImpactVfxPlayer : ISawmillImpactVfxPlayer
+public sealed class SawmillImpactVfxPlayer
 {
-    private readonly ISawmillImpactFeedbackView view;
+    private readonly SawmillView view;
     private readonly SawmillImpactFeedbackSettings settings;
 
-    public SawmillImpactVfxPlayer(ISawmillImpactFeedbackView view, SawmillImpactFeedbackSettings settings)
+    public SawmillImpactVfxPlayer(SawmillView view, SawmillImpactFeedbackSettings settings)
     {
         this.view = view;
         this.settings = settings;

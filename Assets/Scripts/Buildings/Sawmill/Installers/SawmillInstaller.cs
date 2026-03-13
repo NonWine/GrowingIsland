@@ -4,6 +4,10 @@ public class SawmillInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
+        Container.Bind<SawmillView>()
+            .To<SawmillView>()
+            .FromComponentInHierarchy()
+            .AsSingle();
         Container.BindInterfacesAndSelfTo<SawmillStorage>().FromMethod(ctx =>
         {
             var config = ctx.Container.Resolve<SawmillConfig>();

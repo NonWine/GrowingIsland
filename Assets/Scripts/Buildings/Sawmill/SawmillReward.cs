@@ -5,9 +5,9 @@ public class SawmillReward : IInitializable, IDisposable
 {
     private readonly IStorage storage;
     private readonly CollectableManager collectableManager;
-    private readonly ISawmillView view;
+    private readonly SawmillView view;
 
-    public SawmillReward(IStorage storage, CollectableManager collectableManager, ISawmillView view)
+    public SawmillReward(IStorage storage, CollectableManager collectableManager, SawmillView view)
     {
         this.storage = storage;
         this.collectableManager = collectableManager;

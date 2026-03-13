@@ -2,7 +2,7 @@ using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
-public sealed class WoodcutterDepositVisualController : IWoodcutterDepositVisualController
+public sealed class WoodcutterDepositVisualController
 {
     private readonly WoodcutterView view;
     private readonly WoodcutterWorkSettings workSettings;

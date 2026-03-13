@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public sealed class WoodcutterDepositProjectileLauncher : IWoodcutterDepositProjectileLauncher
+public sealed class WoodcutterDepositProjectileLauncher
 {
     private readonly WoodcutterView view;
     private readonly WoodcutterWorkSettings workSettings;

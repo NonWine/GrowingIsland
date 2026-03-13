@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public sealed class SawmillImpactAudioPlayer : ISawmillImpactAudioPlayer
+public sealed class SawmillImpactAudioPlayer
 {
-    private readonly ISawmillImpactFeedbackView view;
+    private readonly SawmillView view;
     private readonly SawmillImpactFeedbackSettings settings;
 
-    public SawmillImpactAudioPlayer(ISawmillImpactFeedbackView view, SawmillImpactFeedbackSettings settings)
+    public SawmillImpactAudioPlayer(SawmillView view, SawmillImpactFeedbackSettings settings)
     {
         this.view = view;
         this.settings = settings;

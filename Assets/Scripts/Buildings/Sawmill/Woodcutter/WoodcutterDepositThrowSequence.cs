@@ -3,15 +3,15 @@ using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
-public sealed class WoodcutterDepositThrowSequence : IWoodcutterDepositThrowSequence
+public sealed class WoodcutterDepositThrowSequence
 {
-    private readonly IWoodcutterDepositVisualController visualController;
-    private readonly IWoodcutterDepositProjectileLauncher projectileLauncher;
+    private readonly WoodcutterDepositVisualController visualController;
+    private readonly WoodcutterDepositProjectileLauncher projectileLauncher;
     private readonly WoodcutterWorkSettings workSettings;
 
     public WoodcutterDepositThrowSequence(
-        IWoodcutterDepositVisualController visualController,
-        IWoodcutterDepositProjectileLauncher projectileLauncher,
+        WoodcutterDepositVisualController visualController,
+        WoodcutterDepositProjectileLauncher projectileLauncher,
         WoodcutterWorkSettings workSettings)
     {
         this.visualController = visualController;

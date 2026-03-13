@@ -4,15 +4,7 @@ public sealed class SawmillPresentationInstaller : Installer<SawmillPresentation
 {
     public override void InstallBindings()
     {
-        Container.Bind(
-                typeof(SawmillView),
-                typeof(ISawmillView),
-                typeof(ISawmillCounterFeedbackView),
-                typeof(ISawmillImpactFeedbackView),
-                typeof(ISawmillPileVisualTarget))
-            .To<SawmillView>()
-            .FromComponentInHierarchy()
-            .AsSingle();
+      
 
         Container.BindInterfacesAndSelfTo<SawmillPresenter>().AsSingle();
         Container.BindInterfacesAndSelfTo<SawmillCounterAnimator>().AsSingle();

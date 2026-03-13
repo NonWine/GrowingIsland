@@ -2,20 +2,20 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public sealed class WoodcutterDepositRoutine : IWoodcutterDepositRoutine
+public sealed class WoodcutterDepositRoutine
 {
     private readonly WoodCutterFacade woodCutterFacade;
     private readonly WoodcutterWorkSettings workSettings;
-    private readonly IWoodcutterDepositPlanBuilder planBuilder;
-    private readonly IWoodcutterDepositVisualController visualController;
-    private readonly IWoodcutterDepositThrowSequence throwSequence;
+    private readonly WoodcutterDepositPlanBuilder planBuilder;
+    private readonly WoodcutterDepositVisualController visualController;
+    private readonly WoodcutterDepositThrowSequence throwSequence;
 
     public WoodcutterDepositRoutine(
         WoodCutterFacade woodCutterFacade,
         WoodcutterWorkSettings workSettings,
-        IWoodcutterDepositPlanBuilder planBuilder,
-        IWoodcutterDepositVisualController visualController,
-        IWoodcutterDepositThrowSequence throwSequence)
+        WoodcutterDepositPlanBuilder planBuilder,
+        WoodcutterDepositVisualController visualController,
+        WoodcutterDepositThrowSequence throwSequence)
     {
         this.woodCutterFacade = woodCutterFacade;
         this.workSettings = workSettings;

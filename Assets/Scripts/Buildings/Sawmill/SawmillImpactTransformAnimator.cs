@@ -2,9 +2,9 @@ using System;
 using DG.Tweening;
 using UnityEngine;
 
-public sealed class SawmillImpactTransformAnimator : ISawmillImpactAnimator, IDisposable
+public sealed class SawmillImpactTransformAnimator : IDisposable
 {
-    private readonly ISawmillImpactFeedbackView view;
+    private readonly SawmillView view;
     private readonly SawmillImpactFeedbackSettings settings;
 
     private Sequence impactSequence;
@@ -13,7 +13,7 @@ public sealed class SawmillImpactTransformAnimator : ISawmillImpactAnimator, IDi
     private Vector3 baseLocalScale;
     private bool basePoseCaptured;
 
-    public SawmillImpactTransformAnimator(ISawmillImpactFeedbackView view, SawmillImpactFeedbackSettings settings)
+    public SawmillImpactTransformAnimator(SawmillView view, SawmillImpactFeedbackSettings settings)
     {
         this.view = view;
         this.settings = settings;

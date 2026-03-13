@@ -1,21 +1,21 @@
 using System;
 
-public sealed class SawmillPileVisualizer : ISawmillPileVisualizer, IDisposable
+public sealed class SawmillPileVisualizer : IDisposable
 {
-    private readonly ISawmillPileVisualTarget view;
+    private readonly SawmillView view;
     private readonly SawmillPileRuntime runtime;
-    private readonly ISawmillPileLayoutCalculator layoutCalculator;
-    private readonly ISawmillPileStageFactory stageFactory;
-    private readonly ISawmillPileAnimator animator;
+    private readonly SawmillPileLayoutCalculator layoutCalculator;
+    private readonly SawmillPileStageFactory stageFactory;
+    private readonly SawmillPileAnimator animator;
     private readonly SawmillPileVisualSettings pileSettings;
     private readonly SawmillImpactFeedbackSettings impactSettings;
 
     public SawmillPileVisualizer(
-        ISawmillPileVisualTarget view,
+        SawmillView view,
         SawmillPileRuntime runtime,
-        ISawmillPileLayoutCalculator layoutCalculator,
-        ISawmillPileStageFactory stageFactory,
-        ISawmillPileAnimator animator,
+        SawmillPileLayoutCalculator layoutCalculator,
+        SawmillPileStageFactory stageFactory,
+        SawmillPileAnimator animator,
         SawmillPileVisualSettings pileSettings,
         SawmillImpactFeedbackSettings impactSettings)
     {

@@ -1,13 +1,13 @@
-public sealed class SawmillImpactFeedbackModule : ISawmillImpactFeedback
+public sealed class SawmillImpactFeedbackModule
 {
-    private readonly ISawmillImpactAnimator animator;
-    private readonly ISawmillImpactAudioPlayer audioPlayer;
-    private readonly ISawmillImpactVfxPlayer vfxPlayer;
+    private readonly SawmillImpactTransformAnimator animator;
+    private readonly SawmillImpactAudioPlayer audioPlayer;
+    private readonly SawmillImpactVfxPlayer vfxPlayer;
 
     public SawmillImpactFeedbackModule(
-        ISawmillImpactAnimator animator,
-        ISawmillImpactAudioPlayer audioPlayer,
-        ISawmillImpactVfxPlayer vfxPlayer)
+        SawmillImpactTransformAnimator animator,
+        SawmillImpactAudioPlayer audioPlayer,
+        SawmillImpactVfxPlayer vfxPlayer)
     {
         this.animator = animator;
         this.audioPlayer = audioPlayer;

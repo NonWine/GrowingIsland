@@ -3,26 +3,26 @@ using Zenject;
 
 public class SawmillPresenter : IInitializable, IDisposable
 {
-    private readonly ISawmillView view;
+    private readonly SawmillView view;
     private readonly IStorage storage;
     private readonly SawmillUpgrader upgrader;
     private readonly IWoodcutterWorkplace workplace;
-    private readonly ISawmillStorageFeedback storageFeedback;
-    private readonly ISawmillImpactFeedback impactFeedback;
-    private readonly ISawmillPileVisualizer pileVisualizer;
+    private readonly SawmillCounterAnimator storageFeedback;
+    private readonly SawmillImpactFeedbackModule impactFeedback;
+    private readonly SawmillPileVisualizer pileVisualizer;
 
     private bool hasRenderedStorage;
     private int lastCurrent = -1;
     private int lastCapacity = -1;
 
     public SawmillPresenter(
-        ISawmillView view,
+        SawmillView view,
         IStorage storage,
         SawmillUpgrader upgrader,
         IWoodcutterWorkplace workplace,
-        ISawmillStorageFeedback storageFeedback,
-        ISawmillImpactFeedback impactFeedback,
-        ISawmillPileVisualizer pileVisualizer)
+        SawmillCounterAnimator storageFeedback,
+        SawmillImpactFeedbackModule impactFeedback,
+        SawmillPileVisualizer pileVisualizer)
     {
         this.view = view;
         this.storage = storage;

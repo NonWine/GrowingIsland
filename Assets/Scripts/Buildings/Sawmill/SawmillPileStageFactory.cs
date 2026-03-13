@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class SawmillPileStageFactory : ISawmillPileStageFactory
+public sealed class SawmillPileStageFactory
 {
-    private readonly ISawmillPileLayoutCalculator layoutCalculator;
+    private readonly SawmillPileLayoutCalculator layoutCalculator;
     private readonly SawmillPileVisualSettings settings;
 
-    public SawmillPileStageFactory(ISawmillPileLayoutCalculator layoutCalculator, SawmillPileVisualSettings settings)
+    public SawmillPileStageFactory(SawmillPileLayoutCalculator layoutCalculator, SawmillPileVisualSettings settings)
     {
         this.layoutCalculator = layoutCalculator;
         this.settings = settings;
     }
 
-    public List<Transform> CreateStages(ISawmillPileVisualTarget view, int stageCount)
+    public List<Transform> CreateStages(SawmillView view, int stageCount)
     {
         var stages = new List<Transform>(Mathf.Max(0, stageCount));
         if (stageCount <= 0)
@@ -56,7 +56,7 @@ public sealed class SawmillPileStageFactory : ISawmillPileStageFactory
         }
     }
 
-    private GameObject ResolvePileTemplate(ISawmillPileVisualTarget view)
+    private GameObject ResolvePileTemplate(SawmillView view)
     {
         if (settings.LogPrefab != null)
             return settings.LogPrefab;
