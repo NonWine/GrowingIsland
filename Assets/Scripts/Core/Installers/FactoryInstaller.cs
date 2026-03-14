@@ -19,7 +19,7 @@ public class FactoryInstaller : MonoInstaller
         BindResourcesFactory();
   
         Container.BindInterfacesAndSelfTo<EnemyFactory>().AsSingle()
-            .WithArguments( Resources.LoadAll<EnemyConfig>("EnemyConfigs").ToList()).NonLazy();
+            .WithArguments(Resources.LoadAll<EnemyConfig>("EnemyConfigs").ToList()).NonLazy();
         
     }
 

@@ -1,7 +1,7 @@
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
-public class TreeHitReaction : ITreeHitReaction
+public class TreeHitReaction : TreeReactionBase, ITreeHitReaction
 {
     private readonly TreeView view;
     private readonly TreeHitAnimationSettings settings;
@@ -16,7 +16,7 @@ public class TreeHitReaction : ITreeHitReaction
 
     private Sequence sequence;
 
-    public TreeHitReaction(TreeView view, TreeHitAnimationSettings settings)
+    public TreeHitReaction(TreeView view, TreeHitAnimationSettings settings) : base(view)
     {
         this.view = view;
         this.settings = settings;
@@ -28,13 +28,13 @@ public class TreeHitReaction : ITreeHitReaction
 
     public void PlayHit(Vector3 sourceWorldPosition, bool isFinalHit = false)
     {
-        KillActiveSequence();
+        KillSequence(ref sequence);
         PlayLeavesBursts(isFinalHit);
 
         var currentMainRotation = view.ReactionRoot.localRotation;
         var currentCrownRotation = view.CrownRoot.localRotation;
 
-        var awayLocal = GetAwayDirectionLocal(sourceWorldPosition);
+        var awayLocal = GetAwayDirectionLocal(view.ReactionRoot, sourceWorldPosition);
         var bendAxis = Vector3.Cross(Vector3.up, awayLocal).normalized;
 
         var finalMultiplier = isFinalHit ? settings.FinalHitMultiplier : 1f;
@@ -76,64 +76,26 @@ public class TreeHitReaction : ITreeHitReaction
         sequence.SetLink(view.gameObject);
     }
 
-    public void ResetToNeutral()
+    public override void ResetToNeutral()
     {
-        KillActiveSequence();
-        view.ReactionRoot.localRotation = mainBaseRotation;
+        KillSequence(ref sequence);
+        ResetPose(view.ReactionRoot, mainBaseRotation);
 
         if (hasSecondaryLag)
         {
-            view.CrownRoot.localRotation = crownBaseRotation;
+            ResetPose(view.CrownRoot, crownBaseRotation);
         }
     }
 
-    private void CacheBasePose()
+    protected override void CacheBasePose()
     {
         mainBaseRotation = view.ReactionRoot.localRotation;
         crownBaseRotation = view.CrownRoot.localRotation;
     }
 
-    private Vector3 GetAwayDirectionLocal(Vector3 sourceWorldPosition)
-    {
-        var pivotPosition = view.ReactionRoot.position;
-        var awayWorld = pivotPosition - sourceWorldPosition;
-        awayWorld.y = 0f;
-
-        if (awayWorld.sqrMagnitude < 0.0001f)
-        {
-            awayWorld = view.transform.forward;
-            awayWorld.y = 0f;
-        }
-
-        awayWorld.Normalize();
-
-        var parent = view.ReactionRoot.parent;
-        var awayLocal = parent.InverseTransformDirection(awayWorld);
-
-        awayLocal.y = 0f;
-        if (awayLocal.sqrMagnitude < 0.0001f)
-        {
-            awayLocal = Vector3.forward;
-        }
-
-        return awayLocal.normalized;
-    }
-
-    private void KillActiveSequence()
-    {
-        if (sequence != null && sequence.IsActive())
-        {
-            sequence.Kill(false);
-        }
-    }
-
     private void PlayLeavesBursts(bool isFinalHit)
     {
         var leavesPoints = view.LeavesPoints;
-        if (leavesPoints == null || leavesPoints.Length == 0 || ParticlePool.Instance == null)
-        {
-            return;
-        }
 
         var hitChance = isFinalHit
             ? Mathf.Min(1f, settings.LeavesHitChance + 0.2f)
@@ -158,5 +120,4 @@ public class TreeHitReaction : ITreeHitReaction
             ParticlePool.Instance.PlayFallenLeaves(point.position + offset);
         }
     }
-
 }

@@ -55,11 +55,22 @@ public abstract class EnvironmentResource : MonoBehaviour, IWorldHitDamageable
         
         health -= damage;
         bool isFinalHit = health <= 0f;
-        AnimTrigDamage(sourceWorldPosition, isFinalHit);
         if (isFinalHit)
         {
-            StartCoroutine(RespawmProp());
+            isAlive = false;
+            HandleFinalHit(sourceWorldPosition);
+            return;
         }
+
+        AnimTrigDamage(sourceWorldPosition, false);
+    }
+
+    protected virtual void HandleFinalHit(Vector3 sourceWorldPosition)
+    {
+        AnimTrigDamage(sourceWorldPosition, true);
+        SpawnResourceDrops();
+        HideResourceVisuals();
+        BeginRespawn();
     }
 
     protected virtual Vector3 GetDefaultHitSource()
@@ -67,7 +78,7 @@ public abstract class EnvironmentResource : MonoBehaviour, IWorldHitDamageable
         return transform.position - transform.forward;
     }
 
-    private void SpawnResources()
+    protected void SpawnResourceDrops()
     {
         for (int i = 0; i < resourceWorld.VisualDrop; i++)
         {
@@ -82,16 +93,33 @@ public abstract class EnvironmentResource : MonoBehaviour, IWorldHitDamageable
 
     public bool isAlive { get; set; }
 
+    protected void BeginRespawn()
+    {
+        StartCoroutine(RespawmProp());
+    }
+
     private IEnumerator RespawmProp()
     {
-        SpawnResources();
-        isAlive = false;
-        ShowMeshObjects(false);
         yield return new WaitForSeconds(respawnTime);
         isAlive = true;
         health = resourceWorld.Health;
-        ShowMeshObjects(true);
+        ShowResourceVisuals();
+        OnRespawnCompleted();
 
+    }
+
+    protected virtual void OnRespawnCompleted()
+    {
+    }
+
+    protected void HideResourceVisuals()
+    {
+        ShowMeshObjects(false);
+    }
+
+    protected void ShowResourceVisuals()
+    {
+        ShowMeshObjects(true);
     }
 
     private void ShowMeshObjects(bool flag)

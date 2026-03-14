@@ -186,6 +186,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6566686893594072183}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4070410682830110322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 234294920869328334}
+  m_Layer: 0
+  m_Name: GroundImpactPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &234294920869328334
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4070410682830110322}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.51, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8726898542225756211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4913565785729625959
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,6 +309,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6566686893594072183}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5708850309606221244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7027059130873962610}
+  m_Layer: 0
+  m_Name: StumpAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7027059130873962610
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5708850309606221244}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8726898542225756211}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6060227351556658893
 GameObject:
@@ -492,6 +554,7 @@ GameObject:
   - component: {fileID: 6989182741600000000}
   - component: {fileID: 1572708498610918927}
   - component: {fileID: 5799979689918679902}
+  - component: {fileID: 4293111238285731814}
   m_Layer: 0
   m_Name: tree
   m_TagString: Untagged
@@ -515,6 +578,8 @@ Transform:
   - {fileID: 2831774066751876004}
   - {fileID: 2756648622660249149}
   - {fileID: 6566686893594072183}
+  - {fileID: 234294920869328334}
+  - {fileID: 7027059130873962610}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1565284827374875123
@@ -546,6 +611,22 @@ MonoBehaviour:
     MinLeavesBursts: 1
     MaxLeavesBursts: 3
     LeavesPositionJitter: 0.22
+  finalFallSettings:
+    FinalBendMultiplier: 1.35
+    MicroHoldDuration: 0.045
+    FallDuration: 0.3
+    LandImpactDuration: 0.11
+    FallAngle: 74
+    ImpactRotationPunch: 2.2
+    ImpactPositionPunch: 0.04
+    FinalLeavesMultiplier: 1.7
+    FinalTrunkFxBursts: 2
+    FinalTrunkFxJitter: 0.2
+    FinalLeafBurstsMin: 2
+    FinalLeafBurstsMax: 4
+    FinalLeafPositionJitter: 0.28
+    ImpactDustBursts: 2
+    ImpactDustJitter: 0.22
   view: {fileID: 6989182741600000000}
 --- !u!114 &6989182741600000000
 MonoBehaviour:
@@ -561,6 +642,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ReactionRoot>k__BackingField: {fileID: 8726898542225756211}
   <CrownRoot>k__BackingField: {fileID: 8726898542225756211}
+  <FallRoot>k__BackingField: {fileID: 8726898542225756211}
+  <GroundImpactPoint>k__BackingField: {fileID: 234294920869328334}
+  <StumpAnchor>k__BackingField: {fileID: 7027059130873962610}
+  <StumpPrefab>k__BackingField: {fileID: 8397399736916625919, guid: 9f732e2fa429dd24dadc41bd1e727ac9,
+    type: 3}
   <LeavesPoints>k__BackingField:
   - {fileID: 4429020541231252938}
   - {fileID: 3967725873204801138}
@@ -624,6 +710,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4293111238285731814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8859158606418821793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f669ec5280447d0b474127dea122ad3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2758580231844653807
 PrefabInstance:
   m_ObjectHideFlags: 0
