@@ -24,7 +24,7 @@ public class PlayerDefaultRadiusDamageHandler : IDamageableHandler
         List<Transform> damagedTargets = new List<Transform>();
         foreach (var enemy in enemies)
         {
-            enemy.GetDamage(damage);
+            ApplyDamage(enemy, damage);
             damagedTargets.Add(enemy.transform);
         }
 
@@ -58,13 +58,24 @@ public class PlayerDefaultRadiusDamageHandler : IDamageableHandler
         enemies.ForEach(x => damagedTargets.Add(x.transform));
         
         damagedTarget = playerContainer.transform.GetNearestTarget(damagedTargets).GetComponent<IDamageable>();
-        damagedTarget.GetDamage(damage);
+        ApplyDamage(damagedTarget, damage);
     }
     
 
     public void HandDamage(float damage, out bool isDetected, out Transform[] taregt)
     {
         isDetected = TryDamagingByRadius(damage, out taregt);
+    }
+
+    private void ApplyDamage(IDamageable target, float damage)
+    {
+        if (target is IWorldHitDamageable worldHitDamageable)
+        {
+            worldHitDamageable.GetDamage(damage, playerContainer.transform.position);
+            return;
+        }
+
+        target.GetDamage(damage);
     }
 }
 

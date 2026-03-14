@@ -5,7 +5,7 @@ using Zenject;
 using Random = UnityEngine.Random;
 using UnityEngine.Serialization;
 
-public abstract class EnvironmentResource : MonoBehaviour , IDamageable
+public abstract class EnvironmentResource : MonoBehaviour, IWorldHitDamageable
 {
     [FormerlySerializedAs("_resourceWorld")]
     [SerializeField] private ResourceWorld resourceWorld;
@@ -25,7 +25,7 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
     
     
 
-    protected virtual void AnimTrigDamage()
+    protected virtual void AnimTrigDamage(Vector3 sourceWorldPosition, bool isFinalHit)
     {
         transform.DOScale(1.05f, 0.3f / 2)
             .SetEase(Ease.OutBounce) // Use an ease type that fits your animation
@@ -40,15 +40,31 @@ public abstract class EnvironmentResource : MonoBehaviour , IDamageable
 
     public virtual void GetDamage(float damage)
     {
+        ApplyDamage(damage, GetDefaultHitSource());
+    }
+
+    public virtual void GetDamage(float damage, Vector3 sourceWorldPosition)
+    {
+        ApplyDamage(damage, sourceWorldPosition);
+    }
+
+    private void ApplyDamage(float damage, Vector3 sourceWorldPosition)
+    {
         if(!isAlive)
             return;
         
         health -= damage;
-        AnimTrigDamage();
-        if (health <= 0)
+        bool isFinalHit = health <= 0f;
+        AnimTrigDamage(sourceWorldPosition, isFinalHit);
+        if (isFinalHit)
         {
             StartCoroutine(RespawmProp());
         }
+    }
+
+    protected virtual Vector3 GetDefaultHitSource()
+    {
+        return transform.position - transform.forward;
     }
 
     private void SpawnResources()

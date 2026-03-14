@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 246324003558683503}
   - component: {fileID: 826723209970569194}
+  - component: {fileID: 1786324575100000000}
   - component: {fileID: 1625317529994217679}
   - component: {fileID: 5591357375634686894}
   m_Layer: 0
@@ -48,6 +49,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _resourceWorld: {fileID: 11400000, guid: ef2874d161054134ab040017f794ebd1, type: 2}
+  animSettings:
+    MainBendAngle: 5.4
+    OvershootAngle: 1.35
+    HitBendDuration: 0.055
+    OvershootDuration: 0.035
+    SettleDuration: 0.05
+    FinalHitMultiplier: 1.25
+    AngleVariance: 0.08
+    DurationVariance: 0.05
+    CrownAngleMultiplier: 0.18
+    CrownLag: 0.018
+    LeavesHitChance: 0.65
+    MinLeavesBursts: 1
+    MaxLeavesBursts: 2
+    LeavesPositionJitter: 0.22
+  view: {fileID: 1786324575100000000}
+--- !u!114 &1786324575100000000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174185540096471153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5bd35bb03c7d7948b59dba82ac807d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ReactionRoot>k__BackingField: {fileID: 246324003558683503}
+  <CrownRoot>k__BackingField: {fileID: 246324003558683503}
+  <LeavesPoints>k__BackingField:
+  - {fileID: 6487074961910063201}
 --- !u!54 &1625317529994217679
 Rigidbody:
   m_ObjectHideFlags: 0

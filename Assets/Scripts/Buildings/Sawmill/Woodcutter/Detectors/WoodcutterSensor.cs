@@ -15,8 +15,8 @@ public class WoodcutterSensor : IWoodcutterSensor
     [Inject]
     public WoodcutterSensor(OverlapSphereHandler overlap, WoodcutterWorkSettings settings, WoodcutterView woodcutterView)
     {
-        overlap = overlap ?? throw new ArgumentNullException(nameof(overlap));
-        settings = settings ?? throw new ArgumentNullException(nameof(settings));
+        this.overlap = overlap ?? throw new ArgumentNullException(nameof(overlap));
+        this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
         this.woodcutterView = woodcutterView != null ? woodcutterView : throw new ArgumentNullException(nameof(woodcutterView));
     }
 

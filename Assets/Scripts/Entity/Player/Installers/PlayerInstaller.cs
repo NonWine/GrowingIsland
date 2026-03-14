@@ -33,7 +33,7 @@ public class PlayerInstaller : Installer<Player, PlayerInstaller>
         Container.BindInterfacesAndSelfTo<PlayerDefaultRadiusDamageHandler>().AsSingle();
         Container.Bind<PlayerAttackHandler>()
             .AsSingle()
-            .WithArguments(player.PlayerContainer.PlayerStats.Damage);
+            .WithArguments(player.PlayerContainer.PlayerStats.Damage, player.PlayerContainer.transform);
 
         Container.Bind<TargetDetector>()
             .AsSingle()

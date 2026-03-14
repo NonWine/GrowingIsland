@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a68d771a3d4160aeb535e62a2d7aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _point: {fileID: 2039591764}
+  point: {fileID: 2039591764}
 --- !u!1 &159792435
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d133f137ee42244b9e9ee077c9bf684, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cinemachineVirtual: {fileID: 913149788}
+  cinemachineVirtual: {fileID: 913149788}
 --- !u!1 &278958840
 GameObject:
   m_ObjectHideFlags: 0
@@ -2635,9 +2635,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37eca03bee1bd0541adfaef7152a8933, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneName: 
-  _useIndex: 1
-  _sceneIndex: 1
+  sceneName: 
+  useIndex: 1
+  sceneIndex: 1
 --- !u!1 &2102289779 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 97901590789934818, guid: 2e608864111e8e649ae12324b84c716f,
@@ -6684,6 +6684,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 563997356399934929, guid: 2e608864111e8e649ae12324b84c716f,
+        type: 3}
+      propertyPath: obstakle
+      value: 
+      objectReference: {fileID: 2102289779}
     - target: {fileID: 563997356399934929, guid: 2e608864111e8e649ae12324b84c716f,
         type: 3}
       propertyPath: _obstakle

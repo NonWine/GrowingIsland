@@ -172,8 +172,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bridgePrefab: {fileID: 2959452919303597425}
-  _obstakle: {fileID: 6623114461604589340}
-  _bridgeBuildZone: {fileID: 4582335282593598693}
+  obstakle: {fileID: 6623114461604589340}
+  bridgeBuildZone: {fileID: 4582335282593598693}
 --- !u!1001 &2838076812790720065
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -427,8 +427,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6014760195228670579, guid: 07b6a520a92fbc74592b60aebf3abfd2,
         type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 2.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 6014760195228670579, guid: 07b6a520a92fbc74592b60aebf3abfd2,
+        type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0.17
+      value: 5.9500012
       objectReference: {fileID: 0}
     - target: {fileID: 6399142683671657379, guid: 07b6a520a92fbc74592b60aebf3abfd2,
         type: 3}
