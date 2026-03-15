@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TreeHitReaction : TreeReactionBase, ITreeHitReaction
 {
-    private readonly TreeView view;
+    private readonly EnvironmentPropObjectView view;
     private readonly TreeHitAnimationSettings settings;
     private readonly bool hasSecondaryLag;
 
@@ -16,7 +16,7 @@ public class TreeHitReaction : TreeReactionBase, ITreeHitReaction
 
     private Sequence sequence;
 
-    public TreeHitReaction(TreeView view, TreeHitAnimationSettings settings) : base(view)
+    public TreeHitReaction(EnvironmentPropObjectView view, TreeHitAnimationSettings settings) : base(view)
     {
         this.view = view;
         this.settings = settings;
@@ -28,6 +28,8 @@ public class TreeHitReaction : TreeReactionBase, ITreeHitReaction
 
     public void PlayHit(Vector3 sourceWorldPosition, bool isFinalHit = false)
     {
+        ParticlePool.Instance.PlayAxeHitFx(view.transform.position);
+
         KillSequence(ref sequence);
         PlayLeavesBursts(isFinalHit);
 
@@ -96,6 +98,10 @@ public class TreeHitReaction : TreeReactionBase, ITreeHitReaction
     private void PlayLeavesBursts(bool isFinalHit)
     {
         var leavesPoints = view.LeavesPoints;
+        if (leavesPoints.Length == 0)
+        {
+            return;
+        }
 
         var hitChance = isFinalHit
             ? Mathf.Min(1f, settings.LeavesHitChance + 0.2f)

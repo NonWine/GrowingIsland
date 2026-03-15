@@ -9,7 +9,7 @@ public class TreeHitReactionFactory : ITreeHitReactionFactory
         this.container = container;
     }
 
-    public ITreeHitReaction Create(TreeView view, TreeHitAnimationSettings settings)
+    public ITreeHitReaction Create(EnvironmentPropObjectView view, TreeHitAnimationSettings settings)
     {
         return container.Instantiate<TreeHitReaction>(new object[] { view, settings });
     }

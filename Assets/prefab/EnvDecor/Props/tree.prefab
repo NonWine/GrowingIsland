@@ -211,7 +211,38 @@ Transform:
   m_GameObject: {fileID: 4070410682830110322}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.51, y: 0, z: 0}
+  m_LocalPosition: {x: 0.462, y: 0.421, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8726898542225756211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4581103717082776571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3607989566479383923}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3607989566479383923
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4581103717082776571}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -510,6 +541,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6566686893594072183}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8339739538683388738
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2687289715852071156}
+  m_Layer: 0
+  m_Name: ResourceDropOirigin
+  m_TagString: Untagged
+  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2687289715852071156
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8339739538683388738}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.079, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8726898542225756211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8423367070191389862
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,10 +613,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8726898542225756211}
   - component: {fileID: 1565284827374875123}
-  - component: {fileID: 6989182741600000000}
   - component: {fileID: 1572708498610918927}
   - component: {fileID: 5799979689918679902}
   - component: {fileID: 4293111238285731814}
+  - component: {fileID: 4094949813494748860}
+  - component: {fileID: 1312203777435643929}
   m_Layer: 0
   m_Name: tree
   m_TagString: Untagged
@@ -580,6 +643,8 @@ Transform:
   - {fileID: 6566686893594072183}
   - {fileID: 234294920869328334}
   - {fileID: 7027059130873962610}
+  - {fileID: 3607989566479383923}
+  - {fileID: 2687289715852071156}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1565284827374875123
@@ -594,60 +659,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9db0da542f0403989a8779ef90a9748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourceWorld: {fileID: 11400000, guid: ef2874d161054134ab040017f794ebd1, type: 2}
-  respawnTime: 10
-  animSettings:
-    MainBendAngle: 5.4
-    OvershootAngle: 1.35
-    HitBendDuration: 0.055
-    OvershootDuration: 0.4
-    SettleDuration: 0.05
-    FinalHitMultiplier: 1.25
-    AngleVariance: 0.08
-    DurationVariance: 0.05
-    CrownAngleMultiplier: 0.18
-    CrownLag: 0.018
-    LeavesHitChance: 0.65
-    MinLeavesBursts: 1
-    MaxLeavesBursts: 3
-    LeavesPositionJitter: 0.22
-  finalFallSettings:
-    FinalBendMultiplier: 1.35
-    MicroHoldDuration: 0.045
-    FallDuration: 0.3
-    LandImpactDuration: 0.11
-    FallAngle: 74
-    ImpactRotationPunch: 2.2
-    ImpactPositionPunch: 0.04
-    FinalLeavesMultiplier: 1.7
-    FinalTrunkFxBursts: 2
-    FinalTrunkFxJitter: 0.2
-    FinalLeafBurstsMin: 2
-    FinalLeafBurstsMax: 4
-    FinalLeafPositionJitter: 0.28
-    ImpactDustBursts: 2
-    ImpactDustJitter: 0.22
-  view: {fileID: 6989182741600000000}
---- !u!114 &6989182741600000000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8859158606418821793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5bd35bb03c7d7948b59dba82ac807d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <ReactionRoot>k__BackingField: {fileID: 8726898542225756211}
-  <CrownRoot>k__BackingField: {fileID: 8726898542225756211}
-  <FallRoot>k__BackingField: {fileID: 8726898542225756211}
-  <GroundImpactPoint>k__BackingField: {fileID: 234294920869328334}
-  <StumpAnchor>k__BackingField: {fileID: 7027059130873962610}
-  <StumpPrefab>k__BackingField: {fileID: 8397399736916625919, guid: 9f732e2fa429dd24dadc41bd1e727ac9,
-    type: 3}
-  <LeavesPoints>k__BackingField:
+  resourceWorldAsset: {fileID: 11400000, guid: ef2874d161054134ab040017f794ebd1, type: 2}
+  reactionRoot: {fileID: 8726898542225756211}
+  crownRoot: {fileID: 8726898542225756211}
+  fallRoot: {fileID: 8726898542225756211}
+  groundImpactPoint: {fileID: 234294920869328334}
+  resourceDropOrigin: {fileID: 2687289715852071156}
+  stumpAnchor: {fileID: 7027059130873962610}
+  stumpPrefab: {fileID: 4581103717082776571}
+  leavesPoints:
   - {fileID: 4429020541231252938}
   - {fileID: 3967725873204801138}
   - {fileID: 2180662500310440008}
@@ -720,6 +740,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f669ec5280447d0b474127dea122ad3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4094949813494748860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8859158606418821793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers:
+  - {fileID: 11400000, guid: 06e114b1a59c4d24b001bc4a803ee9dc, type: 2}
+  _monoInstallers:
+  - {fileID: 1312203777435643929}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
+--- !u!114 &1312203777435643929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8859158606418821793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c79a50d9aa75714eb0da32032753830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2758580231844653807

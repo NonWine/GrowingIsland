@@ -433,7 +433,7 @@ PrefabInstance:
     - target: {fileID: 6014760195228670579, guid: 07b6a520a92fbc74592b60aebf3abfd2,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 10.880003
+      value: 20.570007
       objectReference: {fileID: 0}
     - target: {fileID: 6399142683671657379, guid: 07b6a520a92fbc74592b60aebf3abfd2,
         type: 3}

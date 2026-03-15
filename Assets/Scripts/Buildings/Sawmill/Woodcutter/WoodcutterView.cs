@@ -15,8 +15,13 @@ public class WoodcutterView : MonoBehaviour
     [SerializeField] private Transform heldLogAnchor;
     [FormerlySerializedAs("_throwOrigin")]
     [SerializeField] private Transform throwOrigin;
+    [SerializeField] private Transform pickupAnchor;
+    [SerializeField] private Vector3 fallbackPickupAnchorLocalPosition = new(0.18f, 0.72f, 0.14f);
+    [SerializeField] private Vector3 fallbackPickupAnchorLocalEuler;
 
     private Transform cachedHeldLogAnchor;
+    private Transform cachedPickupAnchor;
+    private Transform runtimePickupAnchor;
 
     public Transform VisualRoot => visualRoot != null
         ? visualRoot
@@ -36,6 +41,12 @@ public class WoodcutterView : MonoBehaviour
             ? HeldLogAnchor
             : VisualRoot;
 
+    public Transform PickupAnchor => pickupAnchor != null
+        ? pickupAnchor
+        : cachedPickupAnchor != null
+            ? cachedPickupAnchor
+            : EnsureRuntimePickupAnchor();
+
     private void Awake()
     {
         CacheReferences();
@@ -50,6 +61,24 @@ public class WoodcutterView : MonoBehaviour
     {
         if (cachedHeldLogAnchor == null)
             cachedHeldLogAnchor = FindDeepChild(transform, "CATRHand") ?? FindDeepChild(transform, "CATLHand");
+
+        if (cachedPickupAnchor == null)
+            cachedPickupAnchor = FindDeepChild(transform, "pickupAnchor") ?? FindDeepChild(transform, "PocketAnchor");
+    }
+
+    private Transform EnsureRuntimePickupAnchor()
+    {
+        if (runtimePickupAnchor != null)
+            return runtimePickupAnchor;
+
+        Transform parent = VisualRoot != null ? VisualRoot : transform;
+        var anchorObject = new GameObject("PocketAnchor_Runtime");
+        runtimePickupAnchor = anchorObject.transform;
+        runtimePickupAnchor.SetParent(parent, false);
+        runtimePickupAnchor.localPosition = fallbackPickupAnchorLocalPosition;
+        runtimePickupAnchor.localEulerAngles = fallbackPickupAnchorLocalEuler;
+        runtimePickupAnchor.localScale = Vector3.one;
+        return runtimePickupAnchor;
     }
 
     private static Transform FindDeepChild(Transform root, string childName)

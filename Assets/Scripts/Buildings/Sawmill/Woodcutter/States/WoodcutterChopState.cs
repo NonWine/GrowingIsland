@@ -30,16 +30,13 @@ public class WoodcutterChopState : WoodcutterState
 
     private void SetDamage()
     {
-        if (woodCutterFacade.CurrentTree is IWorldHitDamageable worldHitDamageable)
-        {
-            worldHitDamageable.GetDamage(workSettings.TreeDamage, view.VisualRoot.position);
-        }
-        else
-        {
-            woodCutterFacade.CurrentTree.GetDamage(workSettings.TreeDamage);
-        }
+        var worldHitDamageable = woodCutterFacade.CurrentTree.GetComponent<IWorldHitDamageable>();
+        if (worldHitDamageable == null)
+            return;
 
-        if (!woodCutterFacade.CurrentTree.isAlive)
+        worldHitDamageable.GetDamage(workSettings.TreeDamage, view.VisualRoot.position);
+
+        if (!woodCutterFacade.CurrentTree.IsAlive)
         {
             woodCutterFacade.ClearTree();
             ChangeState<WoodcutterCollectState>();

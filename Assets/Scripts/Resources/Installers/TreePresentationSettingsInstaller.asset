@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3f6ec960fa45b2b318f4920d193502, type: 3}
+  m_Name: TreePresentationSettingsInstaller
+  m_EditorClassIdentifier: 
+  hitAnimationSettings:
+    MainBendAngle: 5.4
+    OvershootAngle: 1.35
+    HitBendDuration: 0.055
+    OvershootDuration: 0.035
+    SettleDuration: 0.05
+    FinalHitMultiplier: 1.25
+    AngleVariance: 0.08
+    DurationVariance: 0.05
+    CrownAngleMultiplier: 0.18
+    CrownLag: 0.018
+    LeavesHitChance: 0.65
+    MinLeavesBursts: 1
+    MaxLeavesBursts: 2
+    LeavesPositionJitter: 0.22
+  finalFallSettings:
+    FinalBendMultiplier: 1.35
+    MicroHoldDuration: 0.045
+    FallDuration: 0.3
+    LandImpactDuration: 0.11
+    FallAngle: 74
+    ImpactRotationPunch: 2.2
+    ImpactPositionPunch: 0.04
+    FinalLeavesMultiplier: 1.7
+    FinalTrunkFxBursts: 2
+    FinalTrunkFxJitter: 0.2
+    FinalLeafBurstsMin: 2
+    FinalLeafBurstsMax: 4
+    FinalLeafPositionJitter: 0.28
+    ImpactDustBursts: 2
+    ImpactDustJitter: 0.22
+  resourcePickupSettings:
+    SpawnCountMin: 2
+    SpawnCountMax: 4
+    PiecePrefabOverride: {fileID: 2278092284578412633, guid: 11d390317e55c7c4eaa76ac70a69f0a3,
+      type: 3}
+    LaunchDurationMin: 0.2
+    LaunchDurationMax: 0.28
+    SettleDurationMin: 0.06
+    SettleDurationMax: 0.11
+    PickupDelayMin: 0.08
+    PickupDelayMax: 0.16
+    PickupFlightDurationMin: 0.2
+    PickupFlightDurationMax: 0.28
+    LaunchArcHeightMin: 0.18
+    LaunchArcHeightMax: 0.3
+    PickupArcHeightMin: 0.08
+    PickupArcHeightMax: 0.16
+    SideOffset: 0.22
+    LandingHeightOffset: 0.08
+    RandomYawOffset: 16
+    RandomPitchOffset: 8
+    RandomRollOffset: 12
+    LandBounceHeight: 0.04
+    SettleSquashScale: 0.92
+    FinalPickupPopScale: 1.12
+    FinalPickupPopDuration: 0.08

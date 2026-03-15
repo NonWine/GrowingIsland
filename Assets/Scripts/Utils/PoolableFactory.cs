@@ -5,8 +5,8 @@ using Zenject;
 public abstract class PoolableFactory<TType, TEntity> : IFactory<TType, TEntity>
     where TEntity : PoolAble
 {
-    private Dictionary<TType, TEntity> prefabs;
-    private DiContainer container;
+    private readonly Dictionary<TType, TEntity> prefabs;
+    private readonly DiContainer container;
 
     public PoolableFactory(Dictionary<TType, TEntity> prefabs, DiContainer container)
     {
@@ -22,12 +22,18 @@ public abstract class PoolableFactory<TType, TEntity> : IFactory<TType, TEntity>
             return null;
         }
 
-        var prefab = prefabs[type];
-        var instance = container.InstantiatePrefabForComponent<TEntity>(prefab);
-        // instance.gameObject.SetActive(true);
-        //instance.OnSpawn();
-        return instance;
+        return Create(prefabs[type]);
     }
 
+    public TEntity Create(TEntity prefab)
+    {
+        if (prefab == null)
+        {
+            Debug.LogError($"Prefab for {typeof(TEntity).Name} is null!");
+            return null;
+        }
+
+        return container.InstantiatePrefabForComponent<TEntity>(prefab);
+    }
 }
 

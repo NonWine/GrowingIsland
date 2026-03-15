@@ -2,7 +2,7 @@ using System;
 
 public class PlayerResourceDetector : PlayerDetectorBase<ResourcePartObj>
 {
-    private static readonly Func<ResourcePartObj, bool> ResourceIsAvailable = resource => !resource.IsPicked;
+    private static readonly Func<ResourcePartObj, bool> ResourceIsAvailable = resource => !resource.IsPicked && resource.CanBePicked;
 
     public PlayerResourceDetector(PlayerContainer playerContainer,
         OverlapSphereHandler overlapSphereHandler,

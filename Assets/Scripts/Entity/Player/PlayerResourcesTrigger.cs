@@ -20,7 +20,7 @@ public class PlayerResourcesTrigger : PlayerTrigger
     {
         base.OnTriggerEnter(other);
         
-        if (other.TryGetComponent(out EnvironmentResource environmentResource))
+        if (other.TryGetComponent(out EnvironmentPropObjectView environmentResource))
         {
             player.PlayerStateMachine.ChangeState(PlayerStateKey.Farming);
             CurrentResourceTrigger?.Invoke(environmentResource.ResourceType);
@@ -31,7 +31,7 @@ public class PlayerResourcesTrigger : PlayerTrigger
     protected override void OnTriggerExit(Collider other)
     {
         base.OnTriggerExit(other);
-        if (other.TryGetComponent(out EnvironmentResource environmentResource))
+        if (other.TryGetComponent(out EnvironmentPropObjectView environmentResource))
         {
             player.PlayerStateMachine.ChangeState(PlayerStateKey.Idle);
         }

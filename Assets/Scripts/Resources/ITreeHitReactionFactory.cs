@@ -1,4 +1,4 @@
 public interface ITreeHitReactionFactory
 {
-    ITreeHitReaction Create(TreeView view, TreeHitAnimationSettings settings);
+    ITreeHitReaction Create(EnvironmentPropObjectView view, TreeHitAnimationSettings settings);
 }

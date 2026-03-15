@@ -46,7 +46,7 @@ public class PlayerInstaller : Installer<Player, PlayerInstaller>
             .To<PlayerResourceDetectionHandler>()
             .AsSingle();
 
-        Container.Bind<IDetectionHandler<EnvironmentResource>>()
+        Container.Bind<IDetectionHandler<EnvironmentPropObjectView>>()
             .To<PlayerFarmDetectionHandler>()
             .AsSingle();
 

@@ -1,11 +1,11 @@
-﻿using DG.Tweening;
+using DG.Tweening;
 using UnityEngine;
 
 public abstract class TreeReactionBase
 {
-    protected readonly TreeView View;
+    protected readonly EnvironmentPropObjectView View;
 
-    protected TreeReactionBase(TreeView view)
+    protected TreeReactionBase(EnvironmentPropObjectView view)
     {
         View = view;
     }

@@ -9,8 +9,9 @@ public class WoodCutterFacade : IDisposable , IInitializable
     private readonly WoodcutterWorkSettings workSettings;
     private readonly Action<int, int> storageChangedRelay;
 
-    [ShowInInspector, ReadOnly] public EnvironmentResource CurrentTree { get; private set; }
+    [ShowInInspector, ReadOnly] public EnvironmentPropObjectView CurrentTree { get; private set; }
     [ShowInInspector, ReadOnly] public int CarriedWood { get; private set; }
+    [ShowInInspector, ReadOnly] public int PendingWood { get; private set; }
 
     public WoodCutterFacade(IWoodcutterWorkplace workplace, WoodcutterWorkSettings workSettings)
     {
@@ -26,17 +27,29 @@ public class WoodCutterFacade : IDisposable , IInitializable
 
     public event Action<int, int> StorageChanged;
 
-    public bool HasTree =>  CurrentTree.isAlive;
+    public bool HasTree =>  CurrentTree.IsAlive;
     public bool HasWood => CarriedWood > 0;
     public bool WorkPlaceStorageFull =>  workplace.IsStorageFull;
 
     #region Actions
-    public void SetTree(EnvironmentResource tree) => CurrentTree = tree;
+    public void SetTree(EnvironmentPropObjectView tree) => CurrentTree = tree;
     public void ClearTree() => CurrentTree = null;
 
     public void AddWood(int amount) => CarriedWood = Mathf.Max(0, CarriedWood + amount);
+    public void ReserveWood(int amount) => PendingWood = Mathf.Max(0, PendingWood + amount);
+    public void ConfirmReservedWood(int amount)
+    {
+        int safeAmount = Mathf.Max(0, amount);
+        PendingWood = Mathf.Max(0, PendingWood - safeAmount);
+        AddWood(safeAmount);
+    }
+
     public void RemoveWood(int amount) => CarriedWood = Mathf.Max(0, CarriedWood - amount);
-    public void ResetWood() => CarriedWood = 0;
+    public void ResetWood()
+    {
+        CarriedWood = 0;
+        PendingWood = 0;
+    }
 
     public void DepositOneWood(float impactStrength = 1f)
     {

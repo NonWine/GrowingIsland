@@ -1,8 +1,5 @@
-﻿public class Stone: EnvironmentResource
+using System;
+
+public class Stone : EnvironmentPropObjectView
 {
-    public override void GetDamage(float damage)
-    {
-        base.GetDamage(damage);
-        ParticlePool.Instance.PlayMineHitFx(transform.position);
-    }
 }

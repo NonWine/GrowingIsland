@@ -1798,7 +1798,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 964c0202404f3674ab489a6c4810ace6,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 30e53aefb49269f42b0e87683917dfbd, type: 2}
     - target: {fileID: 919132149155446097, guid: 964c0202404f3674ab489a6c4810ace6,
@@ -1899,6 +1899,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1516362958430829956}
     m_Modifications:
+    - target: {fileID: 1565284827374875123, guid: c87c9c52355f79540bb845e074714ee4,
+        type: 3}
+      propertyPath: resourcePickupSettings.PiecePrefabOverride
+      value: 
+      objectReference: {fileID: 2278092284578412633, guid: 11d390317e55c7c4eaa76ac70a69f0a3,
+        type: 3}
     - target: {fileID: 8726898542225756211, guid: c87c9c52355f79540bb845e074714ee4,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -10736,6 +10742,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1516362958430829956}
     m_Modifications:
+    - target: {fileID: 1565284827374875123, guid: c87c9c52355f79540bb845e074714ee4,
+        type: 3}
+      propertyPath: resourcePickupSettings.PickupDelayMax
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565284827374875123, guid: c87c9c52355f79540bb845e074714ee4,
+        type: 3}
+      propertyPath: resourcePickupSettings.PickupDelayMin
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565284827374875123, guid: c87c9c52355f79540bb845e074714ee4,
+        type: 3}
+      propertyPath: resourcePickupSettings.LandBounceHeight
+      value: 0.1488
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565284827374875123, guid: c87c9c52355f79540bb845e074714ee4,
+        type: 3}
+      propertyPath: resourcePickupSettings.FinalPickupPopScale
+      value: 1.1648
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565284827374875123, guid: c87c9c52355f79540bb845e074714ee4,
+        type: 3}
+      propertyPath: resourcePickupSettings.FinalPickupPopDuration
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8726898542225756211, guid: c87c9c52355f79540bb845e074714ee4,
         type: 3}
       propertyPath: m_LocalScale.x

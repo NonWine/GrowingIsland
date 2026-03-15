@@ -14,7 +14,7 @@ public class FactoryInstaller : MonoInstaller
 
         //test
         Container.BindInstance(new CollectStrategyRegistry()).AsSingle();
-        Container.Bind<ITreeHitReactionFactory>().To<TreeHitReactionFactory>().AsSingle();
+        Container.Bind<EnvironmentResourceDropSpawner>().AsSingle();
 
         BindResourcesFactory();
   

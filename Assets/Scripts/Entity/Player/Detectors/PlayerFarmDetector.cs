@@ -1,16 +1,16 @@
 using System;
 using UnityEngine;
 
-public class PlayerFarmDetector : PlayerDetectorBase<EnvironmentResource>
+public class PlayerFarmDetector : PlayerDetectorBase<EnvironmentPropObjectView>
 {
-    private static readonly Func<EnvironmentResource, bool> AvailableFarmObjectFilter = resource => resource.isAlive;
+    private static readonly Func<EnvironmentPropObjectView, bool> AvailableFarmObjectFilter = resource => resource.IsAlive;
 
     private readonly PlayerStateMachine playerStateMachine;
 
     public PlayerFarmDetector(PlayerContainer playerContainer,
         OverlapSphereHandler overlapSphereHandler,
         PlayerStateMachine playerStateMachine,
-        IDetectionHandler<EnvironmentResource> detectionHandler)
+        IDetectionHandler<EnvironmentPropObjectView> detectionHandler)
         : base(playerContainer, overlapSphereHandler, detectionHandler)
     {
         this.playerStateMachine = playerStateMachine;
@@ -22,7 +22,7 @@ public class PlayerFarmDetector : PlayerDetectorBase<EnvironmentResource>
 
     protected override float GetRadius() => PlayerContainer.PlayerStats.RadiusFarming;
 
-    protected override Func<EnvironmentResource, bool> GetFilter() => AvailableFarmObjectFilter;
+    protected override Func<EnvironmentPropObjectView, bool> GetFilter() => AvailableFarmObjectFilter;
 
     protected override bool ShouldForceUpdate() => true;
 

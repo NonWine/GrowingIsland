@@ -25,9 +25,9 @@ public class WoodcutterSensor : IWoodcutterSensor
     /// <summary>
     /// Знаходить найближче живе дерево для рубки.
     /// </summary>
-    public bool TryFindNearest(out EnvironmentResource tree)
+    public bool TryFindNearest(out EnvironmentPropObjectView tree)
     {
-        tree = FindNearest<EnvironmentResource>(
+        tree = FindNearest<EnvironmentPropObjectView>(
             settings.TreeSearchRadius, 
             settings.ResourceMask, 
             TreeFilter);
@@ -104,11 +104,11 @@ public class WoodcutterSensor : IWoodcutterSensor
 
     #region Static Filters (No GC Alloc for closures)
 
-    private static bool TreeFilter(EnvironmentResource r) => 
-        r != null && r.isAlive && r.ResourceType == eCollectable.Wood;
+    private static bool TreeFilter(EnvironmentPropObjectView r) => 
+        r != null && r.IsAlive && r.ResourceType == eCollectable.Wood;
 
     private static bool WoodDropFilter(ResourcePartObj obj) => 
-        obj != null && obj.TypeE == eCollectable.Wood && !obj.IsPicked;
+        obj != null && obj.TypeE == eCollectable.Wood && !obj.IsPicked && obj.CanBePicked;
 
     #endregion
 }

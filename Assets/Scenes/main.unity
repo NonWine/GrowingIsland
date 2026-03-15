@@ -3359,6 +3359,12 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 19
       objectReference: {fileID: 0}
+    - target: {fileID: 2467380366608483145, guid: fe013ded3f1fbb544a1f9808dc78deec,
+        type: 3}
+      propertyPath: resourcePickupSettings.PiecePrefabOverride
+      value: 
+      objectReference: {fileID: 2278092284578412633, guid: 11d390317e55c7c4eaa76ac70a69f0a3,
+        type: 3}
     - target: {fileID: 2484345096465208177, guid: fe013ded3f1fbb544a1f9808dc78deec,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -6359,6 +6365,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8528114524834767815, guid: 700a19a450cad8446b0ea552de0e3162,
         type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8528114524834767815, guid: 700a19a450cad8446b0ea552de0e3162,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -6893,7 +6904,7 @@ PrefabInstance:
     - target: {fileID: 8366112870993919026, guid: 2e608864111e8e649ae12324b84c716f,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 4.270001
+      value: 8.350002
       objectReference: {fileID: 0}
     - target: {fileID: 8385177569761436652, guid: 2e608864111e8e649ae12324b84c716f,
         type: 3}

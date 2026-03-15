@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 public class TreeFinalFallReaction : TreeReactionBase, ITreeFinalFallReaction
 {
-    private readonly TreeView view;
+    private readonly EnvironmentPropObjectView view;
     private readonly TreeFinalFallSettings settings;
 
     private Sequence fallSequence;
@@ -12,7 +12,7 @@ public class TreeFinalFallReaction : TreeReactionBase, ITreeFinalFallReaction
     private Vector3 baseLocalPosition;
     private bool basePoseCaptured;
 
-    public TreeFinalFallReaction(TreeView view, TreeFinalFallSettings settings) : base(view)
+    public TreeFinalFallReaction(EnvironmentPropObjectView view, TreeFinalFallSettings settings) : base(view)
     {
         this.view = view;
         this.settings = settings;
@@ -84,6 +84,11 @@ public class TreeFinalFallReaction : TreeReactionBase, ITreeFinalFallReaction
         }
 
         var leavesPoints = view.LeavesPoints;
+        if (leavesPoints.Length == 0)
+        {
+            return;
+        }
+
         int maxBursts = Mathf.Max(settings.FinalLeafBurstsMin, settings.FinalLeafBurstsMax);
         int burstsCount = Random.Range(settings.FinalLeafBurstsMin, maxBursts + 1);
         burstsCount = Mathf.Max(

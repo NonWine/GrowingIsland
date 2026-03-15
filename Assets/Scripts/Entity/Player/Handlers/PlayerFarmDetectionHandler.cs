@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class PlayerFarmDetectionHandler : IDetectionHandler<EnvironmentResource>
+public class PlayerFarmDetectionHandler : IDetectionHandler<EnvironmentPropObjectView>
 {
     private readonly PlayerStateMachine playerStateMachine;
     private readonly PlayerAnimator playerAnimator;
@@ -11,7 +11,7 @@ public class PlayerFarmDetectionHandler : IDetectionHandler<EnvironmentResource>
         this.playerAnimator = playerAnimator;
     }
 
-    public void Handle(List<EnvironmentResource> farmObjects)
+    public void Handle(List<EnvironmentPropObjectView> farmObjects)
     {
         playerStateMachine.ChangeState(PlayerStateKey.Farming);
     }

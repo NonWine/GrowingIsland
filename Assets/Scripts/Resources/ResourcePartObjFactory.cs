@@ -7,4 +7,9 @@ public class ResourcePartObjFactory :  PoolableFactory<eCollectable,ResourcePart
     {
         
     }
+
+    public ResourcePartObj Create(eCollectable type, ResourcePartObj overridePrefab)
+    {
+        return overridePrefab != null ? Create(overridePrefab) : Create(type);
+    }
 }
