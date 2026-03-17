@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 public sealed class TreeFinalFallSequence : IDisposable
@@ -9,10 +10,8 @@ public sealed class TreeFinalFallSequence : IDisposable
     private readonly ITreeHitReaction hitReaction;
     private readonly ITreeFinalFallReaction finalFallReaction;
     private readonly TreeStumpController _stumpController;
-    private readonly ITreeDelayScheduler delayScheduler;
     private readonly TreeFinalFallSettings treeHitAnimationSettings;
-    private ITreeScheduledAction finalFallImpactAction;
-    private ITreeScheduledAction finalFallCompleteAction;
+    private Sequence presentationSequence;
 
     public TreeFinalFallSequence(
         EnvironmentPropObjectView view,
@@ -21,7 +20,6 @@ public sealed class TreeFinalFallSequence : IDisposable
         ITreeHitReaction hitReaction,
         ITreeFinalFallReaction finalFallReaction,
         TreeStumpController stumpController,
-        ITreeDelayScheduler delayScheduler,
         TreeFinalFallSettings treeHitAnimationSettings)
     {
         this.view = view;
@@ -30,29 +28,30 @@ public sealed class TreeFinalFallSequence : IDisposable
         this.hitReaction = hitReaction;
         this.finalFallReaction = finalFallReaction;
         this._stumpController = stumpController;
-        this.delayScheduler = delayScheduler;
         this.treeHitAnimationSettings = treeHitAnimationSettings;
     }
 
     public void Dispose()
     {
-        CancelFinalFallImpact();
-        CancelFinalFallComplete();
+        CancelPresentation();
     }
 
     public void Play(Vector3 sourceWorldPosition)
     {
-        CancelFinalFallImpact();
-        CancelFinalFallComplete();
+        CancelPresentation();
 
         finalFallReaction.Play(sourceWorldPosition);
-        finalFallImpactAction = delayScheduler.Schedule(treeHitAnimationSettings.ImpactDelay, HandleFinalFallImpact);
+        presentationSequence = DOTween.Sequence()
+            .AppendInterval(treeHitAnimationSettings.ImpactDelay)
+            .AppendCallback(HandleFinalFallImpact)
+            .AppendInterval(treeHitAnimationSettings.LandImpactDuration)
+            .AppendCallback(HandleFinalFallComplete)
+            .SetLink(view.gameObject);
     }
 
     public void Reset()
     {
-        CancelFinalFallImpact();
-        CancelFinalFallComplete();
+        CancelPresentation();
         finalFallReaction.ResetToNeutral();
         hitReaction.ResetToNeutral();
         _stumpController.Hide();
@@ -60,14 +59,12 @@ public sealed class TreeFinalFallSequence : IDisposable
 
     private void HandleFinalFallImpact()
     {
-        finalFallImpactAction = null;
         _resourceDropExecutor.Spawn();
-        finalFallCompleteAction = delayScheduler.Schedule(treeHitAnimationSettings.LandImpactDuration, HandleFinalFallComplete);
     }
 
     private void HandleFinalFallComplete()
     {
-        finalFallCompleteAction = null;
+        presentationSequence = null;
         view.SetResourceVisualsVisible(false);
         _stumpController.Show();
         finalFallReaction.ResetToNeutral();
@@ -75,15 +72,13 @@ public sealed class TreeFinalFallSequence : IDisposable
         events.RaisePresentationCompleted();
     }
 
-    private void CancelFinalFallImpact()
+    private void CancelPresentation()
     {
-        finalFallImpactAction?.Cancel();
-        finalFallImpactAction = null;
-    }
+        if (presentationSequence != null && presentationSequence.IsActive())
+        {
+            presentationSequence.Kill(false);
+        }
 
-    private void CancelFinalFallComplete()
-    {
-        finalFallCompleteAction?.Cancel();
-        finalFallCompleteAction = null;
+        presentationSequence = null;
     }
 }

@@ -62,8 +62,7 @@ public sealed class TreePreviewController : IDisposable
     private readonly ITreeFinalFallReaction finalFallReaction;
     private readonly TreeStumpController _stumpController;
 
-    private Tween finalFallImpactTween;
-    private Tween finalFallCompleteTween;
+    private Sequence previewSequence;
 
     public TreePreviewController(
         EnvironmentPropObjectView view,
@@ -83,8 +82,7 @@ public sealed class TreePreviewController : IDisposable
 
     public void Dispose()
     {
-        KillFinalFallImpactTween();
-        KillFinalFallCompleteTween();
+        KillPreviewSequence();
     }
 
     public void PreviewHit()
@@ -99,14 +97,19 @@ public sealed class TreePreviewController : IDisposable
 
     public void PreviewFullFinalHit()
     {
+        KillPreviewSequence();
         finalFallReaction.Play(GetPreviewHitSource());
-        ScheduleFinalFallImpact(HandlePreviewFinalFallImpact);
+        previewSequence = DOTween.Sequence()
+            .AppendInterval(GetFinalFallImpactDelay())
+            .AppendCallback(HandlePreviewFinalFallImpact)
+            .AppendInterval(finalFallSettings.LandImpactDuration)
+            .AppendCallback(HandlePreviewFinalFallComplete)
+            .SetLink(view.gameObject);
     }
 
     public void ResetPreview()
     {
-        KillFinalFallImpactTween();
-        KillFinalFallCompleteTween();
+        KillPreviewSequence();
         hitReaction.ResetToNeutral();
         finalFallReaction.ResetToNeutral();
         _stumpController.Hide();
@@ -116,43 +119,23 @@ public sealed class TreePreviewController : IDisposable
     private void HandlePreviewFinalFallImpact()
     {
         _resourceDropExecutor.Spawn();
-        ScheduleFinalFallComplete(HandlePreviewFinalFallComplete);
     }
 
     private void HandlePreviewFinalFallComplete()
     {
+        previewSequence = null;
         view.SetResourceVisualsVisible(false);
         _stumpController.Show();
     }
 
-    private void ScheduleFinalFallImpact(TweenCallback onImpact)
+    private void KillPreviewSequence()
     {
-        KillFinalFallImpactTween();
-        finalFallImpactTween = DOVirtual.DelayedCall(GetFinalFallImpactDelay(), onImpact)
-            .SetLink(view.gameObject);
-    }
-
-    private void ScheduleFinalFallComplete(TweenCallback onComplete)
-    {
-        KillFinalFallCompleteTween();
-        finalFallCompleteTween = DOVirtual.DelayedCall(finalFallSettings.LandImpactDuration, onComplete)
-            .SetLink(view.gameObject);
-    }
-
-    private void KillFinalFallImpactTween()
-    {
-        if (finalFallImpactTween != null && finalFallImpactTween.IsActive())
+        if (previewSequence != null && previewSequence.IsActive())
         {
-            finalFallImpactTween.Kill(false);
+            previewSequence.Kill(false);
         }
-    }
 
-    private void KillFinalFallCompleteTween()
-    {
-        if (finalFallCompleteTween != null && finalFallCompleteTween.IsActive())
-        {
-            finalFallCompleteTween.Kill(false);
-        }
+        previewSequence = null;
     }
 
     private float GetFinalFallImpactDelay()

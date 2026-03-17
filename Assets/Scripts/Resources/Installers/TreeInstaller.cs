@@ -6,7 +6,6 @@ public class TreeInstaller : EnvironmentResourceInstaller
     {
         Container.Bind<ITreeHitReaction>().To<TreeHitReaction>().AsSingle();
         Container.Bind<ITreeFinalFallReaction>().To<TreeFinalFallReaction>().AsSingle();
-        Container.Bind<ITreeDelayScheduler>().To<TreeTweenDelayScheduler>().AsSingle();
         Container.BindInterfacesAndSelfTo<TreeFinalFallSequence>().AsSingle();
        
         Container.Bind<TreeStumpController>().AsSingle();
