@@ -15,7 +15,7 @@ public class CameraFollowing : MonoBehaviour
     
     private void Start()
     {
-        SetFollow(playerContainer.transform);
+     //   SetFollow(playerContainer.transform);
 
     }
 
