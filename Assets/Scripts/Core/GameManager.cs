@@ -1,17 +1,19 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private CollectableAnimationData _collectableAnimationData;
-    [Inject] private DiContainer _diContainer;
+    [FormerlySerializedAs("_collectableAnimationData")]
+    [SerializeField] private CollectableAnimationData collectableAnimationData;
+    [Inject] private DiContainer diContainer;
     
     public static GameState GameState { get; private set; }
     
     private void Awake()
     {
        
-        _diContainer.BindInstance(_collectableAnimationData).AsSingle();
+        diContainer.BindInstance(collectableAnimationData).AsSingle();
     }
     
     public static void SetState(GameState state) => GameState = state;

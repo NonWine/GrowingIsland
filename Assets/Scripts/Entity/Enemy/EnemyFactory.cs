@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using Zenject;
 public class EnemyFactory : IFactory<EnemyConfig, BaseEnemy>
 {
-    private readonly DiContainer _container;
-    private readonly List<EnemyConfig> _configs;
+    private readonly DiContainer container;
+    private readonly List<EnemyConfig> configs;
 
     public EnemyFactory(DiContainer container, List<EnemyConfig> configs)
     {
-        _container = container;
-        _configs = configs;
+        this.container = container;
+        this.configs = configs;
     }
 
     public BaseEnemy  Create(DiContainer container, EnemyConfig config)
@@ -18,7 +18,7 @@ public class EnemyFactory : IFactory<EnemyConfig, BaseEnemy>
 
 public BaseEnemy Create(DiContainer container, EnemyConfig config, params object[] extraArgs)
 {
-    var tryGetConfig = _configs.Find(x => x.guId == config.guId);
+    var tryGetConfig = configs.Find(x => x.guId == config.guId);
 
     if (tryGetConfig != null)
     {
@@ -41,7 +41,8 @@ public BaseEnemy Create(DiContainer container, EnemyConfig config, params object
 
     public BaseEnemy Create(EnemyConfig param)
     {
-        return Create(_container, param);
+        return Create(container, param);
     }
 
 }
+

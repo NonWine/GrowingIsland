@@ -1,27 +1,27 @@
-﻿using System;
+using System;
 using System.Linq;
 using UnityEngine;
 
 public class FarmingState : PlayerState
 {
-    private PlayerAnimator _playerAnimator;
-    private IDamageableHandler _damageableHandler;
-    private PlayerStats _playerStats => player.PlayerStats;
-    private float _timer;
+    private PlayerAnimator playerAnimator;
+    private IDamageableHandler damageableHandler;
+    private PlayerStats playerStats => player.PlayerStats;
+    private float timer;
     
     public FarmingState( PlayerStateMachine stateMachine, PlayerContainer playerContainer
         , PlayerAnimator playerAnimator, 
         IDamageableHandler damageableHandler) : base( stateMachine, playerContainer)
     {
-        _playerAnimator = playerAnimator;
-        _damageableHandler = damageableHandler;
+        this.playerAnimator = playerAnimator;
+        this.damageableHandler = damageableHandler;
     }
 
     public override void Enter()
     {
         player.PlayerAnimatorEvent.OnFarming += TryLumber;
-        _playerAnimator.SetAnimataionLayerWeightBehaviour(1);
-        _playerAnimator.SetFarmingAnim(eCollectable.Wood);
+        playerAnimator.SetAnimataionLayerWeightBehaviour(1);
+        playerAnimator.SetFarmingAnim(eCollectable.Wood);
         
     }
 
@@ -32,7 +32,7 @@ public class FarmingState : PlayerState
 
     private void TryLumber()
     {
-        _damageableHandler.HandDamage(_playerStats.AxeDamage, out bool detected, out Transform[] targets);
+        damageableHandler.HandDamage(playerStats.AxeDamage, out bool detected, out Transform[] targets);
         
         if (detected == false)
         {
@@ -48,8 +48,9 @@ public class FarmingState : PlayerState
     public override void Exit()
     {
         player.PlayerAnimatorEvent.OnFarming -= TryLumber;
-        _playerAnimator.SetAnimataionLayerWeightBehaviour(0);
+        playerAnimator.SetAnimataionLayerWeightBehaviour(0);
         Debug.Log("Exit State");
     }
     
 }
+

@@ -2,25 +2,28 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour, IGameTickable
 {
-    [SerializeField] private PlayerContainer _playerContainer;
-    [SerializeField] private HealthUI _healthUI;
-    private IGameController _gameController;
-    [ShowInInspector] private PlayerStateMachine _playerStateMachine;
+    [FormerlySerializedAs("_playerContainer")]
+    [SerializeField] private PlayerContainer playerContainer;
+    [FormerlySerializedAs("_healthUI")]
+    [SerializeField] private HealthUI healthUI;
+    private IGameController gameController;
+    [ShowInInspector] private PlayerStateMachine playerStateMachine;
 
     public Transform ResourceStartPoint;
 
-    private PlayerController _playerController;
-    private PlayerAnimator _playerAnimator;
-    private PlayerRotating _playerRotating;
-    private PlayerDefaultRadiusDamageHandler _defaultRadiusDamageHandler;
-    private PlayerAttackHandler _playerAttackHandler;
-    private TargetDetector _targetDetector;
+    private PlayerController playerController;
+    private PlayerAnimator playerAnimator;
+    private PlayerRotating playerRotating;
+    private PlayerDefaultRadiusDamageHandler defaultRadiusDamageHandler;
+    private PlayerAttackHandler playerAttackHandler;
+    private TargetDetector targetDetector;
 
-    public PlayerContainer PlayerContainer => _playerContainer;
-    public PlayerStateMachine PlayerStateMachine => _playerStateMachine;
+    public PlayerContainer PlayerContainer => playerContainer;
+    public PlayerStateMachine PlayerStateMachine => playerStateMachine;
 
     [Inject]
     private void Construct(PlayerController playerController,
@@ -32,48 +35,48 @@ public class Player : MonoBehaviour, IGameTickable
         TargetDetector targetDetector,
         IGameController gameController)
     {
-        _playerController = playerController;
-        _playerAnimator = playerAnimator;
-        _playerRotating = playerRotating;
-        _playerStateMachine = playerStateMachine;
-        _defaultRadiusDamageHandler = defaultRadiusDamageHandler;
-        _playerAttackHandler = playerAttackHandler;
-        _targetDetector = targetDetector;
-        _gameController = gameController;
+        this.playerController = playerController;
+        this.playerAnimator = playerAnimator;
+        this.playerRotating = playerRotating;
+        this.playerStateMachine = playerStateMachine;
+        this.defaultRadiusDamageHandler = defaultRadiusDamageHandler;
+        this.playerAttackHandler = playerAttackHandler;
+        this.targetDetector = targetDetector;
+        this.gameController = gameController;
 
         InitializePlayer();
     }
 
     private void InitializePlayer()
     {
-        _gameController.RegisterInTick(this);
+        gameController.RegisterInTick(this);
         InitializePlayerStateMachine();
-        _playerContainer.PlayerStats.CurrentHealth = _playerContainer.PlayerStats.MaxHealth;
-        _healthUI.SetHealth(_playerContainer.PlayerStats.MaxHealth);
+        playerContainer.PlayerStats.CurrentHealth = playerContainer.PlayerStats.MaxHealth;
+        healthUI.SetHealth(playerContainer.PlayerStats.MaxHealth);
     }
 
     private void InitializePlayerStateMachine()
     {
         var playerStates = new Dictionary<PlayerStateKey, PlayerState>
         {
-            { PlayerStateKey.Idle, new PlayerIdleState(_playerStateMachine, _playerContainer) },
-            { PlayerStateKey.Farming, new FarmingState(_playerStateMachine, _playerContainer, _playerAnimator, _defaultRadiusDamageHandler) },
+            { PlayerStateKey.Idle, new PlayerIdleState(playerStateMachine, playerContainer) },
+            { PlayerStateKey.Farming, new FarmingState(playerStateMachine, playerContainer, playerAnimator, defaultRadiusDamageHandler) },
             {
-                PlayerStateKey.Attack,new PlayerAttackState(_playerStateMachine, _playerContainer, _playerAnimator, _playerRotating, _playerAttackHandler, _targetDetector)
+                PlayerStateKey.Attack,new PlayerAttackState(playerStateMachine, playerContainer, playerAnimator, playerRotating, playerAttackHandler, targetDetector)
             }
         };
 
-        _playerStateMachine.RegisterStates(playerStates);
-        _playerStateMachine.Initialize(PlayerStateKey.Idle);
+        playerStateMachine.RegisterStates(playerStates);
+        playerStateMachine.Initialize(PlayerStateKey.Idle);
     }
 
     public void GetDamage(float dmg)
     {
         Debug.Log("Get Damage");
-        _playerContainer.PlayerStats.CurrentHealth -= dmg;
-        _healthUI.GetDamageUI(dmg);
+        playerContainer.PlayerStats.CurrentHealth -= dmg;
+        healthUI.GetDamageUI(dmg);
 
-        if (_playerContainer.PlayerStats.CurrentHealth <= 0)
+        if (playerContainer.PlayerStats.CurrentHealth <= 0)
         {
             gameObject.SetActive(false);
         }
@@ -81,14 +84,15 @@ public class Player : MonoBehaviour, IGameTickable
 
     public void Tick()
     {
-        _playerController.Tick();
+        playerController.Tick();
     }
 
     private void OnDrawGizmos()
     {
-        if (_playerStateMachine != null)
+        if (playerStateMachine != null)
         {
-            _playerStateMachine.CurrentState.OnDrawGizmos();
+            playerStateMachine.CurrentState.OnDrawGizmos();
         }
     }
 }
+

@@ -1,7 +1,8 @@
  using System;
 using UnityEngine;
+using Zenject;
 
-public class SawmillStorage : IStorage
+public class SawmillStorage : IStorage , IInitializable
 {
     public event Action<int, int> OnStorageChanged;
 
@@ -16,6 +17,15 @@ public class SawmillStorage : IStorage
     }
 
     public bool TryStore(int amount, out int stored)
+        => TryStoreInternal(amount, out stored, notify: true);
+
+    public bool TryStoreSilently(int amount, out int stored)
+        => TryStoreInternal(amount, out stored, notify: false);
+
+    public void NotifyChanged()
+        => OnStorageChanged?.Invoke(Current, Capacity);
+
+    private bool TryStoreInternal(int amount, out int stored, bool notify)
     {
         stored = 0;
 
@@ -29,7 +39,9 @@ public class SawmillStorage : IStorage
             return false;
 
         Current += stored;
-        OnStorageChanged?.Invoke(Current, Capacity);
+        if (notify)
+            OnStorageChanged?.Invoke(Current, Capacity);
+
         return true;
     }
 
@@ -46,5 +58,10 @@ public class SawmillStorage : IStorage
         Capacity = Mathf.Max(0, capacity);
         Current = Mathf.Min(Current, Capacity);
         OnStorageChanged?.Invoke(Current, Capacity);
+    }
+
+    public void Initialize()
+    {
+        SetCapacity(Capacity);
     }
 }

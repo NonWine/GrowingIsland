@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class OverlapSphereHandler
 {
-    private Collider[] _overlapResults;
-    private Vector3 _lastPosition;
-    private LayerMask _lastLayerMask;
-    private int _lastCount;
-    private float _lastRadius;
-    private bool _resultsAreStale;
+    private Collider[] overlapResults;
+    private Vector3 lastPosition;
+    private LayerMask lastLayerMask;
+    private int lastCount;
+    private float lastRadius;
+    private bool resultsAreStale;
 
-    private List<Collider> _debugColliders = new List<Collider>();
+    private List<Collider> debugColliders = new List<Collider>();
 
     public OverlapSphereHandler(int maxColliders = 40)
     {
-        _overlapResults = new Collider[maxColliders];
-        _resultsAreStale = true;
+        overlapResults = new Collider[maxColliders];
+        resultsAreStale = true;
     }
 
     /// <summary>
@@ -24,18 +24,18 @@ public class OverlapSphereHandler
     /// </summary>
     private void UpdateOverlapSphere(Vector3 position, float radius, LayerMask layerMask)
     {
-        _lastPosition = position;
-        _lastRadius = radius;
-        _lastLayerMask = layerMask;
+        lastPosition = position;
+        lastRadius = radius;
+        lastLayerMask = layerMask;
 
-        _lastCount = Physics.OverlapSphereNonAlloc(position, radius, _overlapResults, layerMask);
-        _resultsAreStale = false;
+        lastCount = Physics.OverlapSphereNonAlloc(position, radius, overlapResults, layerMask);
+        resultsAreStale = false;
 
         // Оновлення для дебагу
-        _debugColliders.Clear();
-        for (int i = 0; i < _lastCount; i++)
+        debugColliders.Clear();
+        for (int i = 0; i < lastCount; i++)
         {
-            _debugColliders.Add(_overlapResults[i]);
+            debugColliders.Add(overlapResults[i]);
         }
     }
 
@@ -48,16 +48,16 @@ public class OverlapSphereHandler
         if(layerMask == 0)
             layerMask = LayerMask.GetMask("Default");
         
-        if (_resultsAreStale || position != _lastPosition || radius != _lastRadius || layerMask != _lastLayerMask || alwaysUpdate)
+        if (resultsAreStale || position != lastPosition || radius != lastRadius || layerMask != lastLayerMask || alwaysUpdate)
         {
             UpdateOverlapSphere(position, radius, layerMask);
         }
 
         
         List<T> results = new List<T>();
-        for (int i = 0; i < _lastCount; i++)
+        for (int i = 0; i < lastCount; i++)
         {
-            if (_overlapResults[i].TryGetComponent(out T component))
+            if (overlapResults[i].TryGetComponent(out T component))
             {
                 if (filter == null || filter(component))
                 {
@@ -75,11 +75,11 @@ public class OverlapSphereHandler
     {
         // Малювання сфери Overlap
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(_lastPosition, _lastRadius);
+        Gizmos.DrawWireSphere(lastPosition, lastRadius);
 
         // Виділення знайдених об'єктів
         Gizmos.color = Color.yellow;
-        foreach (var collider in _debugColliders)
+        foreach (var collider in debugColliders)
         {
             if (collider != null)
             {

@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0bc81ce3d88abd4d84d009f4426f1d9, type: 3}
   m_Name: SawmillConfigInstaller
   m_EditorClassIdentifier: 
-  _config: {fileID: 0}
+  _config:
+    levels:
+    - StorageCapacity: 5
+    - StorageCapacity: 10
+    startLevelIndex: 0

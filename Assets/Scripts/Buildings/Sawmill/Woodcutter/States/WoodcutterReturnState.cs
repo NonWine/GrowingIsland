@@ -2,34 +2,25 @@ using Zenject;
 
 public class WoodcutterReturnState : WoodcutterState
 {
-    [Inject] private NPCAnimator _npcAnimator;
+    [Inject] private NPCAnimator npcAnimator;
 
     public override void Enter()
     {
-        Ctx.Agent.isStopped = false;
-        _npcAnimator.SetMove();
-        Ctx.Agent.SetDestination(woodCutterFacade.DepositPoint.position);
+        view.Agent.isStopped = false;
+        npcAnimator.SetMove();
+        view.Agent.SetDestination(woodCutterFacade.DepositPoint.position);
     }
 
     public override void Tick()
     {
-        if (Ctx.Agent.remainingDistance > workSettings.DepositDistance)
+        if (view.Agent.remainingDistance > workSettings.DepositDistance)
             return;
 
-        woodCutterFacade.TryDepositWood();
-        ChangeNext();
-    }
-
-    private void ChangeNext()
-    {
-        if (woodCutterFacade.StorageFull)
-            ChangeState<WoodcutterWaitingState>();
-        else
-            ChangeState<WoodcutterSearchTreeState>();
+        ChangeState<WoodcutterDepositState>();
     }
 
     public override void Exit()
     {
-        _npcAnimator.SetIdle();
+        npcAnimator.SetIdle();
     }
 }

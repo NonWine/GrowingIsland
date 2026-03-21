@@ -1,28 +1,35 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class ChestLootSystem : MonoBehaviour, IPlayerEnterTriggable, IPlayerExitTriggable
 {
     [Header("Settings")]
-    [SerializeField] private float _lootTime = 3f;
-    [SerializeField] private List<LootData> _lootItems;
-    [SerializeField] private Transform _spawnPoint;
+    [FormerlySerializedAs("_lootTime")]
+    [SerializeField] private float lootTime = 3f;
+    [FormerlySerializedAs("_lootItems")]
+    [SerializeField] private List<LootData> lootItems;
+    [FormerlySerializedAs("_spawnPoint")]
+    [SerializeField] private Transform spawnPoint;
     
     [Header("Visuals")]
-    [SerializeField] private Transform _chestVisual;
-    [SerializeField] private GameObject _timerUI; 
-    [SerializeField] private Image _timerFillImage;
+    [FormerlySerializedAs("_chestVisual")]
+    [SerializeField] private Transform chestVisual;
+    [FormerlySerializedAs("_timerUI")]
+    [SerializeField] private GameObject timerUI;
+    [FormerlySerializedAs("_timerFillImage")]
+    [SerializeField] private Image timerFillImage;
 
-    [Inject] private ResourcePartObjFactory _resourcesFactory;
+    [Inject] private ResourcePartObjFactory resourcesFactory;
 
-    private Coroutine _lootCoroutine;
-    private bool _isLooting;
-    private float _currentTimer;
-    private bool _canBeDestroy;
+    private Coroutine lootCoroutine;
+    private bool isLooting;
+    private float currentTimer;
+    private bool canBeDestroy;
 
     [System.Serializable]
     public struct LootData
@@ -33,77 +40,77 @@ public class ChestLootSystem : MonoBehaviour, IPlayerEnterTriggable, IPlayerExit
 
     private void Start()
     {
-        if (_timerUI != null) _timerUI.SetActive(false);
-        if (_timerFillImage != null) _timerFillImage.fillAmount = 0;
+        if (timerUI != null) timerUI.SetActive(false);
+        if (timerFillImage != null) timerFillImage.fillAmount = 0;
     }
 
     public void PlayerEnter()
     {
-        if (_isLooting || _canBeDestroy) return;
+        if (isLooting || canBeDestroy) return;
         
-        _lootCoroutine = StartCoroutine(LootProcess());
+        lootCoroutine = StartCoroutine(LootProcess());
     }
 
     public void PlayerExit()
     {
-        if (_canBeDestroy) return;
+        if (canBeDestroy) return;
 
-        if (_lootCoroutine != null)
+        if (lootCoroutine != null)
         {
-            StopCoroutine(_lootCoroutine);
-            _lootCoroutine = null;
+            StopCoroutine(lootCoroutine);
+            lootCoroutine = null;
         }
         
-        _isLooting = false;
-        _currentTimer = 0;
+        isLooting = false;
+        currentTimer = 0;
         
-        if (_timerUI != null) _timerUI.SetActive(false);
-        if (_timerFillImage != null) _timerFillImage.fillAmount = 0;
+        if (timerUI != null) timerUI.SetActive(false);
+        if (timerFillImage != null) timerFillImage.fillAmount = 0;
 
         // Reset visual feedback if needed
         
-            _chestVisual.DOKill();
-            _chestVisual.localScale = Vector3.one;
+            chestVisual.DOKill();
+            chestVisual.localScale = Vector3.one;
         
     }
 
     private IEnumerator LootProcess()
     {
-        _isLooting = true;
-        _currentTimer = 0;
+        isLooting = true;
+        currentTimer = 0;
 
-        if (_timerUI != null) _timerUI.SetActive(true);
+        if (timerUI != null) timerUI.SetActive(true);
 
         // Shake animation while looting
-        _chestVisual.DOShakePosition(_lootTime, 0.1f, 10, 90, false, false).SetEase(Ease.Linear);
-        _chestVisual.DOScale(1.1f, _lootTime).SetEase(Ease.InQuad);
+        chestVisual.DOShakePosition(lootTime, 0.1f, 10, 90, false, false).SetEase(Ease.Linear);
+        chestVisual.DOScale(1.1f, lootTime).SetEase(Ease.InQuad);
 
-        while (_currentTimer < _lootTime)
+        while (currentTimer < lootTime)
         {
-            _currentTimer += Time.deltaTime;
+            currentTimer += Time.deltaTime;
             
-            if (_timerFillImage != null)
+            if (timerFillImage != null)
             {
-                _timerFillImage.fillAmount = _currentTimer / _lootTime;
+                timerFillImage.fillAmount = currentTimer / lootTime;
             }
             
             yield return null;
         }
 
-        if (_timerUI != null) _timerUI.SetActive(false);
-        _canBeDestroy = true;
+        if (timerUI != null) timerUI.SetActive(false);
+        canBeDestroy = true;
         SpawnLoot();
         DestroyChest();
     }
 
     private void SpawnLoot()
     {
-        foreach (var loot in _lootItems)
+        foreach (var loot in lootItems)
         {
             for (int i = 0; i < loot.Amount; i++)
             {
-                var resource = _resourcesFactory.Create(loot.Type);
-                Vector3 startPos = _spawnPoint != null ? _spawnPoint.position : transform.position;
+                var resource = resourcesFactory.Create(loot.Type);
+                Vector3 startPos = spawnPoint != null ? spawnPoint.position : transform.position;
                 resource.transform.position = startPos;
                 
                 // Jump out animation
@@ -119,10 +126,10 @@ public class ChestLootSystem : MonoBehaviour, IPlayerEnterTriggable, IPlayerExit
 
     private void DestroyChest()
     {
-        if (_canBeDestroy) return;
-        _canBeDestroy = true;
+        if (canBeDestroy) return;
+        canBeDestroy = true;
 
-        _chestVisual.DOScale(0, 0.3f).SetEase(Ease.InBack).OnComplete(() => {
+        chestVisual.DOScale(0, 0.3f).SetEase(Ease.InBack).OnComplete(() => {
             Destroy(gameObject);
         });
     }

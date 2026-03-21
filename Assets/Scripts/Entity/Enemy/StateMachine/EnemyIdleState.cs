@@ -1,18 +1,18 @@
-﻿public class EnemyIdleState : EnemyState
+public class EnemyIdleState : EnemyState
 {
-    private OverlapSphereHandler _overlapSphereHandler;
-    private EnemyAnimator _enemyAnimator;
+    private OverlapSphereHandler overlapSphereHandler;
+    private EnemyAnimator enemyAnimator;
     
     public EnemyIdleState(EnemyAnimator enemyAnimator, EnemyStateMachine enemyStateMachine) : base(enemyStateMachine, enemyAnimator)
     {
-        _enemyAnimator = enemyAnimator;
-        _overlapSphereHandler = new OverlapSphereHandler();
+        this.enemyAnimator = enemyAnimator;
+        overlapSphereHandler = new OverlapSphereHandler();
     }
     
     public override void EnterState(BaseEnemy baseEnemy)
     {
-        EnemyStateMachine.Enemy.OnDrawGizmoz += _overlapSphereHandler.OnDrawGizmos;
-        _enemyAnimator.Idle();
+        EnemyStateMachine.Enemy.OnDrawGizmoz += overlapSphereHandler.OnDrawGizmos;
+        enemyAnimator.Idle();
         
     }
 
@@ -27,6 +27,7 @@
   
     public override void ExitState()
     {
-        EnemyStateMachine.Enemy.OnDrawGizmoz -= _overlapSphereHandler.OnDrawGizmos;
+        EnemyStateMachine.Enemy.OnDrawGizmoz -= overlapSphereHandler.OnDrawGizmos;
     }
 }
+

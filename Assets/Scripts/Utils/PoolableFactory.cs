@@ -1,32 +1,39 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public abstract class PoolableFactory<TType, TEntity> : IFactory<TType, TEntity>
     where TEntity : PoolAble
 {
-    private Dictionary<TType, TEntity> _prefabs;
-    private DiContainer _container;
+    private readonly Dictionary<TType, TEntity> prefabs;
+    private readonly DiContainer container;
 
     public PoolableFactory(Dictionary<TType, TEntity> prefabs, DiContainer container)
     {
-        _prefabs = prefabs;
-        _container = container;
+        this.prefabs = prefabs;
+        this.container = container;
     }
 
     public TEntity Create(TType type)
     {
-        if (!_prefabs.ContainsKey(type))
+        if (!prefabs.ContainsKey(type))
         {
             Debug.LogError($"Prefab for {type} not found!");
             return null;
         }
 
-        var prefab = _prefabs[type];
-        var instance = _container.InstantiatePrefabForComponent<TEntity>(prefab);
-        // instance.gameObject.SetActive(true);
-        //instance.OnSpawn();
-        return instance;
+        return Create(prefabs[type]);
     }
 
+    public TEntity Create(TEntity prefab)
+    {
+        if (prefab == null)
+        {
+            Debug.LogError($"Prefab for {typeof(TEntity).Name} is null!");
+            return null;
+        }
+
+        return container.InstantiatePrefabForComponent<TEntity>(prefab);
+    }
 }
+

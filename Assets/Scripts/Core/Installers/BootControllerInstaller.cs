@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class BootControllerInstaller : MonoInstaller
 {
-    [SerializeField] private GameController _gameController;
-    [SerializeField] private Player _playerPrefab;
+    [FormerlySerializedAs("_gameController")]
+    [SerializeField] private GameController gameController;
+    [FormerlySerializedAs("_playerPrefab")]
+    [SerializeField] private Player playerPrefab;
 
     public override void InstallBindings()
     {
@@ -24,12 +27,12 @@ public class BootControllerInstaller : MonoInstaller
 
     private void BindGameController()
     {
-        Container.BindInterfacesTo<GameController>().FromInstance(_gameController).AsSingle();
+        Container.BindInterfacesTo<GameController>().FromInstance(gameController).AsSingle();
     }
 
     private void RegisterPlayer()
     {
-        var playerGO = Object.Instantiate(_playerPrefab.gameObject);
+        var playerGO = Object.Instantiate(playerPrefab.gameObject);
         var playerInstance = playerGO.GetComponent<Player>();
 
         PlayerInstaller.Install(Container, playerInstance);

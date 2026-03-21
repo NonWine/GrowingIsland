@@ -7,7 +7,7 @@ public abstract class PlayerDetectorBase<TTarget> : IPlayerDetector
 {
     protected readonly PlayerContainer PlayerContainer;
     protected readonly OverlapSphereHandler OverlapSphereHandler;
-    private readonly IDetectionHandler<TTarget> _detectionHandler;
+    private readonly IDetectionHandler<TTarget> detectionHandler;
 
     protected PlayerDetectorBase(PlayerContainer playerContainer,
         OverlapSphereHandler overlapSphereHandler,
@@ -15,7 +15,7 @@ public abstract class PlayerDetectorBase<TTarget> : IPlayerDetector
     {
         PlayerContainer = playerContainer;
         OverlapSphereHandler = overlapSphereHandler;
-        _detectionHandler = detectionHandler;
+        this.detectionHandler = detectionHandler;
     }
 
     public void Detect()
@@ -44,7 +44,7 @@ public abstract class PlayerDetectorBase<TTarget> : IPlayerDetector
     protected virtual void OnDetected(List<TTarget> detectedObjects)
     {
         detectedObjects.ForEach(x => Debug.Log(x.GetType()));
-        _detectionHandler?.Handle(detectedObjects);
+        detectionHandler?.Handle(detectedObjects);
     }
 
     protected virtual bool CanDetect() => true;
@@ -54,3 +54,4 @@ public abstract class PlayerDetectorBase<TTarget> : IPlayerDetector
     
     protected virtual Vector3 DetectionPoint() => PlayerContainer.transform.position; 
 }
+

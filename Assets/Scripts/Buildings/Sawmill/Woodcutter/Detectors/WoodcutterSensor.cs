@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -8,15 +8,15 @@ using Zenject;
 /// </summary>
 public class WoodcutterSensor : IWoodcutterSensor
 {
-    private readonly OverlapSphereHandler _overlap;
-    private readonly WoodcutterWorkSettings _settings;
+    private readonly OverlapSphereHandler overlap;
+    private readonly WoodcutterWorkSettings settings;
     private readonly WoodcutterView woodcutterView;
 
     [Inject]
     public WoodcutterSensor(OverlapSphereHandler overlap, WoodcutterWorkSettings settings, WoodcutterView woodcutterView)
     {
-        _overlap = overlap ?? throw new ArgumentNullException(nameof(overlap));
-        _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+        this.overlap = overlap ?? throw new ArgumentNullException(nameof(overlap));
+        this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
         this.woodcutterView = woodcutterView != null ? woodcutterView : throw new ArgumentNullException(nameof(woodcutterView));
     }
 
@@ -25,11 +25,11 @@ public class WoodcutterSensor : IWoodcutterSensor
     /// <summary>
     /// Знаходить найближче живе дерево для рубки.
     /// </summary>
-    public bool TryFindNearest(out EnvironmentResource tree)
+    public bool TryFindNearest(out EnvironmentPropObjectView tree)
     {
-        tree = FindNearest<EnvironmentResource>(
-            _settings.TreeSearchRadius, 
-            _settings.ResourceMask, 
+        tree = FindNearest<EnvironmentPropObjectView>(
+            settings.TreeSearchRadius, 
+            settings.ResourceMask, 
             TreeFilter);
             
         return tree != null;
@@ -43,8 +43,8 @@ public class WoodcutterSensor : IWoodcutterSensor
     public ResourcePartObj AcquireNearestDrop()
     {
         return FindNearest<ResourcePartObj>(
-            _settings.DropDetectionRadius, 
-            _settings.ResourcePartMask, 
+            settings.DropDetectionRadius, 
+            settings.ResourcePartMask, 
             WoodDropFilter);
     }
 
@@ -55,7 +55,7 @@ public class WoodcutterSensor : IWoodcutterSensor
     {
         return GetFiltered<ResourcePartObj>(
             radius, 
-            _settings.ResourcePartMask, 
+            settings.ResourcePartMask, 
             WoodDropFilter);
     }
 
@@ -92,7 +92,7 @@ public class WoodcutterSensor : IWoodcutterSensor
 
     private List<T> GetFiltered<T>(float radius, LayerMask mask, Func<T, bool> filter) where T : Component
     {
-        return _overlap.GetFilteredObjects<T>(
+        return overlap.GetFilteredObjects<T>(
             woodcutterView.transform.position,
             radius,
             mask,
@@ -104,11 +104,11 @@ public class WoodcutterSensor : IWoodcutterSensor
 
     #region Static Filters (No GC Alloc for closures)
 
-    private static bool TreeFilter(EnvironmentResource r) => 
-        r != null && r.isAlive && r.ResourceType == eCollectable.Wood;
+    private static bool TreeFilter(EnvironmentPropObjectView r) => 
+        r != null && r.IsAlive && r.ResourceType == eCollectable.Wood;
 
     private static bool WoodDropFilter(ResourcePartObj obj) => 
-        obj != null && obj.TypeE == eCollectable.Wood && !obj.IsPicked;
+        obj != null && obj.TypeE == eCollectable.Wood && !obj.IsPicked && obj.CanBePicked;
 
     #endregion
 }

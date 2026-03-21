@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -10,13 +10,14 @@ public class WoodcutterWorkSettings
     public float TreeSearchRadius = 20f;
     public float ChopDistance = 1.6f;
     public float DepositDistance = 1.5f;
-    public float LootCollectionRadius = 3f;
     public float DropDetectionRadius = 25f;
     public float RetargetCooldown = 0.5f;
     public float TreeDamage;
-    public int WoodPerHit = 1;
     public float ChopInterval = 1.5f;
     public int CarryCapacity = 5;
+
+    public DepositAnimationSettings DepositAnimation = new();
+    public DepositAudioSettings DepositAudio = new();
 
     public WoodcutterWorkSettings() { }
 
@@ -27,14 +28,12 @@ public class WoodcutterWorkSettings
         TreeSearchRadius = template.TreeSearchRadius;
         ChopDistance = template.ChopDistance;
         DepositDistance = template.DepositDistance;
-        LootCollectionRadius = template.LootCollectionRadius;
         DropDetectionRadius = template.DropDetectionRadius;
         RetargetCooldown = template.RetargetCooldown;
         TreeDamage = template.TreeDamage;
-        WoodPerHit = template.WoodPerHit;
         ChopInterval = template.ChopInterval;
         CarryCapacity = template.CarryCapacity;
+        DepositAnimation = new DepositAnimationSettings(template.DepositAnimation);
+        DepositAudio = new DepositAudioSettings(template.DepositAudio);
     }
-
-
 }

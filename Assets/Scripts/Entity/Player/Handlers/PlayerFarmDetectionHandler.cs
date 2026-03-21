@@ -1,26 +1,27 @@
 using System.Collections.Generic;
 
-public class PlayerFarmDetectionHandler : IDetectionHandler<EnvironmentResource>
+public class PlayerFarmDetectionHandler : IDetectionHandler<EnvironmentPropObjectView>
 {
-    private readonly PlayerStateMachine _playerStateMachine;
-    private readonly PlayerAnimator _playerAnimator;
+    private readonly PlayerStateMachine playerStateMachine;
+    private readonly PlayerAnimator playerAnimator;
 
     public PlayerFarmDetectionHandler(PlayerStateMachine playerStateMachine, PlayerAnimator playerAnimator)
     {
-        _playerStateMachine = playerStateMachine;
-        _playerAnimator = playerAnimator;
+        this.playerStateMachine = playerStateMachine;
+        this.playerAnimator = playerAnimator;
     }
 
-    public void Handle(List<EnvironmentResource> farmObjects)
+    public void Handle(List<EnvironmentPropObjectView> farmObjects)
     {
-        _playerStateMachine.ChangeState(PlayerStateKey.Farming);
+        playerStateMachine.ChangeState(PlayerStateKey.Farming);
     }
 
     public void NoDetection()
     {
-        if (_playerStateMachine.CurrentStateKey == PlayerStateKey.Farming)
+        if (playerStateMachine.CurrentStateKey == PlayerStateKey.Farming)
         {
-            _playerStateMachine.ChangeState(PlayerStateKey.Idle);
+            playerStateMachine.ChangeState(PlayerStateKey.Idle);
         }
     }
 }
+

@@ -3,51 +3,68 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using Zenject;
 
-public class WoodCutterFacade
+public class WoodCutterFacade : IDisposable , IInitializable
 {
-    private readonly Sawmill _sawmill;
-    private readonly WoodcutterWorkSettings _workSettings;
+    private readonly IWoodcutterWorkplace workplace;
+    private readonly WoodcutterWorkSettings workSettings;
+    private readonly Action<int, int> storageChangedRelay;
 
-    [ShowInInspector, ReadOnly] public EnvironmentResource CurrentTree { get; private set; }
+    [ShowInInspector, ReadOnly] public EnvironmentPropObjectView CurrentTree { get; private set; }
     [ShowInInspector, ReadOnly] public int CarriedWood { get; private set; }
+    [ShowInInspector, ReadOnly] public int PendingWood { get; private set; }
 
-    public WoodCutterFacade(Sawmill sawmill, WoodcutterWorkSettings workSettings)
+    public WoodCutterFacade(IWoodcutterWorkplace workplace, WoodcutterWorkSettings workSettings)
     {
-        _sawmill = sawmill;
-        _workSettings = workSettings;
+        this.workplace = workplace;
+        this.workSettings = workSettings;
+        storageChangedRelay = (current, capacity) => StorageChanged?.Invoke(current, capacity);
     }
 
-    public class Factory : PlaceholderFactory<Sawmill, WoodcutterView> { }
+    public class Factory : PlaceholderFactory<IWoodcutterWorkplace, WoodcutterView> { }
 
-    public Transform DepositPoint => _sawmill != null ? _sawmill.DepositPoint : null;
+    public Transform DepositPoint => workplace?.DepositPoint;
+    public Vector3 WorkPlacePosition => workplace.WorkPlacePosition;
 
-    public event Action<int, int> StorageChanged
-    {
-        add => _sawmill.StorageChanged += value;
-        remove => _sawmill.StorageChanged -= value;
-    }
+    public event Action<int, int> StorageChanged;
 
-    public bool HasTree => CurrentTree != null && CurrentTree.isAlive;
+    public bool HasTree =>  CurrentTree.IsAlive;
     public bool HasWood => CarriedWood > 0;
-    public bool StorageFull => _sawmill != null && _sawmill.IsStorageFull;
-    public int CarryCapacity => _workSettings.CarryCapacity;
-    public float ChopInterval => _workSettings.ChopInterval;
+    public bool WorkPlaceStorageFull =>  workplace.IsStorageFull;
 
     #region Actions
-    public void SetTree(EnvironmentResource tree) => CurrentTree = tree;
+    public void SetTree(EnvironmentPropObjectView tree) => CurrentTree = tree;
     public void ClearTree() => CurrentTree = null;
 
     public void AddWood(int amount) => CarriedWood = Mathf.Max(0, CarriedWood + amount);
-    public void RemoveWood(int amount) => CarriedWood = Mathf.Max(0, CarriedWood - amount);
-    public void ResetWood() => CarriedWood = 0;
-
-    public void TryDepositWood()
+    public void ReserveWood(int amount) => PendingWood = Mathf.Max(0, PendingWood + amount);
+    public void ConfirmReservedWood(int amount)
     {
-        if (HasWood && _sawmill != null)
-        {
-            var stored = _sawmill.DepositWood(CarriedWood);
-            RemoveWood(stored);
-        }
+        int safeAmount = Mathf.Max(0, amount);
+        PendingWood = Mathf.Max(0, PendingWood - safeAmount);
+        AddWood(safeAmount);
+    }
+
+    public void RemoveWood(int amount) => CarriedWood = Mathf.Max(0, CarriedWood - amount);
+    public void ResetWood()
+    {
+        CarriedWood = 0;
+        PendingWood = 0;
+    }
+
+    public void DepositOneWood(float impactStrength = 1f)
+    {
+        var stored = workplace.DepositOneWood(impactStrength);
+        if (stored > 0) RemoveWood(stored);
     }
     #endregion
+
+    public void Dispose()
+    {
+        workplace.StorageChanged -= storageChangedRelay;
+    }
+
+    public void Initialize()
+    {
+        workplace.StorageChanged += storageChangedRelay;
+    }
 }

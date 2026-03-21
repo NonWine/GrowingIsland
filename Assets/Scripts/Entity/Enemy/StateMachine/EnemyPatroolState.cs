@@ -1,40 +1,40 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyPatroolState : EnemyState
 {
-    private Player _player;
-    private OverlapSphereHandler _overlapSphereHandler;
-    private EnemyAnimator _enemyAnimator;
-    private PatrolArea _patroolArea;
-    private NavMeshAgent _navMeshAgent;
+    private Player player;
+    private OverlapSphereHandler overlapSphereHandler;
+    private EnemyAnimator enemyAnimator;
+    private PatrolArea patroolArea;
+    private NavMeshAgent navMeshAgent;
     
     public EnemyPatroolState(EnemyAnimator enemyAnimator, EnemyStateMachine enemyStateMachine, Player player, 
         PatrolArea patroolArea, NavMeshAgent agent) : base(enemyStateMachine, enemyAnimator)
     {
-        _navMeshAgent = agent;
-        _patroolArea = patroolArea;
-        _enemyAnimator = enemyAnimator;
-        _player = player;
-        _overlapSphereHandler = new OverlapSphereHandler();
+        navMeshAgent = agent;
+        this.patroolArea = patroolArea;
+        this.enemyAnimator = enemyAnimator;
+        this.player = player;
+        overlapSphereHandler = new OverlapSphereHandler();
     }
     
     public override void EnterState(BaseEnemy baseEnemy)
     {
-        EnemyStateMachine.Enemy.OnDrawGizmoz += _overlapSphereHandler.OnDrawGizmos;
-        _navMeshAgent.SetDestination(_patroolArea.GetRandomPointInCollider());
-        _enemyAnimator.Move();
+        EnemyStateMachine.Enemy.OnDrawGizmoz += overlapSphereHandler.OnDrawGizmos;
+        navMeshAgent.SetDestination(patroolArea.GetRandomPointInCollider());
+        enemyAnimator.Move();
     }
 
     public override void UpdateState()
     {
-        Enemy.EnemyRotator.RotateToPoint(_navMeshAgent.destination);
+        Enemy.EnemyRotator.RotateToPoint(navMeshAgent.destination);
         if(Enemy.IsPlayerInRange(Enemy.Stats.AggroRadius))
         {
             EnemyStateMachine.ChangeState<ChaseState>();
         }
 
-        if (!_navMeshAgent.pathPending && _navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
            EnemyStateMachine.ChangeState<EnemyIdleState>();
         }
@@ -44,6 +44,7 @@ public class EnemyPatroolState : EnemyState
   
     public override void ExitState()
     {
-        EnemyStateMachine.Enemy.OnDrawGizmoz -= _overlapSphereHandler.OnDrawGizmos;
+        EnemyStateMachine.Enemy.OnDrawGizmoz -= overlapSphereHandler.OnDrawGizmos;
     }
 }
+

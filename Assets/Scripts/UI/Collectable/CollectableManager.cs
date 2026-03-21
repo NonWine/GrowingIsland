@@ -3,30 +3,33 @@ using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class CollectableManager : MonoBehaviour
 {
-    [SerializeField] private WalletObj[] _walletObjs;
-    [SerializeField] private CollectableWallet _walletPrefab;
-    [Inject] private DiContainer _diContainer;
+    [FormerlySerializedAs("_walletObjs")]
+    [SerializeField] private WalletObj[] walletObjs;
+    [FormerlySerializedAs("_walletPrefab")]
+    [SerializeField] private CollectableWallet walletPrefab;
+    [Inject] private DiContainer diContainer;
     
-    private List<CollectableWallet> _collectableWallets;
+    private List<CollectableWallet> collectableWallets;
 
     private void Start()
     {
-        _collectableWallets = new List<CollectableWallet>();
-        foreach (var wallet in _walletObjs)
+        collectableWallets = new List<CollectableWallet>();
+        foreach (var wallet in walletObjs)
         {
-           var wall =  _diContainer.InstantiatePrefabForComponent<CollectableWallet>(_walletPrefab, transform);
+           var wall =  diContainer.InstantiatePrefabForComponent<CollectableWallet>(walletPrefab, transform);
            wall.Init(wallet);
-            _collectableWallets.Add(wall);
+            collectableWallets.Add(wall);
         }
     }
     
 
     public CollectableWallet GetWallet(eCollectable collectable)
     {
-        foreach (var wallet in _collectableWallets)
+        foreach (var wallet in collectableWallets)
         {
             if (wallet.WalletType == collectable)
                 return wallet;

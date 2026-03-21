@@ -1,18 +1,18 @@
-п»їusing System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class EnemyPatrool : BaseEnemy
 {
-    [Inject] private PatrolArea _patroolArea;
+    [Inject] private PatrolArea patroolArea;
     
 
     protected override Dictionary<Type, EnemyState> CreateStates()
     {
-        var states = base.CreateStates(); // Р’РёРєР»РёРєР°С”РјРѕ Р±Р°Р·РѕРІРёР№ РјРµС‚РѕРґ С– РґРѕРґР°С”РјРѕ РЅРѕРІРёР№ СЃС‚Р°РЅ
+        var states = base.CreateStates(); // Викликаємо базовий метод і додаємо новий стан
         states[typeof(EnemyIdleState)] = new EnemyPatroolIdleState(EnemyAnimator, EnemyStateMachine);
-        states[typeof(EnemyPatroolState)] = new EnemyPatroolState(EnemyAnimator, EnemyStateMachine, Player, _patroolArea, NavMesh);
+        states[typeof(EnemyPatroolState)] = new EnemyPatroolState(EnemyAnimator, EnemyStateMachine, Player, patroolArea, NavMesh);
         return states;
     }
 

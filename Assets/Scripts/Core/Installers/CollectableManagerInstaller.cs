@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Zenject;
+using UnityEngine.Serialization;
 
 public class CollectableManagerInstaller : MonoInstaller
 {
-    [SerializeField] private CollectableManager _collectableManager;
+    [FormerlySerializedAs("_collectableManager")]
+    [SerializeField] private CollectableManager collectableManager;
     
     public override void InstallBindings()
     {
@@ -13,6 +15,6 @@ public class CollectableManagerInstaller : MonoInstaller
 
     private void BindResourcesFactory()
     {
-        Container.BindInstance(_collectableManager);
+        Container.BindInstance(collectableManager);
     }
 }

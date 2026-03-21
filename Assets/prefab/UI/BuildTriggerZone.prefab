@@ -99,6 +99,12 @@ MonoBehaviour:
   requiredResources: []
   _throwPointTarget: {fileID: 9111711573545705541}
   _canvasZone: {fileID: 6568039716678584321}
+  _throwSettings:
+    LandingSpread: 0.2
+    SpinRevolutions: 1.25
+    ArrivalPopScale: 1.2
+    ArrivalPopDuration: 0.12
+    ArrivalPopReturnDuration: 0.08
 --- !u!65 &902147076677630652
 BoxCollider:
   m_ObjectHideFlags: 0

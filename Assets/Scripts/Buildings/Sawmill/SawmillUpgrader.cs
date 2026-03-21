@@ -3,31 +3,31 @@ using UnityEngine;
 
 public class SawmillUpgrader
 {
-    private readonly SawmillConfig _config;
-    private readonly IStorage _storage;
+    private readonly SawmillConfig config;
+    private readonly IStorage storage;
 
-    private int _currentLevelIndex;
+    private int currentLevelIndex;
 
     public event Action<SawmillLevelSettings> LevelChanged;
 
-    public SawmillLevelSettings CurrentLevel => _config.GetLevel(_currentLevelIndex);
+    public SawmillLevelSettings CurrentLevel => config.GetLevel(currentLevelIndex);
 
     public SawmillUpgrader(SawmillConfig config, IStorage storage)
     {
-        _config = config;
-        _storage = storage;
-        _currentLevelIndex = Mathf.Max(0, _config.StartLevelIndex);
+        this.config = config;
+        this.storage = storage;
+        currentLevelIndex = Mathf.Max(0, config.StartLevelIndex);
     }
 
     public void NotifyInitial() => LevelChanged?.Invoke(CurrentLevel);
 
     public void Upgrade()
     {
-        if (_config.Levels == null || _currentLevelIndex >= _config.Levels.Count - 1)
+        if (config.Levels == null || currentLevelIndex >= config.Levels.Count - 1)
             return;
 
-        _currentLevelIndex++;
-        _storage.SetCapacity(CurrentLevel.StorageCapacity);
+        currentLevelIndex++;
+        storage.SetCapacity(CurrentLevel.StorageCapacity);
         LevelChanged?.Invoke(CurrentLevel);
     }
 }

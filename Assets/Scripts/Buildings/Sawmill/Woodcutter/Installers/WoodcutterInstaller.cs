@@ -1,27 +1,30 @@
-﻿using Unity.VisualScripting;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class WoodcutterInstaller : MonoInstaller
 {
+    [FormerlySerializedAs("_woodcutterView")]
     [SerializeField] private WoodcutterView woodcutterView;
 
-    private Sawmill _sawmill;
+    private IWoodcutterWorkplace workplace;
 
     [Inject]
-    public void Construct(Sawmill sawmill)
+    public void Construct(IWoodcutterWorkplace workplace)
     {
-        _sawmill = sawmill;
+        this.workplace = workplace;
     }
 
     public override void InstallBindings()
     {
         Components();
 
-        Container.Bind<Sawmill>().FromInstance(_sawmill).AsSingle();
+        Container.Bind<IWoodcutterWorkplace>().FromInstance(workplace).AsSingle();
         Container.Bind<NPCAnimator>().AsSingle().WithArguments(1);
         Container.Bind<IWoodcutterSensor>().To<WoodcutterSensor>().AsSingle();
+        WoodcutterDepositAnimationInstaller.Install(Container);
 
         StateMachine();
         
@@ -39,6 +42,7 @@ public class WoodcutterInstaller : MonoInstaller
     private void StateMachine()
     {
         Container.DeclareSignal<ChangeWoodcutterStateSignal>();
+        Container.Bind<IState>().To<WoodcutterDepositState>().AsSingle();
         Container.Bind<IState>().To<WoodcutterWaitingState>().AsSingle();
         Container.Bind<IState>().To<WoodcutterChopState>().AsSingle();
         Container.Bind<IState>().To<WoodcutterCollectState>().AsSingle();

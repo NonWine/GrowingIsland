@@ -2,38 +2,38 @@ using UnityEngine;
 
 public class WoodcutterSearchTreeState : WoodcutterState
 {
-    private readonly IWoodcutterSensor _sensor;
-    private float _nextSearchTime;
+    private readonly IWoodcutterSensor sensor;
+    private float nextSearchTime;
 
     public WoodcutterSearchTreeState(IWoodcutterSensor sensor)
     {
-        _sensor = sensor;
+        this.sensor = sensor;
     }
 
     public override void Enter()
     {
-        _nextSearchTime = 0f;
+        nextSearchTime = 0f;
     }
 
     public override void Tick()
     {
-        if (woodCutterFacade.StorageFull)
+        if (woodCutterFacade.WorkPlaceStorageFull)
         {
             ChangeState<WoodcutterWaitingState>();
             return;
         }
 
-        if (Time.time < _nextSearchTime)
+        if (Time.time < nextSearchTime)
             return;
 
-        if (_sensor.TryFindNearest(out var tree))
+        if (sensor.TryFindNearest(out var tree))
         {
             woodCutterFacade.SetTree(tree);
             ChangeState<WoodcutterMoveToTreeState>();
         }
         else
         {
-            _nextSearchTime = Time.time + Mathf.Max(0.05f, workSettings.RetargetCooldown);
+            nextSearchTime = Time.time + Mathf.Max(0.05f, workSettings.RetargetCooldown);
         }
     }
 

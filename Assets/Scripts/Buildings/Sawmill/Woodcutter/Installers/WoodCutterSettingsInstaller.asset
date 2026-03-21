@@ -21,11 +21,55 @@ MonoBehaviour:
       m_Bits: 2047
     TreeSearchRadius: 20
     ChopDistance: 1.6
-    DepositDistance: 1.5
-    LootCollectionRadius: 3
+    DepositDistance: 2.5
     DropDetectionRadius: 25
     RetargetCooldown: 0.5
     TreeDamage: 1
-    WoodPerHit: 1
     ChopInterval: 1
     CarryCapacity: 5
+    DepositAnimation:
+      LogPrefab: {fileID: 568719726346361867, guid: b5e1ce8434b81a740aaa9a7b62b3b047,
+        type: 3}
+      RotationDuration: 0.12
+      DelayBetweenLogs: 0.04
+      AnticipationDurationRange: {x: 0.1, y: 0.3}
+      ReleaseDurationRange: {x: 0.1, y: 0.3}
+      FlightDurationRange: {x: 0.2, y: 0.3}
+      RecoveryDurationRange: {x: 0.3, y: 0.6}
+      ArcHeightRange: {x: 1.33, y: 1.73}
+      SideOffsetRange: {x: -0.61, y: 0.61}
+      LandingSpreadRange: {x: 0.39, y: -0.39}
+      SpinDegreesRange: {x: 150, y: 240}
+      PitchJitterRange: {x: 6.15, y: -6.15}
+      RollJitterRange: {x: -24, y: 24}
+      ImpactStrengthRange: {x: 0.83, y: 0.97}
+      ApexDurationRatioRange: {x: 0.54, y: 0.62}
+      ProjectileScale: 0.8
+      ReleaseScaleMultiplier: 1.08
+      ApexScaleMultiplier: 1.13
+      FirstThrowTimingMultiplier: 0.52
+      ComboTimingMultiplier: 0.51
+      AccentEvery: 5
+      AccentImpactMultiplier: 1.15
+      HeldLogLocalPosition: {x: 0.02, y: 0.02, z: 0.14}
+      HeldLogLocalEuler: {x: 8.1, y: 85, z: 8}
+      ThrowA:
+        HeldAnticipationOffset: {x: -0.03, y: 0.01, z: -0.04}
+        HeldReleaseOffset: {x: 0.05, y: 0.04, z: 0.05}
+        HeldEulerOffset: {x: -8, y: 4, z: -10}
+        ArcHeightMultiplier: 1.02
+        SideOffsetMultiplier: 0.75
+        SpinMultiplier: 1
+        TimingMultiplier: 1
+      ThrowB:
+        HeldAnticipationOffset: {x: 0.05, y: 0.02, z: -0.05}
+        HeldReleaseOffset: {x: -0.04, y: 0.05, z: 0.08}
+        HeldEulerOffset: {x: 10, y: -14, z: 16}
+        ArcHeightMultiplier: 1.14
+        SideOffsetMultiplier: 1.35
+        SpinMultiplier: 1.18
+        TimingMultiplier: 0.96
+    DepositAudio:
+      ReleaseClips: []
+      ReleaseVolume: 1
+      ReleaseSoundPitchRange: {x: 0.95, y: 1.05}

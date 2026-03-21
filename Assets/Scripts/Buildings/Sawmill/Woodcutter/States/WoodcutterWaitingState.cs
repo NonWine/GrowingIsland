@@ -1,16 +1,16 @@
 public class WoodcutterWaitingState : WoodcutterState
 {
-    private readonly NPCAnimator _npcAnimator;
+    private readonly NPCAnimator npcAnimator;
 
     public WoodcutterWaitingState(NPCAnimator npcAnimator)
     {
-        _npcAnimator = npcAnimator;
+        this.npcAnimator = npcAnimator;
     }
 
     public override void Enter()
     {
-        Ctx.Agent.isStopped = true;
-        _npcAnimator.SetIdle();
+        view.Agent.isStopped = true;
+        npcAnimator.SetIdle();
         woodCutterFacade.StorageChanged += OnStorageChanged;
     }
 
@@ -31,7 +31,7 @@ public class WoodcutterWaitingState : WoodcutterState
             return;
         }
 
-        if (!woodCutterFacade.StorageFull)
+        if (!woodCutterFacade.WorkPlaceStorageFull)
             ChangeState<WoodcutterSearchTreeState>();
     }
 }

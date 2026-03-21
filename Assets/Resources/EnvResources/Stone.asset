@@ -15,4 +15,5 @@ MonoBehaviour:
   DropPrefab: {fileID: 0}
   TypeWallet: 1
   Health: 100
+  RespawnTime: 10
   VisualDrop: 28

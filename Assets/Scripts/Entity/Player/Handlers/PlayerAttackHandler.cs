@@ -1,12 +1,15 @@
-﻿using System;
+using System;
+using UnityEngine;
 
 public class PlayerAttackHandler
 {
-    private readonly float _damage;
+    private readonly float damage;
+    private readonly Transform attackSource;
 
-    public PlayerAttackHandler(float damage)
+    public PlayerAttackHandler(float damage, Transform attackSource)
     {
-        _damage = damage;
+        this.damage = damage;
+        this.attackSource = attackSource;
     }
 
     public void TryAttack(IDamageable target, Action onMiss)
@@ -17,6 +20,13 @@ public class PlayerAttackHandler
             return;
         }
 
-        target.GetDamage(_damage);
+        if (target is IWorldHitDamageable worldHitDamageable)
+        {
+            worldHitDamageable.GetDamage(damage, attackSource.position);
+            return;
+        }
+
+        target.GetDamage(damage);
     }
 }
+

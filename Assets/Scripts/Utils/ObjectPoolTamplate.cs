@@ -1,17 +1,17 @@
-п»їusing System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class ObjectPoolTemplate<TType, TEntity> where TEntity : PoolAble
 {
-    [Inject] private PoolableFactory<TType, TEntity> _factory;
+    [Inject] private PoolableFactory<TType, TEntity> factory;
     public List<TEntity> _inActiveUnits = new List<TEntity>();
 
     
-    // РћС‡РёС‰РµРЅРЅСЏ РїСѓР»Сѓ
+    // Очищення пулу
     public void ClearPool() => _inActiveUnits.Clear();
 
-    // РњРµС‚РѕРґ РґР»СЏ РїРѕС€СѓРєСѓ СЃСѓС‚РЅРѕСЃС‚С–, СЏРєР° РЅРµР°РєС‚РёРІРЅР°
+    // Метод для пошуку сутності, яка неактивна
     private TEntity TryResetFromPool()
     {
         foreach (var entity in _inActiveUnits)
@@ -25,7 +25,7 @@ public class ObjectPoolTemplate<TType, TEntity> where TEntity : PoolAble
         return null;
     }
 
-    // РЎРїР°РІРЅ РѕР±'С”РєС‚Р° Р· РїСѓР»Сѓ Р°Р±Рѕ СЃС‚РІРѕСЂРµРЅРЅСЏ РЅРѕРІРѕРіРѕ С‡РµСЂРµР· С„Р°Р±СЂРёРєСѓ
+    // Спавн об'єкта з пулу або створення нового через фабрику
     public TEntity SpawnEntity(TType entityType, Transform pos, Quaternion rotation)
     {
         var unit = TryResetFromPool();
@@ -38,8 +38,8 @@ public class ObjectPoolTemplate<TType, TEntity> where TEntity : PoolAble
             return unit;
         }
 
-        // РЎС‚РІРѕСЂРµРЅРЅСЏ РЅРѕРІРѕРіРѕ РѕР±'С”РєС‚Р° С‡РµСЂРµР· С„Р°Р±СЂРёРєСѓ
-        unit = _factory.Create(entityType);
+        // Створення нового об'єкта через фабрику
+        unit = factory.Create(entityType);
         unit.transform.position = pos.position;
         unit.transform.rotation = rotation;
         _inActiveUnits.Add(unit);
@@ -47,7 +47,7 @@ public class ObjectPoolTemplate<TType, TEntity> where TEntity : PoolAble
         return unit;
     }
 
-    // РџРѕРІРµСЂРЅРµРЅРЅСЏ РѕР±'С”РєС‚Р° РІ РїСѓР»
+    // Повернення об'єкта в пул
     public void ToPool(TEntity entity) 
     {
         entity.gameObject.SetActive(false);

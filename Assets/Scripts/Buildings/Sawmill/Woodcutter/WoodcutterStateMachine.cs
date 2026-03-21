@@ -7,7 +7,7 @@ using Zenject;
 [System.Serializable]
 public class WoodcutterStateMachine : ITickable, IInitializable, IDisposable
 {
-    private readonly Dictionary<Type, IState> _states = new();
+    private readonly Dictionary<Type, IState> states = new();
     private readonly SignalBus signalBus;
 
     [ShowInInspector] public IState CurrentState { get; private set; }
@@ -16,7 +16,7 @@ public class WoodcutterStateMachine : ITickable, IInitializable, IDisposable
     {
         this.signalBus = signalBus;
         foreach (var state in states)
-            _states[state.GetType()] = state;
+            this.states[state.GetType()] = state;
     }
 
     public void Initialize()
@@ -45,7 +45,7 @@ public class WoodcutterStateMachine : ITickable, IInitializable, IDisposable
 
     private void ChangeState(Type stateType)
     {
-        if (!_states.TryGetValue(stateType, out var next))
+        if (!states.TryGetValue(stateType, out var next))
         {
             UnityEngine.Debug.LogError($"State {stateType} not registered!");
             return;

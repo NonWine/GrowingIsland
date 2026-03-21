@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Zenject;
@@ -6,13 +6,13 @@ using Zenject;
 public class PlayerResourcesTrigger : PlayerTrigger
 {
     
-    [Inject] private Player _player;
+    [Inject] private Player player;
 
     public event Action<eCollectable> CurrentResourceTrigger;
 
     protected  void Awake()
     {
-        _player = GetComponentInParent<Player>();
+        player = GetComponentInParent<Player>();
     }
     
     
@@ -20,9 +20,9 @@ public class PlayerResourcesTrigger : PlayerTrigger
     {
         base.OnTriggerEnter(other);
         
-        if (other.TryGetComponent(out EnvironmentResource environmentResource))
+        if (other.TryGetComponent(out EnvironmentPropObjectView environmentResource))
         {
-            _player.PlayerStateMachine.ChangeState(PlayerStateKey.Farming);
+            player.PlayerStateMachine.ChangeState(PlayerStateKey.Farming);
             CurrentResourceTrigger?.Invoke(environmentResource.ResourceType);
         }
 
@@ -31,9 +31,9 @@ public class PlayerResourcesTrigger : PlayerTrigger
     protected override void OnTriggerExit(Collider other)
     {
         base.OnTriggerExit(other);
-        if (other.TryGetComponent(out EnvironmentResource environmentResource))
+        if (other.TryGetComponent(out EnvironmentPropObjectView environmentResource))
         {
-            _player.PlayerStateMachine.ChangeState(PlayerStateKey.Idle);
+            player.PlayerStateMachine.ChangeState(PlayerStateKey.Idle);
         }
     }
 }

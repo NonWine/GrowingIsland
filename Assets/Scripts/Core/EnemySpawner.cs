@@ -8,14 +8,14 @@ using Zenject;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Inject] private GameObjectContext _context;
+    [Inject] private GameObjectContext context;
     
     [Inject] private EnemyConfig config;
   
         
     private void Start()
     {
-        var enemy = _context.Container.InstantiatePrefab(config.EnemyPrefab, transform);
+        var enemy = context.Container.InstantiatePrefab(config.EnemyPrefab, transform);
      
         if (enemy == null)
         {

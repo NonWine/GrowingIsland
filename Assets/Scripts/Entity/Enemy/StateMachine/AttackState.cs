@@ -1,17 +1,17 @@
-﻿public class AttackState : EnemyState
+public class AttackState : EnemyState
 {
-    private IAttackable _attackable;
-    private EnemyAnimator _enemyAnimator;
+    private IAttackable attackable;
+    private EnemyAnimator enemyAnimator;
 
     public AttackState(EnemyAnimator enemyAnimator, EnemyStateMachine enemyStateMachine, IAttackable attackable) : base(enemyStateMachine, enemyAnimator)
     {
-        _enemyAnimator = enemyAnimator;
-        _attackable = attackable;
+        this.enemyAnimator = enemyAnimator;
+        this.attackable = attackable;
     }
     
     public override void EnterState(BaseEnemy baseEnemy)
     {
-        _enemyAnimator.Attack();
+        enemyAnimator.Attack();
     }
 
     public override void UpdateState()
@@ -23,12 +23,13 @@
         }
         
         Enemy.EnemyRotator.RotateToPlayer();
-        _attackable.Attack();
+        attackable.Attack();
     }
 
     public override void ExitState()
     {
-        _enemyAnimator.Idle();
+        enemyAnimator.Idle();
     }
     
 }
+

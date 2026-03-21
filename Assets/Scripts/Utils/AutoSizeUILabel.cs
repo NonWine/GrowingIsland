@@ -3,23 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Utils
 {
     [RequireComponent(typeof(RectTransform))]
     public class AutoSizeUILabel : MonoBehaviour
     {
-        [SerializeField] private Padding _padding;
-        [SerializeField] private RectTransform _preferredRect;
-        [SerializeField] private bool _useHeight, _useWidht;
-        private RectTransform _rectTransform;
+        [FormerlySerializedAs("_padding")]
+        [SerializeField] private Padding padding;
+        [FormerlySerializedAs("_preferredRect")]
+        [SerializeField] private RectTransform preferredRect;
+        [FormerlySerializedAs("_useWidht")]
+        [FormerlySerializedAs("_useHeight")]
+        [SerializeField] private bool useHeight, useWidht;
+        private RectTransform rectTransform;
 
         [ShowInInspector]
-        public TextIconView[] Labels => _preferredRect.GetComponentsInChildren<TextIconView>(true);
+        public TextIconView[] Labels => preferredRect.GetComponentsInChildren<TextIconView>(true);
         
         private void OnValidate()
         {
-            _rectTransform = GetComponent<RectTransform>();
+            rectTransform = GetComponent<RectTransform>();
            // UpdateRectToPadding();
         }
 
@@ -32,15 +37,15 @@ namespace Utils
         [Button]
         public void UpdateRectToPadding()
         {
-            var rect = _rectTransform.rect;
-            if (_useHeight)
+            var rect = rectTransform.rect;
+            if (useHeight)
             {
-                _rectTransform.sizeDelta = new Vector2(rect.width + _padding.widht, _preferredRect.sizeDelta.y + _padding.height);
+                rectTransform.sizeDelta = new Vector2(rect.width + padding.widht, preferredRect.sizeDelta.y + padding.height);
             }
 
-            if (_useWidht)
+            if (useWidht)
             {
-                _rectTransform.sizeDelta = new Vector2(_preferredRect.sizeDelta.x + _padding.widht, rect.height + _padding.height);
+                rectTransform.sizeDelta = new Vector2(preferredRect.sizeDelta.x + padding.widht, rect.height + padding.height);
 
             }
         }

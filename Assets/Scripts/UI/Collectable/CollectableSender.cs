@@ -5,21 +5,26 @@ using Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Serialization;
 
 public class CollectableSender : MonoBehaviour
 {
-    private CollectableAnimationData.SendingData _animData;
-    [SerializeField] private CollectableVisualPart _collectableVisualPartPrefab;
-    [SerializeField] private int _amount;
-    [SerializeField] private Vector2 _size;
+    private CollectableAnimationData.SendingData animData;
+    [FormerlySerializedAs("_collectableVisualPartPrefab")]
+    [SerializeField] private CollectableVisualPart collectableVisualPartPrefab;
+    [FormerlySerializedAs("_amount")]
+    [SerializeField] private int amount;
+    [FormerlySerializedAs("_size")]
+    [SerializeField] private Vector2 size;
 
-    [SerializeField, ReadOnly] private CollectableVisualPart[] _collectableVisualParts;
+    [FormerlySerializedAs("_collectableVisualParts")]
+    [SerializeField, ReadOnly] private CollectableVisualPart[] collectableVisualParts;
 
-    private Camera _cam => Camera.main;
-    private CollectableWallet _wallet;
-    private Coroutine _coroutine;
-    private Action _onEndCallback;
-    private int _count;
+    private Camera cam => Camera.main;
+    private CollectableWallet wallet;
+    private Coroutine coroutine;
+    private Action onEndCallback;
+    private int count;
 
     #region Editor
     private void OnValidate() 
@@ -35,10 +40,10 @@ public class CollectableSender : MonoBehaviour
 
         var sprite = transform.parent.FindDeepChild<Image>("Icon").sprite;
 
-        for (int i = 0; i < _amount; i++)
+        for (int i = 0; i < amount; i++)
         {
-            var item = Instantiate(_collectableVisualPartPrefab, transform);
-            item.GetComponent<RectTransform>().sizeDelta = _size;
+            var item = Instantiate(collectableVisualPartPrefab, transform);
+            item.GetComponent<RectTransform>().sizeDelta = size;
             item.GetComponent<Image>().sprite = sprite;
             item.name = $"Visual ({i})";
             item.gameObject.SetActive(false);
@@ -51,95 +56,95 @@ public class CollectableSender : MonoBehaviour
     private void SetRefs()
     {
     
-        _collectableVisualParts = GetComponentsInChildren<CollectableVisualPart>(true);
+        collectableVisualParts = GetComponentsInChildren<CollectableVisualPart>(true);
     }
     #endregion
 
     #region Init
     private void OnEnable()
     {
-        foreach (var visual in _collectableVisualParts)
+        foreach (var visual in collectableVisualParts)
             visual.onEndSending += OnEndSending;
     }
 
     private void OnDisable()
     {
-        foreach (var visual in _collectableVisualParts)
+        foreach (var visual in collectableVisualParts)
             visual.onEndSending -= OnEndSending;
     }
     
     public void Initialize(CollectableWallet wallet) 
-        => _wallet = wallet;
+        => this.wallet = wallet;
     #endregion
 
     #region Callbacks
     private void OnEndSending()
     {
-        if (_onEndCallback == null)
+        if (onEndCallback == null)
             return;
 
-        _count--;
-        if (_count <= 0)
+        count--;
+        if (count <= 0)
         {
-            _onEndCallback?.Invoke();
-            _onEndCallback = null;
+            onEndCallback?.Invoke();
+            onEndCallback = null;
         }
     }
     #endregion
     
     public void Send(RectTransform start, int amount, RectTransform target, Action onEnd = null)
     {
-        if (_coroutine != null)
-            StopCoroutine(_coroutine);
+        if (coroutine != null)
+            StopCoroutine(coroutine);
 
-        _count = Mathf.Min(amount, _collectableVisualParts.Length);
-        _onEndCallback = onEnd;
+        count = Mathf.Min(amount, collectableVisualParts.Length);
+        onEndCallback = onEnd;
 
-        _coroutine = StartCoroutine(SendC(start, target, amount));
+        coroutine = StartCoroutine(SendC(start, target, amount));
     }
 
     public void SendOne(Transform startPos, RectTransform target, Action onEnd = null)
     {
-        var collectable = _collectableVisualParts.First( x=> x.gameObject.activeSelf == false);
+        var collectable = collectableVisualParts.First( x=> x.gameObject.activeSelf == false);
         collectable.transform.SetParent(target);
-        var pos = _cam.WorldToScreenPoint(startPos.position);
+        var pos = cam.WorldToScreenPoint(startPos.position);
         collectable.Initialize(pos);
-        collectable.MoveTo(target, _wallet, 1);
+        collectable.MoveTo(target, wallet, 1);
     }
     
     public void SendOne(Transform startPos, RectTransform target, int countAdd, Action onEnd = null)
     {
-        var collectable = _collectableVisualParts.First( x=> x.gameObject.activeSelf == false);
+        var collectable = collectableVisualParts.First( x=> x.gameObject.activeSelf == false);
         collectable.transform.SetParent(target);
-        var pos = _cam.WorldToScreenPoint(startPos.position);
+        var pos = cam.WorldToScreenPoint(startPos.position);
         collectable.Initialize(pos);
-        collectable.MoveTo(target, _wallet, countAdd);
+        collectable.MoveTo(target, wallet, countAdd);
     }
 
     private IEnumerator SendC(RectTransform start, RectTransform target, int amount)
     {
         int addingValue;
         int lastAddingValue;
-        if(amount <= _collectableVisualParts.Length)
+        if(amount <= collectableVisualParts.Length)
         {
             addingValue = 1;
             lastAddingValue = addingValue;
         }
         else
         {
-            addingValue = amount / _collectableVisualParts.Length;
-            lastAddingValue = addingValue + amount % _collectableVisualParts.Length;
+            addingValue = amount / collectableVisualParts.Length;
+            lastAddingValue = addingValue + amount % collectableVisualParts.Length;
         }
         
-        for (int i = 0; i < _count; i++)
+        for (int i = 0; i < count; i++)
         {
-            var collectable = _collectableVisualParts[i];
+            var collectable = collectableVisualParts[i];
 
             collectable.transform.SetParent(target);
             collectable.Initialize(start);
-            collectable.MoveTo(target, _wallet, (i != _count - 1) ? addingValue : lastAddingValue);
+            collectable.MoveTo(target, wallet, (i != count - 1) ? addingValue : lastAddingValue);
 
-            var delay = _animData.DelayBetween * _animData.DelayCurve.Evaluate(((float)i / _count));
+            var delay = animData.DelayBetween * animData.DelayCurve.Evaluate(((float)i / count));
 
             if (delay != 0)
                 yield return new WaitForSeconds(delay);
