@@ -1,9 +1,11 @@
 using DG.Tweening;
 using UnityEngine;
+using Zenject;
 
-public abstract class TreeReactionBase
+public abstract class TreeReactionBase : IInitializable
 {
     protected readonly EnvironmentPropObjectView View;
+    [Inject] protected readonly TreeLeavesBurster  leavesBurster;
 
     protected TreeReactionBase(EnvironmentPropObjectView view)
     {
@@ -95,4 +97,6 @@ public abstract class TreeReactionBase
 
         return awayLocal.normalized;
     }
+
+    public abstract void Initialize();
 }

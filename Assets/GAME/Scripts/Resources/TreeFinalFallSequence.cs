@@ -5,7 +5,6 @@ using UnityEngine;
 public sealed class TreeFinalFallSequence : IDisposable
 {
     private readonly EnvironmentPropObjectView view;
-    private readonly EnvironmentResourceEvents events;
     private readonly TreeResourceDropExecutor _resourceDropExecutor;
     private readonly ITreeHitReaction hitReaction;
     private readonly ITreeFinalFallReaction finalFallReaction;
@@ -15,7 +14,6 @@ public sealed class TreeFinalFallSequence : IDisposable
 
     public TreeFinalFallSequence(
         EnvironmentPropObjectView view,
-        EnvironmentResourceEvents events,
         TreeResourceDropExecutor resourceDropExecutor,
         ITreeHitReaction hitReaction,
         ITreeFinalFallReaction finalFallReaction,
@@ -23,7 +21,6 @@ public sealed class TreeFinalFallSequence : IDisposable
         TreeFinalFallSettings treeHitAnimationSettings)
     {
         this.view = view;
-        this.events = events;
         this._resourceDropExecutor = resourceDropExecutor;
         this.hitReaction = hitReaction;
         this.finalFallReaction = finalFallReaction;
@@ -53,7 +50,6 @@ public sealed class TreeFinalFallSequence : IDisposable
     {
         CancelPresentation();
         finalFallReaction.ResetToNeutral();
-        hitReaction.ResetToNeutral();
         _stumpController.Hide();
     }
 

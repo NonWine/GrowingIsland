@@ -7,10 +7,7 @@ public sealed class TreePresentationController : IInitializable, IDisposable , I
     private readonly ITreeHitReaction hitReaction;
     private readonly TreeFinalFallSequence finalFallSequence;
 
-    public TreePresentationController(
-        EnvironmentResourceEvents events,
-        ITreeHitReaction hitReaction,
-        TreeFinalFallSequence finalFallSequence)
+    public TreePresentationController(EnvironmentResourceEvents events, ITreeHitReaction hitReaction, TreeFinalFallSequence finalFallSequence)
     {
         this.events = events;
         this.hitReaction = hitReaction;

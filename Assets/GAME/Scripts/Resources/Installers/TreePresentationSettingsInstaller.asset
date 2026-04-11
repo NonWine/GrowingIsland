@@ -18,7 +18,6 @@ MonoBehaviour:
     HitBendDuration: 0.055
     OvershootDuration: 0.035
     SettleDuration: 0.05
-    FinalHitMultiplier: 1.25
     AngleVariance: 0.08
     DurationVariance: 0.05
     CrownAngleMultiplier: 0.18
