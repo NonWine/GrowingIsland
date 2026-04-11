@@ -1,40 +1,24 @@
 using System;
 using UnityEngine;
 
-public readonly struct EnvironmentResourceHitEvent
-{
-    public EnvironmentResourceHitEvent(float damage, float remainingHealth, bool isFinalHit, Vector3 sourceWorldPosition)
-    {
-        Damage = damage;
-        RemainingHealth = remainingHealth;
-        IsFinalHit = isFinalHit;
-        SourceWorldPosition = sourceWorldPosition;
-    }
-
-    public float Damage { get; }
-    public float RemainingHealth { get; }
-    public bool IsFinalHit { get; }
-    public Vector3 SourceWorldPosition { get; }
-}
-
 public sealed class EnvironmentResourceEvents
 {
-    public event Action<EnvironmentResourceHitEvent> HitApplied;
-    public event Action PresentationCompleted;
-    public event Action RespawnCompleted;
+    public event Action<EnvironmentResourceHitResult> HitApplied;
+    public event Action<float, Vector3> OnReceiveWorldDamage;
+    public event Action<EnvironmentResourceHitResult> FinalHitEvent;
 
-    public void RaiseHitApplied(EnvironmentResourceHitEvent hitEvent)
+    public void RaiseReceiveWorldDamage(float damage, Vector3 position)
     {
-        HitApplied?.Invoke(hitEvent);
+        OnReceiveWorldDamage?.Invoke(damage, position);
+    }
+    
+    public void RaiseHitApplied(EnvironmentResourceHitResult hitResult)
+    {
+        HitApplied?.Invoke(hitResult);
     }
 
-    public void RaisePresentationCompleted()
+    public void RaiseFinalHitEvent(EnvironmentResourceHitResult hitResult)
     {
-        PresentationCompleted?.Invoke();
-    }
-
-    public void RaiseRespawnCompleted()
-    {
-        RespawnCompleted?.Invoke();
+        FinalHitEvent?.Invoke(hitResult);
     }
 }

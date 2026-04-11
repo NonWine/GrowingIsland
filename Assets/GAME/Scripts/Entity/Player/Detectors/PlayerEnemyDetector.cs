@@ -2,7 +2,7 @@ using System;
 
 public class PlayerEnemyDetector : PlayerDetectorBase<BaseEnemy>
 {
-    private static readonly Func<BaseEnemy, bool> AliveEnemyFilter = resource => resource.isAlive;
+    private static readonly Func<BaseEnemy, bool> AliveEnemyFilter = resource => resource.IsAlive;
     private readonly PlayerStateMachine playerStateMachine;
 
     public PlayerEnemyDetector(PlayerContainer playerContainer,

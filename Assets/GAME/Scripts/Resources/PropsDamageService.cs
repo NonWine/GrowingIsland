@@ -1,30 +1,23 @@
 using UnityEngine;
 using Zenject;
 
-public class PropsDamageService : IEnvironmentResourceDamageService, IResetable, IInitializable
+public class PropsDamageService : IEnvironmentResourceDamageService, IResetable, IAliveStateReader, IInitializable
 {
     private readonly ResourceWorld resourceWorld;
-    private readonly EnvironmentPropObjectView view;
     private readonly EnvironmentResourceEvents events;
-
     private float health;
+    public bool IsAlive { get; private set; }
 
-    public PropsDamageService(
-        ResourceWorld resourceWorld,
-        EnvironmentPropObjectView view,
-        EnvironmentResourceEvents events)
+    public PropsDamageService(ResourceWorld resourceWorld, EnvironmentResourceEvents events)
     {
         this.resourceWorld = resourceWorld;
-        this.view = view;
         this.events = events;
     }
 
-    public bool IsAlive { get; private set; }
 
     public void Initialize()
     {
         Reset();
-        view.SetResourceVisualsVisible(true);
     }
 
     public void Reset()
@@ -33,25 +26,22 @@ public class PropsDamageService : IEnvironmentResourceDamageService, IResetable,
         health = resourceWorld.Health;
     }
 
-    public void ApplyDamage(float damage)
-    {
-        ApplyDamage(damage, view.GetDefaultHitSource());
-    }
-
-    public void ApplyDamage(float damage, Vector3 sourceWorldPosition)
+    public EnvironmentResourceHitResult ApplyDamage(float damage, Vector3 sourceWorldPosition)
     {
         if (!IsAlive)
         {
-            return;
+            return new EnvironmentResourceHitResult(damage, 0f,false,false,sourceWorldPosition);
         }
 
         health -= damage;
         bool isFinalHit = health <= 0f;
+     
         if (isFinalHit)
         {
+            health = 0f;
             IsAlive = false;
         }
-
-        events.RaiseHitApplied(new EnvironmentResourceHitEvent(damage, health, isFinalHit, sourceWorldPosition));
+        
+        return new EnvironmentResourceHitResult(damage, health, isFinalHit, true,sourceWorldPosition);
     }
 }

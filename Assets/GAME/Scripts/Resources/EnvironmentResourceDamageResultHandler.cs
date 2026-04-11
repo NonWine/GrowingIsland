@@ -5,78 +5,29 @@ public interface IEnvironmentResourceDamageResultHandler : IInitializable, IDisp
 {
 }
 
-public sealed class DefaultEnvironmentResourceDamageResultHandler : IEnvironmentResourceDamageResultHandler
-{
-    private readonly EnvironmentPropObjectView view;
-    private readonly EnvironmentResourceEvents events;
-
-    public DefaultEnvironmentResourceDamageResultHandler(EnvironmentPropObjectView view, EnvironmentResourceEvents events)
-    {
-        this.view = view;
-        this.events = events;
-    }
-
-    public void Initialize()
-    {
-        events.HitApplied += OnHitApplied;
-    }
-
-    public void Dispose()
-    {
-        events.HitApplied -= OnHitApplied;
-    }
-
-    private void OnHitApplied(EnvironmentResourceHitEvent hitEvent)
-    {
-        if (!hitEvent.IsFinalHit)
-        {
-            return;
-        }
-
-        view.SetResourceVisualsVisible(false);
-        events.RaisePresentationCompleted();
-    }
-}
-
 public sealed class StoneEnvironmentResourceDamageResultHandler : IEnvironmentResourceDamageResultHandler
 {
-    private readonly ResourceWorld resourceWorld;
     private readonly EnvironmentPropObjectView view;
-    private readonly EnvironmentResourceDropSpawner dropSpawner;
     private readonly EnvironmentResourceEvents events;
 
-    public StoneEnvironmentResourceDamageResultHandler(
-        ResourceWorld resourceWorld,
-        EnvironmentPropObjectView view,
-        EnvironmentResourceDropSpawner dropSpawner,
-        EnvironmentResourceEvents events)
+    public StoneEnvironmentResourceDamageResultHandler(EnvironmentPropObjectView view, EnvironmentResourceEvents events)
     {
-        this.resourceWorld = resourceWorld;
         this.view = view;
-        this.dropSpawner = dropSpawner;
         this.events = events;
     }
 
     public void Initialize()
     {
-        events.HitApplied += OnHitApplied;
+        events.FinalHitEvent += OnFinalHitApplied;
     }
 
     public void Dispose()
     {
-        events.HitApplied -= OnHitApplied;
+        events.FinalHitEvent -= OnFinalHitApplied;
     }
 
-    private void OnHitApplied(EnvironmentResourceHitEvent hitEvent)
+    private void OnFinalHitApplied(EnvironmentResourceHitResult resourceHitResult)
     {
-        ParticlePool.Instance.PlayMineHitFx(view.transform.position);
-        if (!hitEvent.IsFinalHit)
-        {
-            return;
-        }
-
-        dropSpawner.Spawn(resourceWorld.TypeWallet, resourceWorld.VisualDrop, view.transform.position);
-        view.SetResourceVisualsVisible(false);
-        events.RaisePresentationCompleted();
+        EnvironmentResourceViewUtility.SetChildrenVisible(view.transform, false);
     }
 }

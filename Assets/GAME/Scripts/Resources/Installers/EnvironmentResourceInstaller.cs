@@ -1,25 +1,25 @@
+using UnityEngine;
 using Zenject;
 
 public abstract class EnvironmentResourceInstaller : MonoInstaller
 {
+    private EnvironmentPropObjectView propObjectView;
+    
     public override void InstallBindings()
     {
         Container.Bind<EnvironmentResourceEvents>().AsSingle();
         ViewDependencies();
         DamageHandler();
-        
         Container.BindInterfacesAndSelfTo<EnvironmentResourceRespawnService>().AsSingle();
-
         InstallResourceBindings();
+        Container.BindInterfacesAndSelfTo<EnvironmentObjPresenter>().AsSingle();
     }
 
     private void ViewDependencies()
     {
-        EnvironmentPropObjectView propObjectView = GetComponent<EnvironmentPropObjectView>();
-        Container.Bind<EnvironmentPropObjectView>().FromInstance(propObjectView).AsSingle();
-        Container.Bind<IDamageable>().FromInstance(propObjectView).AsSingle();
-        Container.Bind<IWorldHitDamageable>().FromInstance(propObjectView).AsSingle();
-        Container.BindInstance(propObjectView.ResourceWorldAsset);
+         propObjectView = GetComponent<EnvironmentPropObjectView>();
+         Container.Bind<EnvironmentPropObjectView>().FromInstance(propObjectView).AsSingle();
+         Container.BindInstance(propObjectView.ResourceWorldAsset);
     }
 
     private void DamageHandler()
@@ -30,4 +30,5 @@ public abstract class EnvironmentResourceInstaller : MonoInstaller
     protected virtual void InstallResourceBindings()
     {
     }
+    
 }

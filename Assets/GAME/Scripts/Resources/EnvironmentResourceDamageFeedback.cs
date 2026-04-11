@@ -28,7 +28,7 @@ public sealed class ScalePunchEnvironmentResourceDamageFeedback : IEnvironmentRe
         view.transform.DOKill();
     }
 
-    private void OnHitApplied(EnvironmentResourceHitEvent hitEvent)
+    private void OnHitApplied(EnvironmentResourceHitResult result)
     {
         view.transform.DOKill();
         view.transform.DOScale(1.05f, 0.15f)

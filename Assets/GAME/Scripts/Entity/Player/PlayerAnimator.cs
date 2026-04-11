@@ -19,16 +19,8 @@ public class PlayerAnimator : IEntityAnimateable
     
     public void UpdateAnimator() 
     {
-        if (playerContainer.Direction != Vector3.zero)
-        {
-            playerContainer.Animator.SetFloat(_MOVING_KEY, 1f);
-
-        }
-        else
-        {
-            playerContainer.Animator.SetFloat(_MOVING_KEY, -1f);
-
-        }
+        // ThirdPersonController drives the locomotion parameter on this animator.
+        // This class only controls state-based actions like mining/lumbering/attack.
     }
 
     public void SetAnimataionLayerWeightBehaviour(int state)

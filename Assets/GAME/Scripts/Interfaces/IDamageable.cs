@@ -2,9 +2,14 @@
 
 public interface IDamageable
 {
-    void GetDamage(float damage);
+    void GetDamage(float damage, Vector3 sourceWorldPosition);
 
-    bool isAlive { get; set; }
+    bool IsAlive { get; }
     
     Transform transform { get;  }
+}
+
+public interface IAliveStateReader
+{
+    bool IsAlive { get; }
 }

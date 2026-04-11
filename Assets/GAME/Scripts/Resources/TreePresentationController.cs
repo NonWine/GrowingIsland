@@ -20,14 +20,15 @@ public sealed class TreePresentationController : IInitializable, IDisposable , I
     public void Initialize()
     {
         events.HitApplied += OnHitApplied;
-        events.RespawnCompleted += OnRespawnCompleted;
+        events.FinalHitEvent += FinalHitApply;
+
         Reset();
     }
 
     public void Dispose()
     {
         events.HitApplied -= OnHitApplied;
-        events.RespawnCompleted -= OnRespawnCompleted;
+        events.FinalHitEvent -= FinalHitApply;
     }
 
     public void Reset()
@@ -36,19 +37,14 @@ public sealed class TreePresentationController : IInitializable, IDisposable , I
         finalFallSequence.Reset();
     }
 
-    private void OnHitApplied(EnvironmentResourceHitEvent hitEvent)
+    private void OnHitApplied(EnvironmentResourceHitResult hitResult)
     {
-        if (hitEvent.IsFinalHit)
-        {
-            finalFallSequence.Play(hitEvent.SourceWorldPosition);
-            return;
-        }
-
-        hitReaction.PlayHit(hitEvent.SourceWorldPosition);
+        hitReaction.PlayHit(hitResult.SourceWorldPosition);
     }
 
-    private void OnRespawnCompleted()
+    private void FinalHitApply(EnvironmentResourceHitResult hitResult)
     {
-        Reset();
+        finalFallSequence.Play(hitResult.SourceWorldPosition);
     }
+    
 }

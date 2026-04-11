@@ -51,8 +51,7 @@ public class PlayerAttackState : PlayerState
             rotator.SetTargetRotate(currentTarget.transform);
         }
 
-        if (!currentTarget.isAlive ||
-            !detector.IsTargetWithinRange(currentTarget.transform.position))
+        if (!currentTarget.IsAlive || !detector.IsTargetWithinRange(currentTarget.transform.position))
         { 
             ResetTarget();
         }

@@ -3,69 +3,44 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Zenject;
 
-public sealed class EnvironmentResourceRespawnService : IInitializable, IDisposable
+public sealed class EnvironmentResourceRespawnService : IRespawner
 {
     private readonly ResourceWorld resourceWorld;
-    private readonly IResetable damageService;
     private readonly EnvironmentPropObjectView view;
-    private readonly EnvironmentResourceEvents events;
-
     private CancellationTokenSource respawnCts;
 
-    public EnvironmentResourceRespawnService(
-        ResourceWorld resourceWorld,
-        IResetable damageService,
-        EnvironmentPropObjectView view,
-        EnvironmentResourceEvents events)
+    public EnvironmentResourceRespawnService(ResourceWorld resourceWorld, EnvironmentPropObjectView view)
     {
         this.resourceWorld = resourceWorld;
-        this.damageService = damageService;
         this.view = view;
-        this.events = events;
     }
 
-    public void Initialize()
-    {
-        events.PresentationCompleted += OnPresentationCompleted;
-    }
 
     public void Dispose()
     {
-        events.PresentationCompleted -= OnPresentationCompleted;
         CancelRespawn();
     }
 
-    private void OnPresentationCompleted()
+    public UniTask Respawn()
     {
-        if (resourceWorld.RespawnTime <= 0f)
-        {
-            CompleteRespawn();
-            return;
-        }
-
         CancelRespawn();
         respawnCts = new CancellationTokenSource();
-        RespawnAsync(respawnCts.Token).Forget();
+        return RespawnAsync(respawnCts.Token);
     }
 
-    private async UniTaskVoid RespawnAsync(CancellationToken cancellationToken)
+    private async UniTask RespawnAsync(CancellationToken cancellationToken)
     {
         try
         {
             await UniTask.Delay(TimeSpan.FromSeconds(resourceWorld.RespawnTime), cancellationToken: cancellationToken);
-            CompleteRespawn();
+            CancelRespawn();
+            EnvironmentResourceViewUtility.SetChildrenVisible(view.transform, true);
+            
         }
         catch (OperationCanceledException)
         {
+            
         }
-    }
-
-    private void CompleteRespawn()
-    {
-        CancelRespawn();
-        damageService.Reset();
-        view.SetResourceVisualsVisible(true);
-        events.RaiseRespawnCompleted();
     }
 
     private void CancelRespawn()
@@ -74,9 +49,13 @@ public sealed class EnvironmentResourceRespawnService : IInitializable, IDisposa
         {
             return;
         }
-
         respawnCts.Cancel();
         respawnCts.Dispose();
         respawnCts = null;
     }
+}
+
+public interface IRespawner
+{
+    UniTask Respawn();
 }

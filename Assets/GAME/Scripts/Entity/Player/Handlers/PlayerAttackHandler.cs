@@ -14,19 +14,13 @@ public class PlayerAttackHandler
 
     public void TryAttack(IDamageable target, Action onMiss)
     {
-        if (target == null || !target.isAlive)
+        if (target == null || !target.IsAlive)
         {
             onMiss?.Invoke();
             return;
         }
 
-        if (target is IWorldHitDamageable worldHitDamageable)
-        {
-            worldHitDamageable.GetDamage(damage, attackSource.position);
-            return;
-        }
-
-        target.GetDamage(damage);
+        target.GetDamage(damage, attackSource.position);
     }
 }
 

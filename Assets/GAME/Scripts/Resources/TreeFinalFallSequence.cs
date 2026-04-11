@@ -65,11 +65,10 @@ public sealed class TreeFinalFallSequence : IDisposable
     private void HandleFinalFallComplete()
     {
         presentationSequence = null;
-        view.SetResourceVisualsVisible(false);
+        EnvironmentResourceViewUtility.SetChildrenVisible(view.transform, false);
         _stumpController.Show();
         finalFallReaction.ResetToNeutral();
         hitReaction.ResetToNeutral();
-        events.RaisePresentationCompleted();
     }
 
     private void CancelPresentation()

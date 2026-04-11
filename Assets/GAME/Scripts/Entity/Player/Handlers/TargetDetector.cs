@@ -27,7 +27,7 @@ public class TargetDetector
             playerTransform.position,
             radius,
             enemyMask,
-            e => e.isAlive,
+            e => e.IsAlive,
             true);
 
         if (enemies.Count == 0)
@@ -44,7 +44,7 @@ public class TargetDetector
     public bool IsTargetWithinRange(Vector3 targetPos)
     {
         Vector3 playerPos = playerTransform.position;
-        playerPos.y = targetPos.y; // вирівняли по висоті
+        playerPos.y = targetPos.y; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         return (targetPos - playerPos).sqrMagnitude <= radius * radius;
     }
 
@@ -52,12 +52,12 @@ public class TargetDetector
     public void DrawGizmos()
     {
 
-        // Радіус детекції
+        // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(playerTransform.position, radius);
         
         if (playerTransform == null || lastDetectedTarget == null) return;
-        // Активна ціль
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         if (IsTargetWithinRange(lastDetectedTarget.transform.position) && lastDetectedTarget is Component c)
         {
             Gizmos.color = Color.red;

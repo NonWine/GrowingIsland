@@ -12,4 +12,14 @@ public class PlayerAnimatorEvent : MonoBehaviour
         OnFarming?.Invoke();
     }
 
+    public void OnFootstep(AnimationEvent animationEvent)
+    {
+        // Receiver for imported walk/run clips that already send this event.
+    }
+
+    public void OnLand(AnimationEvent animationEvent)
+    {
+        // Receiver for imported landing clips that already send this event.
+    }
+
 }

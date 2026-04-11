@@ -30,7 +30,7 @@ public class WoodcutterChopState : WoodcutterState
 
     private void SetDamage()
     {
-        var worldHitDamageable = woodCutterFacade.CurrentTree.GetComponent<IWorldHitDamageable>();
+        var worldHitDamageable = woodCutterFacade.CurrentTree.GetComponent<IDamageable>();
         if (worldHitDamageable == null)
             return;
 
