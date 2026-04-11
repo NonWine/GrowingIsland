@@ -7,6 +7,7 @@ public abstract class EnvironmentResourceInstaller : MonoInstaller
     
     public override void InstallBindings()
     {
+        
         Container.Bind<EnvironmentResourceEvents>().AsSingle();
         ViewDependencies();
         Container.BindInterfacesAndSelfTo<EnvironmentResourceRespawnService>().AsSingle();

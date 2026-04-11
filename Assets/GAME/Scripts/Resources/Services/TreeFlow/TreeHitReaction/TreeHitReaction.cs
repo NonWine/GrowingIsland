@@ -3,9 +3,7 @@ using UnityEngine;
 
 public class TreeHitReaction : TreeReactionBase, ITreeHitReaction
 {
-    private readonly EnvironmentPropObjectView view;
     private readonly TreeHitAnimationSettings settings;
-    private readonly TreeLeavesBurster  leavesBurster;
 
     private Quaternion mainBaseRotation;
     private Quaternion mainBendRotation;
@@ -15,18 +13,17 @@ public class TreeHitReaction : TreeReactionBase, ITreeHitReaction
 
     public TreeHitReaction(EnvironmentPropObjectView view, TreeHitAnimationSettings settings) : base(view)
     {
-        this.view = view;
         this.settings = settings;
     }
 
     public void PlayHit(Vector3 sourceWorldPosition)
     {
-        ParticlePool.Instance.PlayAxeHitFx(view.transform.position);
+        ParticlePool.Instance.PlayAxeHitFx(View.transform.position);
 
         KillSequence(ref sequence);
         leavesBurster.PlayLeavesBursts(settings);
 
-        var awayLocal = GetAwayDirectionLocal(view.ReactionRoot, sourceWorldPosition);
+        var awayLocal = GetAwayDirectionLocal(View.ReactionRoot, sourceWorldPosition);
         var bendAxis = Vector3.Cross(Vector3.up, awayLocal).normalized;
 
         var angleScale = 1f + Random.Range(-settings.AngleVariance, settings.AngleVariance);
@@ -43,18 +40,18 @@ public class TreeHitReaction : TreeReactionBase, ITreeHitReaction
         mainOvershootRotation = mainBaseRotation * Quaternion.AngleAxis(-overshootAngle, bendAxis);
 
         sequence = DOTween.Sequence();
-        sequence.Append(view.ReactionRoot.DOLocalRotateQuaternion(mainBendRotation, mainBendDuration).SetEase(Ease.OutQuad));
-        sequence.Append(view.ReactionRoot.DOLocalRotateQuaternion(mainOvershootRotation, mainOvershootDuration).SetEase(Ease.InOutQuad));
-        sequence.Append(view.ReactionRoot.DOLocalRotateQuaternion(mainBaseRotation, mainSettleDuration).SetEase(Ease.OutCubic));
+        sequence.Append(View.ReactionRoot.DOLocalRotateQuaternion(mainBendRotation, mainBendDuration).SetEase(Ease.OutQuad));
+        sequence.Append(View.ReactionRoot.DOLocalRotateQuaternion(mainOvershootRotation, mainOvershootDuration).SetEase(Ease.InOutQuad));
+        sequence.Append(View.ReactionRoot.DOLocalRotateQuaternion(mainBaseRotation, mainSettleDuration).SetEase(Ease.OutCubic));
 
         sequence.OnComplete(ResetToNeutral);
-        sequence.SetLink(view.gameObject);
+        sequence.SetLink(View.gameObject);
     }
 
     public override void ResetToNeutral()
     {
         KillSequence(ref sequence);
-        ResetPose(view.ReactionRoot, mainBaseRotation);
+        ResetPose(View.ReactionRoot, mainBaseRotation);
     }
 
     public override void Initialize()
@@ -65,6 +62,6 @@ public class TreeHitReaction : TreeReactionBase, ITreeHitReaction
 
     protected override void CacheBasePose()
     {
-        mainBaseRotation = view.ReactionRoot.localRotation;
+        mainBaseRotation = View.ReactionRoot.localRotation;
     }
 }

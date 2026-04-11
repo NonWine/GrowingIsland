@@ -2,11 +2,8 @@ using System;
 using DG.Tweening;
 using Zenject;
 
-public interface IEnvironmentResourceDamageFeedback : IInitializable, IDisposable
-{
-}
 
-public sealed class ScalePunchEnvironmentResourceDamageFeedback : IEnvironmentResourceDamageFeedback
+public sealed class ScalePunchEnvironmentResourceDamageFeedback
 {
     private readonly EnvironmentPropObjectView view;
     private readonly EnvironmentResourceEvents events;

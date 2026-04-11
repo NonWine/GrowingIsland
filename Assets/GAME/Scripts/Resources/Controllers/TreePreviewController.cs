@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -10,8 +11,7 @@ public sealed class TreePreviewController : IDisposable
     private readonly TreeResourceDropExecutor _resourceDropExecutor;
     private readonly ITreeHitReaction hitReaction;
     private readonly ITreeFinalFallReaction finalFallReaction;
-    private readonly TreeStumpController _stumpController;
-    private IResetable resetable;
+    private readonly List<IResetable> resetables;
 
     private Sequence previewSequence;
 
@@ -21,14 +21,14 @@ public sealed class TreePreviewController : IDisposable
         TreeResourceDropExecutor resourceDropExecutor,
         ITreeHitReaction hitReaction,
         ITreeFinalFallReaction finalFallReaction,
-        TreeStumpController stumpController)
+        List<IResetable> resetables)
     {
         this.view = view;
         this.finalFallSettings = finalFallSettings;
         this._resourceDropExecutor = resourceDropExecutor;
         this.hitReaction = hitReaction;
         this.finalFallReaction = finalFallReaction;
-        this._stumpController = stumpController;
+        this.resetables = resetables;
     }
 
     public void Dispose()
@@ -43,13 +43,13 @@ public sealed class TreePreviewController : IDisposable
 
     public void PreviewFinalFall()
     {
-        finalFallReaction.Play(GetPreviewHitSource());
+        _ = finalFallReaction.Play(GetPreviewHitSource());
     }
 
     public void PreviewFullFinalHit()
     {
         KillPreviewSequence();
-        finalFallReaction.Play(GetPreviewHitSource());
+        _ = finalFallReaction.Play(GetPreviewHitSource());
         previewSequence = DOTween.Sequence()
             .AppendInterval(GetFinalFallImpactDelay())
             .AppendCallback(HandlePreviewFinalFallImpact)
@@ -61,10 +61,7 @@ public sealed class TreePreviewController : IDisposable
     public void ResetPreview()
     {
         KillPreviewSequence();
-        hitReaction.ResetToNeutral();
-        finalFallReaction.ResetToNeutral();
-        _stumpController.Hide();
-        resetable.Reset();
+        resetables.ForEach(resetable => resetable.Reset());
         EnvironmentResourceViewUtility.SetChildrenVisible(view.transform, true);
     }
 
@@ -77,7 +74,6 @@ public sealed class TreePreviewController : IDisposable
     {
         previewSequence = null;
         EnvironmentResourceViewUtility.SetChildrenVisible(view.transform, false);
-        _stumpController.Show();
     }
 
     private void KillPreviewSequence()

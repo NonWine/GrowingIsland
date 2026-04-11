@@ -1,30 +1,30 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
 public class TreeFinalFallReaction : TreeReactionBase, ITreeFinalFallReaction
 {
-    private readonly EnvironmentPropObjectView view;
     private readonly TreeFinalFallSettings settings;
     private Sequence fallSequence;
+    private UniTaskCompletionSource currentPlayCompletion;
     private Quaternion baseLocalRotation;
     private Vector3 baseLocalPosition;
     private bool basePoseCaptured;
 
     public TreeFinalFallReaction(EnvironmentPropObjectView view, TreeFinalFallSettings settings) : base(view)
     {
-        this.view = view;
         this.settings = settings;
 
     }
 
-    public void Play(Vector3 sourceWorldPosition)
+    public UniTask Play(Vector3 sourceWorldPosition)
     {
         CacheBasePose();
         KillSequence(ref fallSequence);
         ResetToNeutral();
         leavesBurster.PlayFinalHitBursts(settings);
 
-        var fallRoot = view.FallRoot;
+        var fallRoot = View.FallRoot;
         var awayDirection = GetAwayDirectionLocal(fallRoot, sourceWorldPosition);
         var fallAxis = Vector3.Cross(Vector3.up, awayDirection).normalized;
         var preFallAngle = settings.FallAngle * 0.12f * settings.FinalBendMultiplier;
@@ -42,14 +42,19 @@ public class TreeFinalFallReaction : TreeReactionBase, ITreeFinalFallReaction
         PlayImpactPosition();
         PlayImpactRotation();
 
-        fallSequence.SetLink(view.gameObject);
+        var playCompletion = new UniTaskCompletionSource();
+        currentPlayCompletion = playCompletion;
+        fallSequence.OnComplete(() => CompletePlay(playCompletion));
+        fallSequence.OnKill(() => CompletePlay(playCompletion));
+        fallSequence.SetLink(View.gameObject);
+        return playCompletion.Task;
     }
 
     private void PlayImpactRotation()
     {
         if (settings.ImpactRotationPunch > 0f)
         {
-            fallSequence.Join( view.FallRoot.DOPunchRotation(
+            fallSequence.Join( View.FallRoot.DOPunchRotation(
                 new Vector3(0f, 0f, settings.ImpactRotationPunch),
                 settings.LandImpactDuration,
                 vibrato: 1,
@@ -61,7 +66,7 @@ public class TreeFinalFallReaction : TreeReactionBase, ITreeFinalFallReaction
     {
         if (settings.ImpactPositionPunch > 0f)
         {
-            fallSequence.Append( view.FallRoot.DOPunchPosition(
+            fallSequence.Append( View.FallRoot.DOPunchPosition(
                 Vector3.down * settings.ImpactPositionPunch,
                 settings.LandImpactDuration,
                 vibrato: 1,
@@ -72,7 +77,7 @@ public class TreeFinalFallReaction : TreeReactionBase, ITreeFinalFallReaction
     public override void ResetToNeutral()
     {
         KillSequence(ref fallSequence);
-        ResetCapturedPose(basePoseCaptured, view.FallRoot, baseLocalRotation, baseLocalPosition);
+        ResetCapturedPose(basePoseCaptured, View.FallRoot, baseLocalRotation, baseLocalPosition);
     }
 
     public override void Initialize()
@@ -83,6 +88,16 @@ public class TreeFinalFallReaction : TreeReactionBase, ITreeFinalFallReaction
 
     protected override void CacheBasePose()
     {
-        CapturePoseOnce(view.FallRoot, ref basePoseCaptured, ref baseLocalPosition, ref baseLocalRotation);
+        CapturePoseOnce(View.FallRoot, ref basePoseCaptured, ref baseLocalPosition, ref baseLocalRotation);
+    }
+
+    private void CompletePlay(UniTaskCompletionSource playCompletion)
+    {
+        if (currentPlayCompletion == playCompletion)
+        {
+            currentPlayCompletion = null;
+        }
+
+        playCompletion.TrySetResult();
     }
 }

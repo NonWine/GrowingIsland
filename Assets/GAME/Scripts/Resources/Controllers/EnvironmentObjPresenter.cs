@@ -10,6 +10,7 @@ public class EnvironmentObjPresenter : IInitializable , IDisposable
     private IEnvPropDamageService damageService;
     private IDropSpawner dropSpawner;
     private IRespawner respawner;
+    private IFinalHitPresentation finalHitPresentation;
     private List<IResetable> resetables;
     
     public EnvironmentObjPresenter(IEnvPropDamageService damageService, 
@@ -17,6 +18,7 @@ public class EnvironmentObjPresenter : IInitializable , IDisposable
         EnvironmentResourceEvents events,
         IDropSpawner dropSpawner,
         IRespawner respawner,
+        IFinalHitPresentation finalHitPresentation,
         List<IResetable> resetables)
     {
         this.damageService = damageService;
@@ -24,6 +26,7 @@ public class EnvironmentObjPresenter : IInitializable , IDisposable
         this.events = events;
         this.dropSpawner = dropSpawner;
         this.respawner = respawner;
+        this.finalHitPresentation = finalHitPresentation;
         this.resetables = resetables;
     }
 
@@ -52,8 +55,9 @@ public class EnvironmentObjPresenter : IInitializable , IDisposable
   
             if (result.IsFinalHit)
             {
-                events.RaiseFinalHitEvent(result);
+                await finalHitPresentation.PlayAsync(result);
                 dropSpawner.Spawn(propView.transform.position);
+                EnvironmentResourceViewUtility.SetChildrenVisible(propView.transform, false);
                 await respawner.Respawn();
                 resetables.ForEach(r => r.Reset());
             }
@@ -63,4 +67,5 @@ public class EnvironmentObjPresenter : IInitializable , IDisposable
             Debug.LogError(e.Message);
         }
     }
+
 }

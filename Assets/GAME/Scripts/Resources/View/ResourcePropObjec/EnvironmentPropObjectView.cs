@@ -6,15 +6,13 @@ public class EnvironmentPropObjectView : MonoBehaviour , IDamageable
 {
     [SerializeField] private ResourceWorld resourceWorldAsset;
     [Inject] private EnvironmentResourceEvents environmentResourceEvents;
-    private IAliveStateReader aliveStateReader;
+    [Inject] private IAliveStateReader aliveStateReader;
     [Header("Tree Presentation")]
     [SerializeField] private Transform reactionRoot;
     [SerializeField] private Transform crownRoot;
     [SerializeField] private Transform fallRoot;
     [SerializeField] private Transform groundImpactPoint;
     [SerializeField] private Transform resourceDropOrigin;
-    [SerializeField] private Transform stumpAnchor;
-    [SerializeField] private GameObject stumpPrefab;
     [SerializeField] private Transform[] leavesPoints;
     
     public ResourceWorld ResourceWorldAsset => resourceWorldAsset;
@@ -24,8 +22,6 @@ public class EnvironmentPropObjectView : MonoBehaviour , IDamageable
     public Transform FallRoot => fallRoot;
     public Transform GroundImpactPoint => groundImpactPoint;
     public Transform ResourceDropOrigin => resourceDropOrigin;
-    public Transform StumpAnchor => stumpAnchor;
-    public GameObject StumpPrefab => stumpPrefab;
     public Transform[] LeavesPoints => leavesPoints;
     public bool IsAlive => aliveStateReader.IsAlive;
 
