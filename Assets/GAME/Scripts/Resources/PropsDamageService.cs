@@ -1,17 +1,15 @@
 using UnityEngine;
 using Zenject;
 
-public class PropsDamageService : IEnvironmentResourceDamageService, IResetable, IAliveStateReader, IInitializable
+public class PropsDamageService : IEnvPropDamageService, IResetable, IAliveStateReader, IInitializable
 {
     private readonly ResourceWorld resourceWorld;
-    private readonly EnvironmentResourceEvents events;
     private float health;
     public bool IsAlive { get; private set; }
 
-    public PropsDamageService(ResourceWorld resourceWorld, EnvironmentResourceEvents events)
+    public PropsDamageService(ResourceWorld resourceWorld)
     {
         this.resourceWorld = resourceWorld;
-        this.events = events;
     }
 
 

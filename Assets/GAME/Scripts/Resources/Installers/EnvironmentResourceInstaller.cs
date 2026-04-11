@@ -9,9 +9,12 @@ public abstract class EnvironmentResourceInstaller : MonoInstaller
     {
         Container.Bind<EnvironmentResourceEvents>().AsSingle();
         ViewDependencies();
-        DamageHandler();
         Container.BindInterfacesAndSelfTo<EnvironmentResourceRespawnService>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PropsDamageService>().AsSingle();
+        Container.Bind<IRespawner>().To<EnvironmentResourceRespawnService>();
+        
         InstallResourceBindings();
+        InstallDropSpawner();
         Container.BindInterfacesAndSelfTo<EnvironmentObjPresenter>().AsSingle();
     }
 
@@ -21,14 +24,14 @@ public abstract class EnvironmentResourceInstaller : MonoInstaller
          Container.Bind<EnvironmentPropObjectView>().FromInstance(propObjectView).AsSingle();
          Container.BindInstance(propObjectView.ResourceWorldAsset);
     }
-
-    private void DamageHandler()
-    {
-        Container.BindInterfacesAndSelfTo<PropsDamageService>().AsSingle();
-    }
+    
 
     protected virtual void InstallResourceBindings()
     {
     }
-    
+
+    protected virtual void InstallDropSpawner()
+    {
+        Container.Bind<IDropSpawner>().To<EnvironmentResourceDropSpawner>();
+    }
 }

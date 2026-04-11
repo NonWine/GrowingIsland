@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class TreeResourceDropExecutor
+public class TreeResourceDropExecutor : IDropSpawner
 {
     private readonly ResourceWorld resourceWorld;
     private readonly EnvironmentPropObjectView view;
@@ -133,5 +133,10 @@ public class TreeResourceDropExecutor
             Random.Range(-settings.RandomPitchOffset, settings.RandomPitchOffset),
             Random.Range(70f, 130f) * Mathf.Sign(Random.value - 0.5f),
             Random.Range(-settings.RandomRollOffset, settings.RandomRollOffset));
+    }
+
+    public void Spawn(Vector3 origin)
+    {
+        Spawn();
     }
 }

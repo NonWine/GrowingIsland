@@ -5,20 +5,19 @@ public sealed class TreePresentationController : IInitializable, IDisposable , I
 {
     private readonly EnvironmentResourceEvents events;
     private readonly ITreeHitReaction hitReaction;
-    private readonly TreeFinalFallSequence finalFallSequence;
+    private readonly ITreeFinalFallReaction finalFallReaction;
 
-    public TreePresentationController(EnvironmentResourceEvents events, ITreeHitReaction hitReaction, TreeFinalFallSequence finalFallSequence)
+    public TreePresentationController(EnvironmentResourceEvents events, ITreeHitReaction hitReaction, ITreeFinalFallReaction finalFallReaction)
     {
         this.events = events;
         this.hitReaction = hitReaction;
-        this.finalFallSequence = finalFallSequence;
+        this.finalFallReaction = finalFallReaction;
     }
 
     public void Initialize()
     {
         events.HitApplied += OnHitApplied;
         events.FinalHitEvent += FinalHitApply;
-
         Reset();
     }
 
@@ -31,7 +30,7 @@ public sealed class TreePresentationController : IInitializable, IDisposable , I
     public void Reset()
     {
         hitReaction.ResetToNeutral();
-        finalFallSequence.Reset();
+        finalFallReaction.ResetToNeutral();
     }
 
     private void OnHitApplied(EnvironmentResourceHitResult hitResult)
@@ -41,7 +40,6 @@ public sealed class TreePresentationController : IInitializable, IDisposable , I
 
     private void FinalHitApply(EnvironmentResourceHitResult hitResult)
     {
-        finalFallSequence.Play(hitResult.SourceWorldPosition);
+        finalFallReaction.Play(hitResult.SourceWorldPosition);
     }
-    
 }

@@ -1,21 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class EnvironmentObjPresenter : IInitializable , IDisposable
 {
-    private IEnvironmentResourceDamageService damageService;
     private EnvironmentPropObjectView propView;
     private EnvironmentResourceEvents events;
-    private EnvironmentResourceDropSpawner dropSpawner;
-    private ResourceWorld resourceWorld;
-    private IResetable resetable;
+    private IEnvPropDamageService damageService;
+    private IDropSpawner dropSpawner;
     private IRespawner respawner;
+    private List<IResetable> resetables;
     
-    public EnvironmentObjPresenter(IEnvironmentResourceDamageService damageService, EnvironmentPropObjectView propView)
+    public EnvironmentObjPresenter(IEnvPropDamageService damageService, 
+        EnvironmentPropObjectView propView,
+        EnvironmentResourceEvents events,
+        IDropSpawner dropSpawner,
+        IRespawner respawner,
+        List<IResetable> resetables)
     {
         this.damageService = damageService;
         this.propView = propView;
+        this.events = events;
+        this.dropSpawner = dropSpawner;
+        this.respawner = respawner;
+        this.resetables = resetables;
     }
 
     public void Initialize()
@@ -44,10 +53,9 @@ public class EnvironmentObjPresenter : IInitializable , IDisposable
             if (result.IsFinalHit)
             {
                 events.RaiseFinalHitEvent(result);
-                dropSpawner.Spawn(resourceWorld.TypeWallet, resourceWorld.VisualDrop, propView.transform.position);
+                dropSpawner.Spawn(propView.transform.position);
                 await respawner.Respawn();
-                resetable.Reset();
-
+                resetables.ForEach(r => r.Reset());
             }
         }
         catch (Exception e)

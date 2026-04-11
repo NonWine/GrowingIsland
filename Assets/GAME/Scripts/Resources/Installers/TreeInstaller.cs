@@ -7,15 +7,19 @@ public class TreeInstaller : EnvironmentResourceInstaller
         Container.Bind<TreeLeavesBurster>().AsSingle();
         Container.Bind<ITreeHitReaction>().To<TreeHitReaction>().AsSingle();
         Container.Bind<ITreeFinalFallReaction>().To<TreeFinalFallReaction>().AsSingle();
-        Container.BindInterfacesAndSelfTo<TreeFinalFallSequence>().AsSingle();
        
-        Container.Bind<TreeStumpController>().AsSingle();
-        Container.Bind<TreeResourceDropExecutor>().AsSingle();
         Container.BindInterfacesAndSelfTo<TreePresentationController>().AsSingle();
 
         if (GetComponent<TreeDebugPreview>() != null)
         {
+            Container.Bind<TreeResourceDropExecutor>().AsSingle();
             Container.BindInterfacesAndSelfTo<TreePreviewController>().AsSingle();
         }
+    }
+
+    protected override void InstallDropSpawner()
+    {
+        Container.Bind<IDropSpawner>().To<TreeResourceDropExecutor>();
+
     }
 }

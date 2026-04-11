@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface IEnvironmentResourceDamageService
+public interface IEnvPropDamageService
 {
     EnvironmentResourceHitResult ApplyDamage(float damage, Vector3 sourceWorldPosition);
 }

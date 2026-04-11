@@ -15,12 +15,6 @@ public sealed class EnvironmentResourceRespawnService : IRespawner
         this.view = view;
     }
 
-
-    public void Dispose()
-    {
-        CancelRespawn();
-    }
-
     public UniTask Respawn()
     {
         CancelRespawn();
@@ -53,9 +47,4 @@ public sealed class EnvironmentResourceRespawnService : IRespawner
         respawnCts.Dispose();
         respawnCts = null;
     }
-}
-
-public interface IRespawner
-{
-    UniTask Respawn();
 }
