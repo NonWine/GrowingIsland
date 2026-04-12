@@ -1,11 +1,15 @@
+using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using Zenject;
 
+[Serializable]
 public class PropsDamageService : IEnvPropDamageService, IResetable, IAliveStateReader, IInitializable
 {
     private readonly ResourceWorld resourceWorld;
-    private float health;
-    public bool IsAlive { get; private set; }
+ 
+    [SerializeField, ReadOnly] private float health;
+    [ShowInInspector] public bool IsAlive { get; private set; }
 
     public PropsDamageService(ResourceWorld resourceWorld)
     {
@@ -26,6 +30,8 @@ public class PropsDamageService : IEnvPropDamageService, IResetable, IAliveState
 
     public EnvironmentResourceHitResult ApplyDamage(float damage, Vector3 sourceWorldPosition)
     {
+        Debug.Log(damage + "Damage");
+        Debug.Log(IsAlive);
         if (!IsAlive)
         {
             return new EnvironmentResourceHitResult(damage, 0f,false,false,sourceWorldPosition);

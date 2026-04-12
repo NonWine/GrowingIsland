@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 public class PlayerStateMachine
 {
@@ -18,11 +19,16 @@ public class PlayerStateMachine
 
     public void ChangeState(PlayerStateKey state)
     {
+        if (CurrentState != null && CurrentStateKey == state)
+        {
+            return;
+        }
+        Debug.Log("new State is "  + state);
         if(CurrentState != null)
             CurrentState.Exit();
+        CurrentStateKey = state;
         CurrentState = GetState(state);
         CurrentState.Enter();
-        CurrentStateKey = state;
     }
 
     private PlayerState GetState(PlayerStateKey playerStateKey)

@@ -8,8 +8,3 @@ public interface IDamageable
     
     Transform transform { get;  }
 }
-
-public interface IAliveStateReader
-{
-    bool IsAlive { get; }
-}

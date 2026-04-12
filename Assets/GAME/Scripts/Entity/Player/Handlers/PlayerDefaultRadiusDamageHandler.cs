@@ -1,72 +1,25 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Extensions;
 using UnityEngine;
 
 public class PlayerDefaultRadiusDamageHandler : IDamageableHandler
 {
-    private PlayerContainer playerContainer;
-    private OverlapSphereHandler overlapSphereHandler;
+    private readonly PlayerContainer playerContainer;
 
-    public PlayerDefaultRadiusDamageHandler(PlayerContainer playerContainer, OverlapSphereHandler overlapSphereHandler)
+    public PlayerDefaultRadiusDamageHandler(PlayerContainer playerContainer)
     {
         this.playerContainer = playerContainer;
-        this.overlapSphereHandler = overlapSphereHandler;
     }
 
-
-
-    private bool TryDamagingByRadius(float damage, out Transform[] taregt)
+    public bool TryDamageTarget(IDamageable target, float damage, Action ifNull = null)
     {
-        var enemies = Damageables();
-
-        List<Transform> damagedTargets = new List<Transform>();
-        foreach (var enemy in enemies)
+        if (target == null || !target.IsAlive)
         {
-            enemy.GetDamage(damage,playerContainer.transform.position);
-            damagedTargets.Add(enemy.transform);
+            ifNull?.Invoke();
+            return false;
         }
 
-        taregt = damagedTargets.ToArray();
-        return taregt.Length > 0;    
+        target.GetDamage(damage, playerContainer.transform.position);
+        return true;
     }
-
-    private List<IDamageable> Damageables()
-    {
-        var enemies = overlapSphereHandler.GetFilteredObjects<IDamageable>(
-            playerContainer.transform.position,
-            playerContainer.PlayerStats.AggroRadius,
-            0,
-            enemy => enemy.IsAlive
-        );
-        return enemies;
-    }
-
-    public void HandDamageSingleTarget(float damage, out IDamageable damagedTarget, Action Ifnull = null)
-    {
-        var enemies = Damageables();
-
-        if (enemies.Count == 0)
-        {
-            Ifnull?.Invoke();
-            damagedTarget = null;
-            return;
-        }
-        
-        List<Transform>  damagedTargets = new List<Transform>();
-        enemies.ForEach(x => damagedTargets.Add(x.transform));
-        
-        damagedTarget = playerContainer.transform.GetNearestTarget(damagedTargets).GetComponent<IDamageable>();
-        damagedTarget.GetDamage(damage,playerContainer.transform.position);
-    }
-    
-
-    public void HandDamage(float damage, out bool isDetected, out Transform[] taregt)
-    {
-        isDetected = TryDamagingByRadius(damage, out taregt);
-    }
-
-
 }
 

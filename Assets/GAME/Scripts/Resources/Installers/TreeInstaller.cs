@@ -12,14 +12,12 @@ public class TreeInstaller : EnvironmentResourceInstaller
 
         if (GetComponent<TreeDebugPreview>() != null)
         {
-            Container.Bind<TreeResourceDropExecutor>().AsSingle();
             Container.BindInterfacesAndSelfTo<TreePreviewController>().AsSingle();
         }
     }
 
     protected override void InstallDropSpawner()
     {
-        Container.Bind<IDropSpawner>().To<TreeResourceDropExecutor>();
-
+        Container.BindInterfacesAndSelfTo<TreeResourceDropExecutor>().AsSingle();
     }
 }

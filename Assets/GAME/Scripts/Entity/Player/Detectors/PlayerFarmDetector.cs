@@ -18,7 +18,7 @@ public class PlayerFarmDetector : PlayerDetectorBase<EnvironmentPropObjectView>
 
     public void FindFarmingResources() => Detect();
 
-    protected override bool CanDetect() => true;
+    protected override bool CanDetect() => playerStateMachine.CurrentStateKey != PlayerStateKey.Attack;
 
     protected override float GetRadius() => PlayerContainer.PlayerStats.RadiusFarming;
 
@@ -28,7 +28,7 @@ public class PlayerFarmDetector : PlayerDetectorBase<EnvironmentPropObjectView>
 
     protected override Vector3 DetectionPoint()
     {
-        return PlayerContainer.FarmDetectionPoint.position;
+        return PlayerContainer.transform.position;
     }
 }
 

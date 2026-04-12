@@ -21,6 +21,7 @@ public class Player : MonoBehaviour, IGameTickable
     private PlayerDefaultRadiusDamageHandler defaultRadiusDamageHandler;
     private PlayerAttackHandler playerAttackHandler;
     private TargetDetector targetDetector;
+    private PlayerFarmTargetTracker farmTargetTracker;
 
     public PlayerContainer PlayerContainer => playerContainer;
     public PlayerStateMachine PlayerStateMachine => playerStateMachine;
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour, IGameTickable
         PlayerDefaultRadiusDamageHandler defaultRadiusDamageHandler,
         PlayerAttackHandler playerAttackHandler,
         TargetDetector targetDetector,
+        PlayerFarmTargetTracker farmTargetTracker,
         IGameController gameController)
     {
         this.playerController = playerController;
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour, IGameTickable
         this.defaultRadiusDamageHandler = defaultRadiusDamageHandler;
         this.playerAttackHandler = playerAttackHandler;
         this.targetDetector = targetDetector;
+        this.farmTargetTracker = farmTargetTracker;
         this.gameController = gameController;
 
         InitializePlayer();
@@ -58,7 +61,7 @@ public class Player : MonoBehaviour, IGameTickable
         var playerStates = new Dictionary<PlayerStateKey, PlayerState>
         {
             { PlayerStateKey.Idle, new PlayerIdleState(playerStateMachine, playerContainer) },
-            { PlayerStateKey.Farming, new FarmingState(playerStateMachine, playerContainer, playerAnimator, defaultRadiusDamageHandler) },
+            { PlayerStateKey.Farming, new FarmingState(playerStateMachine, playerContainer, playerAnimator, defaultRadiusDamageHandler, farmTargetTracker) },
             {
                 PlayerStateKey.Attack,new PlayerAttackState(playerStateMachine, playerContainer, playerAnimator, playerRotating, playerAttackHandler, targetDetector)
             }

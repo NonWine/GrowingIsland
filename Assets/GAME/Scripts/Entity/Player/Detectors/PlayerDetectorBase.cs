@@ -34,6 +34,7 @@ public abstract class PlayerDetectorBase<TTarget> : IPlayerDetector
 
         if (detectedObjects.Count == 0)
         {
+            detectionHandler?.NoDetection();
             return;
         }
 
@@ -43,7 +44,6 @@ public abstract class PlayerDetectorBase<TTarget> : IPlayerDetector
     protected abstract float GetRadius();
     protected virtual void OnDetected(List<TTarget> detectedObjects)
     {
-        detectedObjects.ForEach(x => Debug.Log(x.GetType()));
         detectionHandler?.Handle(detectedObjects);
     }
 

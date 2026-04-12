@@ -1,4 +1,5 @@
 using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using Zenject;
 
@@ -6,7 +7,7 @@ public class EnvironmentPropObjectView : MonoBehaviour , IDamageable
 {
     [SerializeField] private ResourceWorld resourceWorldAsset;
     [Inject] private EnvironmentResourceEvents environmentResourceEvents;
-    [Inject] private IAliveStateReader aliveStateReader;
+    [ShowInInspector] [Inject] private IAliveStateReader aliveStateReader;
     [Header("Tree Presentation")]
     [SerializeField] private Transform reactionRoot;
     [SerializeField] private Transform crownRoot;

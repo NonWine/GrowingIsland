@@ -2488,14 +2488,14 @@ MonoBehaviour:
     <AggroRadius>k__BackingField: 1.4558742
     <TimeBeetwenHit>k__BackingField: 1.3069141
     <DamageHit>k__BackingField: 4.890388
-    axeDamage: 12
+    axeDamage: 1
     pickAxeDamage: 5
     digDamage: 5
     damage: 2
     coolDown: 0.8
     maxEnemyDetection: 4
     <perHitRadius>k__BackingField: 0
-    <RadiusFarming>k__BackingField: 0.5
+    <RadiusFarming>k__BackingField: 1
     <MiningCD>k__BackingField: 0.5
   playerAnimatorEvent: {fileID: 7310931004945973}
   playerController: {fileID: 2299367331271766705}
@@ -2691,7 +2691,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1153355490180105636
 Transform:
   m_ObjectHideFlags: 0
@@ -3623,7 +3623,7 @@ PrefabInstance:
     - target: {fileID: 9500000, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 40db3173a05ae3242b1c182a09b0a183, type: 2}
+      objectReference: {fileID: 9100000, guid: 2d615ca04b5fd3c4197248bf239c1809, type: 2}
     m_RemovedComponents:
     - {fileID: 11100000, guid: e2b3820f507f5aa4ca5657f5ee1e5a64, type: 3}
     m_RemovedGameObjects: []

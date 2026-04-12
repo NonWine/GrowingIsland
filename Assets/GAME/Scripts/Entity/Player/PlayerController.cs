@@ -24,14 +24,14 @@ public class PlayerController
 
     public void Tick()
     {
-
         animateable.UpdateAnimator();
-        playerStateMachine.CurrentState.LogicUpdate();
 
         foreach (var detector in detectors)
         {
             detector.Detect();
         }
+
+        playerStateMachine.CurrentState.LogicUpdate();
     }
 }
 

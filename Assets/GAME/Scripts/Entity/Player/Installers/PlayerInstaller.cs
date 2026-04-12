@@ -22,6 +22,7 @@ public class PlayerInstaller : Installer<Player, PlayerInstaller>
         Container.BindInstance(player.PlayerContainer).AsSingle();
         Container.BindInstance(player).AsSingle();
         Container.Bind<PlayerStateMachine>().AsSingle();
+        Container.Bind<PlayerFarmTargetTracker>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<PlayerAnimator>().AsSingle();
     }

@@ -12,7 +12,6 @@ public abstract class EnvironmentResourceInstaller : MonoInstaller
         ViewDependencies();
         Container.BindInterfacesAndSelfTo<EnvironmentResourceRespawnService>().AsSingle();
         Container.BindInterfacesAndSelfTo<PropsDamageService>().AsSingle();
-        Container.Bind<IRespawner>().To<EnvironmentResourceRespawnService>();
         
         InstallResourceBindings();
         InstallDropSpawner();
@@ -33,6 +32,6 @@ public abstract class EnvironmentResourceInstaller : MonoInstaller
 
     protected virtual void InstallDropSpawner()
     {
-        Container.Bind<IDropSpawner>().To<EnvironmentResourceDropSpawner>();
+        Container.Bind<IDropSpawner>().To<EnvironmentResourceDropSpawner>().AsSingle();
     }
 }
