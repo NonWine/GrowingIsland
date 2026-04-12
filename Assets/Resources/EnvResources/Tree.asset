@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DropPrefab: {fileID: 0}
   TypeWallet: 0
-  Health: 3
-  RespawnTime: 10
+  Health: 5
+  RespawnTime: 2
   VisualDrop: 6

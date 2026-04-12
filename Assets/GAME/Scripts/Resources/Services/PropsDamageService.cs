@@ -30,8 +30,7 @@ public class PropsDamageService : IEnvPropDamageService, IResetable, IAliveState
 
     public EnvironmentResourceHitResult ApplyDamage(float damage, Vector3 sourceWorldPosition)
     {
-        Debug.Log(damage + "Damage");
-        Debug.Log(IsAlive);
+
         if (!IsAlive)
         {
             return new EnvironmentResourceHitResult(damage, 0f,false,false,sourceWorldPosition);

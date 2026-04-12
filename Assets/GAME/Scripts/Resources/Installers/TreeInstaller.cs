@@ -5,8 +5,8 @@ public class TreeInstaller : EnvironmentResourceInstaller
     protected override void InstallResourceBindings()
     {
         Container.Bind<TreeLeavesBurster>().AsSingle();
-        Container.Bind<ITreeHitReaction>().To<TreeHitReaction>().AsSingle();
-        Container.Bind<ITreeFinalFallReaction>().To<TreeFinalFallReaction>().AsSingle();
+        Container.BindInterfacesAndSelfTo<TreeHitReaction>().AsSingle();
+        Container.BindInterfacesAndSelfTo<TreeFinalFallReaction>().AsSingle();
        
         Container.BindInterfacesAndSelfTo<TreePresentationController>().AsSingle();
 

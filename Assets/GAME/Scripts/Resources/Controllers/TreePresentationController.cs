@@ -2,31 +2,20 @@ using System;
 using Cysharp.Threading.Tasks;
 using Zenject;
 
-public sealed class TreePresentationController : IInitializable, IDisposable, IResetable, IFinalHitPresentation
+public sealed class TreePresentationController : IInitializable, IResetable, IHitPresentation
 {
-    private readonly EnvironmentResourceEvents events;
     private readonly ITreeHitReaction hitReaction;
     private readonly ITreeFinalFallReaction finalFallReaction;
 
-    public TreePresentationController(
-        EnvironmentResourceEvents events,
-        ITreeHitReaction hitReaction,
-        ITreeFinalFallReaction finalFallReaction)
+    public TreePresentationController(ITreeHitReaction hitReaction, ITreeFinalFallReaction finalFallReaction)
     {
-        this.events = events;
         this.hitReaction = hitReaction;
         this.finalFallReaction = finalFallReaction;
     }
 
     public void Initialize()
     {
-        events.HitApplied += OnHitApplied;
         Reset();
-    }
-
-    public void Dispose()
-    {
-        events.HitApplied -= OnHitApplied;
     }
 
     public void Reset()
@@ -35,12 +24,20 @@ public sealed class TreePresentationController : IInitializable, IDisposable, IR
         finalFallReaction.ResetToNeutral();
     }
 
-    private void OnHitApplied(EnvironmentResourceHitResult hitResult)
+    public async UniTask PlayHitAsync(EnvironmentResourceHitResult hitResult)
     {
-        hitReaction.PlayHit(hitResult.SourceWorldPosition);
+        UniTask hitTask = hitReaction.Play(hitResult.SourceWorldPosition);
+
+        if (hitResult.IsFinalHit)
+        {
+            await hitTask;
+            return;
+        }
+
+        await hitTask;
     }
 
-    public async UniTask PlayAsync(EnvironmentResourceHitResult hitResult)
+    public async UniTask PlayFinalHitAsync(EnvironmentResourceHitResult hitResult)
     {
         await finalFallReaction.Play(hitResult.SourceWorldPosition);
     }

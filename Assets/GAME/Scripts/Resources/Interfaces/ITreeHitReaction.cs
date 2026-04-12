@@ -1,7 +1,8 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public interface ITreeHitReaction
 {
-    void PlayHit(Vector3 sourceWorldPosition);
+    public UniTask Play(Vector3 sourceWorldPosition);
     void ResetToNeutral();
 }

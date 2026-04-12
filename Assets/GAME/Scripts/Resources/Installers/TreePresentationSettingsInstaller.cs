@@ -10,8 +10,8 @@ public class TreePresentationSettingsInstaller : ScriptableObjectInstaller<TreeP
 
     public override void InstallBindings()
     {
-        Container.BindInstance(new TreeHitAnimationSettings(hitAnimationSettings));
-        Container.BindInstance(new TreeFinalFallSettings(finalFallSettings));
-        Container.BindInstance(new TreeResourcePickupAnimationSettings(resourcePickupSettings));
+        Container.BindInstance(hitAnimationSettings);
+        Container.BindInstance(finalFallSettings);
+        Container.BindInstance(resourcePickupSettings);
     }
 }

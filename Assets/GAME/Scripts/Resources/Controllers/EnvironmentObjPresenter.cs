@@ -6,38 +6,36 @@ using Zenject;
 public class EnvironmentObjPresenter : IInitializable , IDisposable
 {
     private EnvironmentPropObjectView propView;
-    private EnvironmentResourceEvents events;
     private IEnvPropDamageService damageService;
     private IDropSpawner dropSpawner;
     private IRespawner respawner;
-    private IFinalHitPresentation finalHitPresentation;
+    private IHitPresentation hitPresentation;
+    
     private List<IResetable> resetables;
     
     public EnvironmentObjPresenter(IEnvPropDamageService damageService, 
         EnvironmentPropObjectView propView,
-        EnvironmentResourceEvents events,
         IDropSpawner dropSpawner,
         IRespawner respawner,
-        IFinalHitPresentation finalHitPresentation,
+        IHitPresentation hitPresentation,
         List<IResetable> resetables)
     {
         this.damageService = damageService;
         this.propView = propView;
-        this.events = events;
         this.dropSpawner = dropSpawner;
         this.respawner = respawner;
-        this.finalHitPresentation = finalHitPresentation;
+        this.hitPresentation = hitPresentation;
         this.resetables = resetables;
     }
 
     public void Initialize()
     {
-        events.OnReceiveWorldDamage += ApplyDamage;
+        propView.OnReceiveWorldDamage += ApplyDamage;
     }
 
     public void Dispose()
     {
-        events.OnReceiveWorldDamage -= ApplyDamage;
+        propView.OnReceiveWorldDamage -= ApplyDamage;
 
     }
 
@@ -51,15 +49,19 @@ public class EnvironmentObjPresenter : IInitializable , IDisposable
             {
                 return;
             }
-            events.RaiseHitApplied(result);
+            
   
             if (result.IsFinalHit)
             {
-                await finalHitPresentation.PlayAsync(result);
+                await hitPresentation.PlayFinalHitAsync(result);
                 dropSpawner.Spawn(propView.transform.position);
                 EnvironmentResourceViewUtility.SetChildrenVisible(propView.transform, false);
                 await respawner.Respawn();
                 resetables.ForEach(r => r.Reset());
+            }
+            else
+            {
+                await hitPresentation.PlayHitAsync(result);
             }
         }
         catch (Exception e)

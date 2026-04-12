@@ -38,7 +38,7 @@ public sealed class TreePreviewController : IDisposable
 
     public void PreviewHit()
     {
-        hitReaction.PlayHit(GetPreviewHitSource());
+        _ = hitReaction.Play(GetPreviewHitSource());
     }
 
     public void PreviewFinalFall()

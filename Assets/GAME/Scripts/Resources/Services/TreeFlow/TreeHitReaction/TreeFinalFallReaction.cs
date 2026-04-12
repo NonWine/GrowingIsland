@@ -21,23 +21,20 @@ public class TreeFinalFallReaction : TreeReactionBase, ITreeFinalFallReaction
     {
         CacheBasePose();
         KillSequence(ref fallSequence);
-        ResetToNeutral();
         leavesBurster.PlayFinalHitBursts(settings);
 
         var fallRoot = View.FallRoot;
+        var currentRotation = fallRoot.localRotation;
         var awayDirection = GetAwayDirectionLocal(fallRoot, sourceWorldPosition);
         var fallAxis = Vector3.Cross(Vector3.up, awayDirection).normalized;
-        var preFallAngle = settings.FallAngle * 0.12f * settings.FinalBendMultiplier;
-        var preFallRotation = baseLocalRotation * Quaternion.AngleAxis(preFallAngle, fallAxis);
-        var fallRotation = baseLocalRotation * Quaternion.AngleAxis(settings.FallAngle, fallAxis);
+        var preFallAngle = settings.FallAngle * 0.1f * settings.FinalBendMultiplier;
+        var preFallRotation = currentRotation * Quaternion.AngleAxis(preFallAngle, fallAxis);
+        var fallRotation = currentRotation * Quaternion.AngleAxis(settings.FallAngle, fallAxis);
 
         fallSequence = DOTween.Sequence();
-        fallSequence.Append(fallRoot.DOLocalRotateQuaternion(preFallRotation, settings.MicroHoldDuration)
-            .SetEase(Ease.OutQuad));
+        fallSequence.Append(fallRoot.DOLocalRotateQuaternion(preFallRotation, settings.FinalRorationDuration).SetEase(settings.FinalRorationEase));
         fallSequence.AppendInterval(settings.MicroHoldDuration);
-        fallSequence.Append(fallRoot.DOLocalRotateQuaternion(fallRotation, settings.FallDuration)
-            .SetEase(Ease.InQuad));
-        fallSequence.AppendCallback(() => leavesBurster.PlayImpactBursts(settings));
+        fallSequence.Append(fallRoot.DOLocalRotateQuaternion(fallRotation, settings.FallDuration).SetEase(Ease.InQuad));
 
         PlayImpactPosition();
         PlayImpactRotation();

@@ -6,20 +6,17 @@ using Zenject;
 public class EnvironmentPropObjectView : MonoBehaviour , IDamageable
 {
     [SerializeField] private ResourceWorld resourceWorldAsset;
-    [Inject] private EnvironmentResourceEvents environmentResourceEvents;
     [ShowInInspector] [Inject] private IAliveStateReader aliveStateReader;
-    [Header("Tree Presentation")]
     [SerializeField] private Transform reactionRoot;
-    [SerializeField] private Transform crownRoot;
     [SerializeField] private Transform fallRoot;
     [SerializeField] private Transform groundImpactPoint;
     [SerializeField] private Transform resourceDropOrigin;
     [SerializeField] private Transform[] leavesPoints;
-    
+    public event Action<float, Vector3> OnReceiveWorldDamage;
+
     public ResourceWorld ResourceWorldAsset => resourceWorldAsset;
     public eCollectable ResourceType => resourceWorldAsset.TypeWallet;
     public Transform ReactionRoot => reactionRoot;
-    public Transform CrownRoot => crownRoot;
     public Transform FallRoot => fallRoot;
     public Transform GroundImpactPoint => groundImpactPoint;
     public Transform ResourceDropOrigin => resourceDropOrigin;
@@ -29,6 +26,6 @@ public class EnvironmentPropObjectView : MonoBehaviour , IDamageable
 
     public void GetDamage(float damage, Vector3 sourceWorldPosition)
     {
-        environmentResourceEvents.RaiseReceiveWorldDamage(damage,sourceWorldPosition);
+        OnReceiveWorldDamage?.Invoke(damage,sourceWorldPosition);
     }
 }

@@ -6,24 +6,12 @@ using Zenject;
 public sealed class ScalePunchEnvironmentResourceDamageFeedback
 {
     private readonly EnvironmentPropObjectView view;
-    private readonly EnvironmentResourceEvents events;
 
-    public ScalePunchEnvironmentResourceDamageFeedback(EnvironmentPropObjectView view, EnvironmentResourceEvents events)
+    public ScalePunchEnvironmentResourceDamageFeedback(EnvironmentPropObjectView view)
     {
         this.view = view;
-        this.events = events;
     }
-
-    public void Initialize()
-    {
-        events.HitApplied += OnHitApplied;
-    }
-
-    public void Dispose()
-    {
-        events.HitApplied -= OnHitApplied;
-        view.transform.DOKill();
-    }
+    
 
     private void OnHitApplied(EnvironmentResourceHitResult result)
     {

@@ -27,6 +27,11 @@ public class ParticlePool : MonoBehaviour
 
     public void PlayPoof(Vector3 pos)
     {
+        if (!HasItems(poofFx))
+        {
+            return;
+        }
+
         poofFx[currentPoof].transform.position = pos;
         poofFx[currentPoof].Play();
         currentPoof++;
@@ -36,6 +41,11 @@ public class ParticlePool : MonoBehaviour
 
     public void PlayFallenLeaves(Vector3 pos)
     {
+        if (!HasItems(fallenLeaves))
+        {
+            return;
+        }
+
         var fx = fallenLeaves[currentLeaves];
         fx.transform.position = pos;
         fx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
@@ -49,6 +59,11 @@ public class ParticlePool : MonoBehaviour
     
     public void PlayAxeHitFx(Vector3 pos)
     {
+        if (!HasItems(lumberHitFx))
+        {
+            return;
+        }
+
         lumberHitFx[currentAxeHit].transform.position = pos;
         lumberHitFx[currentAxeHit].Play();
         currentAxeHit++;
@@ -58,10 +73,17 @@ public class ParticlePool : MonoBehaviour
     
     public void PlayMineHitFx(Vector3 pos)
     {
+        if (!HasItems(mineHitFx))
+        {
+            return;
+        }
+
         mineHitFx[currentMineHit].transform.position = pos;
         mineHitFx[currentMineHit].Play();
         currentMineHit++;
         if (currentMineHit == mineHitFx.Length)
             currentMineHit = 0;
     }
+
+    private static bool HasItems(ParticleSystem[] pool) => pool != null && pool.Length > 0;
 }
